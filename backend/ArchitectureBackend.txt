@@ -1,0 +1,2 @@
+AuthService  SERVER_ADDRESS=":8080"
+CartService  SERVER_ADDRESS=":8081"
