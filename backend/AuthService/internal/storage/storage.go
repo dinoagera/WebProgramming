@@ -2,6 +2,7 @@ package storage
 
 import (
 	"authservice/internal/domain/models"
+	"authservice/internal/handler"
 	"context"
 	"log/slog"
 	"time"
@@ -32,11 +33,22 @@ func New(log *slog.Logger, storagePath string) (*Storage, error) {
 	}, nil
 }
 func (s *Storage) CreateUser(email, passHash string) error {
-	_, err := s.Pool.Exec(context.Background(), `INSERT INTO users (email, pass_hash, created_at) VALUES ($1,$2,$3)`, email, passHash, time.Now())
+	var exists bool
+	err := s.Pool.QueryRow(context.Background(), `SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)`, email).Scan(&exists)
+	if err != nil {
+		s.log.Info("failed to query row", "err", err)
+		return err
+	}
+	if exists {
+		s.log.Info("user is busy", "email", email)
+		return handler.ErrEmailBusy
+	}
+	_, err = s.Pool.Exec(context.Background(), `INSERT INTO users (email, pass_hash, created_at) VALUES ($1,$2,$3)`, email, passHash, time.Now())
 	if err != nil {
 		s.log.Info("failed to execute query on create user", "err:", err)
 		return err
 	}
+	s.log.Info("user created", "email", email)
 	return nil
 }
 func (s *Storage) LoginUser(email string) (models.User, error) {

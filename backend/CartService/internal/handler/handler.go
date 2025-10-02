@@ -23,7 +23,7 @@ func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
 	userID := r.Header.Get("X-User-ID")
 	if userID == "" {
 		h.log.Info("failed to get cart, userId is empty")
-		http.Error(w, "email is not allowed", http.StatusUnauthorized)
+		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
 	}
 	id, err := strconv.Atoi(userID)
@@ -46,7 +46,7 @@ func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
 	})
 }
 func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
-	//
+
 }
 func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
 	//

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"authservice/internal/handler"
 	storage "authservice/internal/storage/interfaces"
 	lib "authservice/lib/jwt"
 	"errors"
@@ -25,13 +26,17 @@ func New(log *slog.Logger, createUser storage.CreateUser, loginUser storage.Logi
 func (s *Service) Register(email, password string) error {
 	passHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		s.log.Info("Failed to generate passhash", "err:", err)
+		s.log.Info("Failed to generate passhash", "err", err)
 		return errors.New("failed to generate passhash")
 	}
 	err = s.createUser.CreateUser(email, string(passHash))
 	if err != nil {
-		s.log.Info("Failed to create user", "err:", err)
-		return errors.New("generate user is failed")
+		if errors.Is(err, handler.ErrEmailBusy) {
+			s.log.Info("email is busy", "email", email)
+			return handler.ErrEmailBusy
+		} else {
+			return err
+		}
 	}
 	return nil
 }

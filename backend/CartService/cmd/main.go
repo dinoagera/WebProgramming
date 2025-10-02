@@ -16,5 +16,6 @@ func main() {
 		logger.Info("failed to create client redis.", "err", err)
 		os.Exit(1)
 	}
-	api.InitApi(logger, cfg, clientRedis)
+	api := api.InitApi(logger, cfg, clientRedis)
+	api.StartServer()
 }

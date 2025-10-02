@@ -12,6 +12,7 @@ import (
 var (
 	ErrEmailEmpty      = errors.New("email is empty")
 	ErrEmailNotAllowed = errors.New("email is not allowed")
+	ErrEmailBusy       = errors.New("email is busy")
 )
 
 type Handler struct {
@@ -46,6 +47,7 @@ func New(log *slog.Logger, login service.Login, register service.Register) *Hand
 // @Router /register [post]
 func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
+		h.log.Info("method is allowed")
 		http.Error(w, "Method is not allowed", http.StatusMethodNotAllowed)
 		return
 	}
@@ -58,13 +60,21 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	err := validator.ValidateEmail(req.Email)
 	switch {
 	case errors.Is(err, ErrEmailEmpty):
-		http.Error(w, "Email is empty", http.StatusBadRequest)
+		h.log.Info("failed to register", "err", err)
+		http.Error(w, "email is empty", http.StatusBadRequest)
 		return
 	case errors.Is(err, ErrEmailNotAllowed):
+		h.log.Info("failed to register", "err", err)
 		http.Error(w, "email is not allowed", http.StatusBadRequest)
 		return
 	}
-	if err = h.register.Register(req.Email, req.Password); err != nil {
+	err = h.register.Register(req.Email, req.Password)
+	if err != nil {
+		if errors.Is(err, ErrEmailBusy) {
+			h.log.Info("failed to register", "err", err)
+			http.Error(w, "email is busy", http.StatusBadRequest)
+			return
+		}
 		h.log.Info("failed to register", "err:", err)
 		http.Error(w, "failed to register", http.StatusInternalServerError)
 		return

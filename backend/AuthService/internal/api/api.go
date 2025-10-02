@@ -41,6 +41,7 @@ func InitApi(log *slog.Logger, cfg *config.Config) *API {
 	}
 	return api
 }
+
 func (api *API) StartServer() {
 	api.setupRouter()
 	server := &http.Server{
@@ -56,11 +57,12 @@ func (api *API) StartServer() {
 		os.Exit(1)
 	}
 }
+
 func (api *API) setupRouter() {
 	public := api.router.PathPrefix("/api").Subrouter()
 	public.HandleFunc("/register", api.handler.Register).Methods(http.MethodPost)
 	public.HandleFunc("/login", api.handler.Auth).Methods(http.MethodPost)
 	api.router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8080/swagger/doc.json"),
+		httpSwagger.URL("http://localhost:8081/swagger/doc.json"),
 	))
 }
