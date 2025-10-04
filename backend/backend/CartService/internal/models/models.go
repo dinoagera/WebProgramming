@@ -12,9 +12,9 @@ type CartItem struct {
 	Name      string  `json:"name"`
 }
 
-// type AddItemRequest struct {
-// 	ProductID string  `json:"product_id" binding:"required"`
-// 	Quantity  int     `json:"quantity" binding:"min=1"`
-// 	Price     float64 `json:"price" binding:"min=0"`
-// 	Name      string  `json:"name" binding:"required"`
-// }
+type AddItemRequest struct {
+	ProductID string  `json:"product_id" binding:"required"`
+	Quantity  int     `json:"quantity" binding:"min=1"`
+	Price     float64 `json:"price" binding:"min=0"`
+	Name      string  `json:"name" binding:"required"`
+}

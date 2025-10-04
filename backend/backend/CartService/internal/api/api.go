@@ -23,9 +23,9 @@ type API struct {
 }
 
 func InitApi(log *slog.Logger, cfg *config.Config, client *redis.Client) *API {
-	storage := storage.New(log, client)
-	srv := service.New(log, storage)
-	handler := handler.New(log, srv)
+	storage := storage.New(log, client, cfg)
+	srv := service.New(log, storage, storage)
+	handler := handler.New(log, srv, srv)
 	api := &API{
 		log:     log,
 		cfg:     cfg,

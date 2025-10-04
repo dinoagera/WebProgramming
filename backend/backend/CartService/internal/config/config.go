@@ -13,6 +13,7 @@ type Config struct {
 	RedisAddr     string        `env:"REDIS_ADDRESS" env-default:"localhost:6379"`
 	RedisPassword string        `env:"REDIS_PASSWORD"`
 	DB            int           `env:"REDIS_DB"`
+	CartTTL       time.Duration `env:"CART_TTL"`
 	MaxRetries    int           `env:"MAX_RETRIES"`
 	DialTimeout   time.Duration `env:"DialTimeout"`
 	Timeout       time.Duration `env:"Timeout"`
