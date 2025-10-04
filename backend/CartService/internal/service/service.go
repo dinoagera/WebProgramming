@@ -7,16 +7,18 @@ import (
 )
 
 type Service struct {
-	log      *slog.Logger
-	getCart  storage.GetCart
-	saveCart storage.AddItem
+	log        *slog.Logger
+	getCart    storage.GetCart
+	addItem    storage.AddItem
+	removeItem storage.RemoveItem
 }
 
-func New(log *slog.Logger, getCart storage.GetCart, saveCart storage.AddItem) *Service {
+func New(log *slog.Logger, getCart storage.GetCart, addItem storage.AddItem, removeItem storage.RemoveItem) *Service {
 	return &Service{
-		log:      log,
-		getCart:  getCart,
-		saveCart: saveCart,
+		log:        log,
+		getCart:    getCart,
+		addItem:    addItem,
+		removeItem: removeItem,
 	}
 }
 func (s *Service) GetCart(userID string) (models.Cart, error) {
@@ -29,9 +31,18 @@ func (s *Service) GetCart(userID string) (models.Cart, error) {
 }
 
 func (s *Service) AddItem(userID string, addItem models.AddItemRequest) error {
-	err := s.saveCart.AddItem(userID, addItem)
+	err := s.addItem.AddItem(userID, addItem)
 	if err != nil {
-		s.log.Info("failed to save cart", "err", err)
+		s.log.Info("failed to add item", "err", err)
+		return err
+	}
+	return nil
+}
+
+func (s *Service) RemoveItem(userID string, removeItem models.CartItem) error {
+	err := s.removeItem.RemoveItem(userID, removeItem)
+	if err != nil {
+		s.log.Info("failed to remove item", "err", err)
 		return err
 	}
 	return nil

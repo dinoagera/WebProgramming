@@ -9,5 +9,5 @@ type AddItem interface {
 	AddItem(userID string, addItem models.AddItemRequest) error
 }
 type RemoveItem interface {
-	RemoveItem(userID string) error
+	RemoveItem(userID string, cartItem models.CartItem) error
 }

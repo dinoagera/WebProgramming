@@ -10,19 +10,21 @@ import (
 )
 
 type Handler struct {
-	log     *slog.Logger
-	getCart service.GetCart
-	addItem service.AddItem
+	log        *slog.Logger
+	getCart    service.GetCart
+	addItem    service.AddItem
+	removeItem service.RemoveItem
 }
 
-func New(log *slog.Logger, getCart service.GetCart, addItem service.AddItem) *Handler {
+func New(log *slog.Logger, getCart service.GetCart, addItem service.AddItem, removeItem service.RemoveItem) *Handler {
 	return &Handler{
-		log:     log,
-		getCart: getCart,
-		addItem: addItem,
+		log:        log,
+		getCart:    getCart,
+		addItem:    addItem,
+		removeItem: removeItem,
 	}
 }
-func (h *Handler) getKey(w http.ResponseWriter, r *http.Request) (string, error) {
+func (h *Handler) getKey(r *http.Request) (string, error) {
 	userID := r.Header.Get("X-User-ID")
 	if userID == "" {
 		h.log.Info("failed to get cart, userId is empty")
@@ -31,7 +33,7 @@ func (h *Handler) getKey(w http.ResponseWriter, r *http.Request) (string, error)
 	return userID, nil
 }
 func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
-	userID, err := h.getKey(w, r)
+	userID, err := h.getKey(r)
 	if err != nil {
 		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
@@ -45,7 +47,7 @@ func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status": "successfully",
+		"status": "get cart is successfully",
 		"cart":   cart,
 	})
 }
@@ -56,7 +58,7 @@ func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Error", http.StatusInternalServerError)
 		return
 	}
-	userID, err := h.getKey(w, r)
+	userID, err := h.getKey(r)
 	if err != nil {
 		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
@@ -74,7 +76,28 @@ func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
 	})
 }
 func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
-	//
+	var removeItem models.CartItem
+	if err := json.NewDecoder(r.Body).Decode(&removeItem); err != nil {
+		h.log.Info("failed to decode to model remove item req", "err", err)
+		http.Error(w, "Internal Error", http.StatusInternalServerError)
+		return
+	}
+	userID, err := h.getKey(r)
+	if err != nil {
+		http.Error(w, "not authorization", http.StatusUnauthorized)
+		return
+	}
+	err = h.removeItem.RemoveItem(userID, removeItem)
+	if err != nil {
+		h.log.Info("failed to remove item", "err", err)
+		http.Error(w, "", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "item remove is successfully",
+	})
 }
 func (h *Handler) UpdateItem(w http.ResponseWriter, r *http.Request) {
 	//

@@ -81,3 +81,6 @@ func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 	}
 	return s.saveCart(key, cart)
 }
+func (s *Storage) RemoveItem(userID string, removeItem models.CartItem) error {
+	return nil
+}
