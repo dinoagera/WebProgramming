@@ -8,3 +8,6 @@ type GetCart interface {
 type AddItem interface {
 	AddItem(userID string, addItem models.AddItemRequest) error
 }
+type RemoveItem interface {
+	RemoveItem(userID string) error
+}

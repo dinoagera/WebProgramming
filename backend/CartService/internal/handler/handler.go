@@ -3,6 +3,7 @@ package handler
 import (
 	"CartService/internal/models"
 	service "CartService/internal/service/interfaces"
+	"CartService/lib"
 	"encoding/json"
 	"log/slog"
 	"net/http"
@@ -21,10 +22,17 @@ func New(log *slog.Logger, getCart service.GetCart, addItem service.AddItem) *Ha
 		addItem: addItem,
 	}
 }
-func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) getKey(w http.ResponseWriter, r *http.Request) (string, error) {
 	userID := r.Header.Get("X-User-ID")
 	if userID == "" {
 		h.log.Info("failed to get cart, userId is empty")
+		return "", lib.ErrUserIDIsEmpty
+	}
+	return userID, nil
+}
+func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
+	userID, err := h.getKey(w, r)
+	if err != nil {
 		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
 	}
@@ -46,14 +54,14 @@ func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&addItemReq); err != nil {
 		h.log.Info("failed to decode to model add item req", "err", err)
 		http.Error(w, "Internal Error", http.StatusInternalServerError)
+		return
 	}
-	userID := r.Header.Get("X-User-ID")
-	if userID == "" {
-		h.log.Info("failed to add item, userId is empty")
+	userID, err := h.getKey(w, r)
+	if err != nil {
 		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
 	}
-	err := h.addItem.AddItem(userID, addItemReq)
+	err = h.addItem.AddItem(userID, addItemReq)
 	if err != nil {
 		h.log.Info("failed to add item", "err", err)
 		http.Error(w, "", http.StatusInternalServerError)

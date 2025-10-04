@@ -23,6 +23,21 @@ func New(log *slog.Logger, client *redis.Client, cfg *config.Config) *Storage {
 		cfg:    cfg,
 	}
 }
+func (s *Storage) saveCart(key string, cart models.Cart) error {
+	data, err := json.Marshal(cart)
+	if err != nil {
+		s.log.Info("failed to marshall", "err", err)
+		return err
+	}
+	err = s.client.Set(context.Background(), key, data, s.cfg.CartTTL).Err()
+	if err != nil {
+		s.log.Info("failed to set date in redis", "err", err)
+		return err
+	}
+	s.log.Info("set date is successfully")
+	return nil
+}
+
 func (s *Storage) GetCart(key string) (models.Cart, error) {
 	data, err := s.client.Get(context.Background(), key).Result()
 	if err != nil {
@@ -65,18 +80,4 @@ func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 		cart.Items = append(cart.Items, item)
 	}
 	return s.saveCart(key, cart)
-}
-func (s *Storage) saveCart(key string, cart models.Cart) error {
-	data, err := json.Marshal(cart)
-	if err != nil {
-		s.log.Info("failed to marshall", "err", err)
-		return err
-	}
-	err = s.client.Set(context.Background(), key, data, s.cfg.CartTTL).Err()
-	if err != nil {
-		s.log.Info("failed to set date in redis", "err", err)
-		return err
-	}
-	s.log.Info("set date is successfully")
-	return nil
 }
