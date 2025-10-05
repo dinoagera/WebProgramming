@@ -14,3 +14,6 @@ type RemoveItem interface {
 type UpdateItem interface {
 	UpdateItem(key string, updateItem models.UpdateItemRequest) error
 }
+type ClearCart interface {
+	ClearCart(key string) error
+}

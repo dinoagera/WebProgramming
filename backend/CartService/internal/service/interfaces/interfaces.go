@@ -1,6 +1,8 @@
 package service
 
-import "CartService/internal/models"
+import (
+	"CartService/internal/models"
+)
 
 type GetCart interface {
 	GetCart(userID string) (models.Cart, error)
@@ -13,4 +15,7 @@ type RemoveItem interface {
 }
 type UpdateItem interface {
 	UpdateItem(userID string, updateItem models.UpdateItemRequest) error
+}
+type ClearCart interface {
+	ClearCart(userID string) error
 }

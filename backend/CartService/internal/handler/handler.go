@@ -15,21 +15,23 @@ type Handler struct {
 	addItem    service.AddItem
 	removeItem service.RemoveItem
 	updateItem service.UpdateItem
+	clearCart  service.ClearCart
 }
 
-func New(log *slog.Logger, getCart service.GetCart, addItem service.AddItem, removeItem service.RemoveItem, updateItem service.UpdateItem) *Handler {
+func New(log *slog.Logger, getCart service.GetCart, addItem service.AddItem, removeItem service.RemoveItem, updateItem service.UpdateItem, clearCart service.ClearCart) *Handler {
 	return &Handler{
 		log:        log,
 		getCart:    getCart,
 		addItem:    addItem,
 		removeItem: removeItem,
 		updateItem: updateItem,
+		clearCart:  clearCart,
 	}
 }
 func (h *Handler) getKey(r *http.Request) (string, error) {
 	userID := r.Header.Get("X-User-ID")
 	if userID == "" {
-		h.log.Info("failed to get cart, userId is empty")
+		h.log.Info("failed to get key, userId is empty")
 		return "", lib.ErrUserIDIsEmpty
 	}
 	return userID, nil
@@ -127,5 +129,20 @@ func (h *Handler) UpdateItem(w http.ResponseWriter, r *http.Request) {
 	})
 }
 func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
-	//TODO:
+	userID, err := h.getKey(r)
+	if err != nil {
+		http.Error(w, "not authorization", http.StatusUnauthorized)
+		return
+	}
+	err = h.clearCart.ClearCart(userID)
+	if err != nil {
+		h.log.Info("failed to clear cart", "err", err)
+		http.Error(w, "failed to clear cart", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "cart is cleared successfully",
+	})
 }

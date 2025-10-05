@@ -130,3 +130,11 @@ func (s *Storage) UpdateItem(key string, updateItem models.UpdateItemRequest) er
 	}
 	return s.saveCart(key, cart)
 }
+func (s *Storage) ClearCart(key string) error {
+	err := s.client.Del(context.Background(), key).Err()
+	if err != nil {
+		s.log.Info("failed to del date from redis", "err", err)
+		return err
+	}
+	return nil
+}
