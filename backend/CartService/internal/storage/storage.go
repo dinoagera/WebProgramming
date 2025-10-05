@@ -82,8 +82,8 @@ func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 	}
 	return s.saveCart(key, cart)
 }
-func (s *Storage) RemoveItem(userID string, removeItem models.CartItem) error {
-	cart, err := s.GetCart(userID)
+func (s *Storage) RemoveItem(key string, removeItem models.CartItem) error {
+	cart, err := s.GetCart(key)
 	if err != nil {
 		s.log.Info("failed to get cart", "err", err)
 		return err
@@ -100,5 +100,33 @@ func (s *Storage) RemoveItem(userID string, removeItem models.CartItem) error {
 		s.log.Info("needed item not founded")
 		return lib.ErrItemIsNotFounded
 	}
-	return s.saveCart(userID, cart)
+	return s.saveCart(key, cart)
+}
+func (s *Storage) UpdateItem(key string, updateItem models.UpdateItemRequest) error {
+	cart, err := s.GetCart(key)
+	if err != nil {
+		s.log.Info("failed to get cart", "err", err)
+		return err
+	}
+	itemFound := false
+	for i, item := range cart.Items {
+		if item.ProductID == updateItem.ProductID {
+			if updateItem.TypeOperation == 0 {
+				if cart.Items[i].Quantity > 1 {
+					cart.Items[i].Quantity--
+				} else {
+					cart.Items = append(cart.Items[:i], cart.Items[i+1:]...)
+				}
+			} else {
+				cart.Items[i].Quantity++
+			}
+			itemFound = true
+			break
+		}
+	}
+	if !itemFound {
+		s.log.Info("needed item not founded")
+		return lib.ErrItemIsNotFounded
+	}
+	return s.saveCart(key, cart)
 }

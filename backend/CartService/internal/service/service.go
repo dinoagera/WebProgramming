@@ -11,9 +11,10 @@ type Service struct {
 	getCart    storage.GetCart
 	addItem    storage.AddItem
 	removeItem storage.RemoveItem
+	updateItem storage.UpdateItem
 }
 
-func New(log *slog.Logger, getCart storage.GetCart, addItem storage.AddItem, removeItem storage.RemoveItem) *Service {
+func New(log *slog.Logger, getCart storage.GetCart, addItem storage.AddItem, removeItem storage.RemoveItem, updateItem storage.UpdateItem) *Service {
 	return &Service{
 		log:        log,
 		getCart:    getCart,
@@ -48,5 +49,10 @@ func (s *Service) RemoveItem(userID string, removeItem models.CartItem) error {
 	return nil
 }
 func (s *Service) UpdateItem(userID string, updateItem models.UpdateItemRequest) error {
-
+	err := s.updateItem.UpdateItem(userID, updateItem)
+	if err != nil {
+		s.log.Info("failed to update item", "err", err)
+		return err
+	}
+	return nil
 }
