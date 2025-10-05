@@ -47,3 +47,6 @@ func (s *Service) RemoveItem(userID string, removeItem models.CartItem) error {
 	}
 	return nil
 }
+func (s *Service) UpdateItem(userID string, updateItem models.UpdateItemRequest) error {
+
+}

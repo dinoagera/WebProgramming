@@ -3,6 +3,7 @@ package storage
 import (
 	"CartService/internal/config"
 	"CartService/internal/models"
+	"CartService/lib"
 	"context"
 	"encoding/json"
 	"log/slog"
@@ -82,5 +83,22 @@ func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 	return s.saveCart(key, cart)
 }
 func (s *Storage) RemoveItem(userID string, removeItem models.CartItem) error {
-	return nil
+	cart, err := s.GetCart(userID)
+	if err != nil {
+		s.log.Info("failed to get cart", "err", err)
+		return err
+	}
+	itemFound := false
+	for i, item := range cart.Items {
+		if item.ProductID == removeItem.ProductID {
+			cart.Items = append(cart.Items[:i], cart.Items[i+1:]...)
+			itemFound = true
+			break
+		}
+	}
+	if !itemFound {
+		s.log.Info("needed item not founded")
+		return lib.ErrItemIsNotFounded
+	}
+	return s.saveCart(userID, cart)
 }

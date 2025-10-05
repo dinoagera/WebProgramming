@@ -14,14 +14,16 @@ type Handler struct {
 	getCart    service.GetCart
 	addItem    service.AddItem
 	removeItem service.RemoveItem
+	updateItem service.UpdateItem
 }
 
-func New(log *slog.Logger, getCart service.GetCart, addItem service.AddItem, removeItem service.RemoveItem) *Handler {
+func New(log *slog.Logger, getCart service.GetCart, addItem service.AddItem, removeItem service.RemoveItem, updateItem service.UpdateItem) *Handler {
 	return &Handler{
 		log:        log,
 		getCart:    getCart,
 		addItem:    addItem,
 		removeItem: removeItem,
+		updateItem: updateItem,
 	}
 }
 func (h *Handler) getKey(r *http.Request) (string, error) {
@@ -90,7 +92,7 @@ func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
 	err = h.removeItem.RemoveItem(userID, removeItem)
 	if err != nil {
 		h.log.Info("failed to remove item", "err", err)
-		http.Error(w, "", http.StatusInternalServerError)
+		http.Error(w, "failed to remove item", http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -100,8 +102,30 @@ func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
 	})
 }
 func (h *Handler) UpdateItem(w http.ResponseWriter, r *http.Request) {
-	//
+	var updateItem models.UpdateItemRequest
+	if err := json.NewDecoder(r.Body).Decode(&updateItem); err != nil {
+		h.log.Info("failed to decode to model update item req", "err", err)
+		http.Error(w, "Internal Error", http.StatusInternalServerError)
+		return
+	}
+	userID, err := h.getKey(r)
+	if err != nil {
+		h.log.Info("failed to get key", "err", err)
+		http.Error(w, "not authorization", http.StatusUnauthorized)
+		return
+	}
+	err = h.updateItem.UpdateItem(userID, updateItem)
+	if err != nil {
+		h.log.Info("failed to update item", "err", err)
+		http.Error(w, "failed to update item", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "item update is successfully",
+	})
 }
 func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
-	//
+	//TODO:
 }

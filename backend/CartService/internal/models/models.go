@@ -13,8 +13,12 @@ type CartItem struct {
 }
 
 type AddItemRequest struct {
-	ProductID string  `json:"product_id" binding:"required"`
-	Quantity  int     `json:"quantity" binding:"min=1"`
-	Price     float64 `json:"price" binding:"min=0"`
-	Name      string  `json:"name" binding:"required"`
+	ProductID string  `json:"product_id"`
+	Quantity  int     `json:"quantity"`
+	Price     float64 `json:"price"`
+	Name      string  `json:"name"`
+}
+type UpdateItemRequest struct {
+	ProductID     string `json:"product_id"`
+	TypeOperation int    `json:"type_operation" `
 }

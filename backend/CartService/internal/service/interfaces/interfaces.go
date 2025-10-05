@@ -11,3 +11,6 @@ type AddItem interface {
 type RemoveItem interface {
 	RemoveItem(userID string, cartItem models.CartItem) error
 }
+type UpdateItem interface {
+	UpdateItem(userID string, updateItem models.UpdateItemRequest) error
+}
