@@ -54,5 +54,9 @@ func (api *API) StartServer() {
 }
 func (api *API) setupRouter() {
 	public := api.router.PathPrefix("/api").Subrouter()
-	public.HandleFunc("/getCart", api.handler.GetCart).Methods(http.MethodGet)
+	public.HandleFunc("/getcart", api.handler.GetCart).Methods(http.MethodGet)
+	public.HandleFunc("/additem", api.handler.AddItem).Methods(http.MethodPost)
+	public.HandleFunc("/removeitem", api.handler.RemoveItem).Methods(http.MethodPost)
+	public.HandleFunc("/updateitem", api.handler.UpdateItem).Methods(http.MethodPost)
+	public.HandleFunc("/clearcart", api.handler.ClearCart).Methods(http.MethodGet)
 }

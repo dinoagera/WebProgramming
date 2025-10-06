@@ -116,6 +116,8 @@ func (s *Storage) UpdateItem(key string, updateItem models.UpdateItemRequest) er
 					cart.Items[i].Quantity--
 				} else {
 					cart.Items = append(cart.Items[:i], cart.Items[i+1:]...)
+					itemFound = true
+					break
 				}
 			} else {
 				cart.Items[i].Quantity++

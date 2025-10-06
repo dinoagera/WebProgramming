@@ -20,6 +20,7 @@ func New(log *slog.Logger, getCart storage.GetCart, addItem storage.AddItem, rem
 		log:        log,
 		getCart:    getCart,
 		addItem:    addItem,
+		updateItem: updateItem,
 		removeItem: removeItem,
 		clearCart:  clearCart,
 	}
