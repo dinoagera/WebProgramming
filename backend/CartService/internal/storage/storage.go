@@ -24,6 +24,13 @@ func New(log *slog.Logger, client *redis.Client, cfg *config.Config) *Storage {
 		cfg:    cfg,
 	}
 }
+func (s *Storage) calculateTotal(cart *models.Cart) {
+	var totalSum float64
+	for _, item := range cart.Items {
+		totalSum += float64(item.Quantity) * item.Price
+	}
+	cart.Total = totalSum
+}
 func (s *Storage) saveCart(key string, cart models.Cart) error {
 	data, err := json.Marshal(cart)
 	if err != nil {
@@ -60,6 +67,8 @@ func (s *Storage) GetCart(key string) (models.Cart, error) {
 	}
 	return cart, nil
 }
+
+// Исправить валидацию, поставить кол-во по умолчанию 1.
 func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 	cart, err := s.GetCart(key)
 	if err != nil {
@@ -80,6 +89,7 @@ func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 		item := models.CartItem(addItem)
 		cart.Items = append(cart.Items, item)
 	}
+	s.calculateTotal(&cart)
 	return s.saveCart(key, cart)
 }
 func (s *Storage) RemoveItem(key string, removeItem models.CartItem) error {
@@ -100,6 +110,7 @@ func (s *Storage) RemoveItem(key string, removeItem models.CartItem) error {
 		s.log.Info("needed item not founded")
 		return lib.ErrItemIsNotFounded
 	}
+	s.calculateTotal(&cart)
 	return s.saveCart(key, cart)
 }
 func (s *Storage) UpdateItem(key string, updateItem models.UpdateItemRequest) error {
@@ -130,6 +141,7 @@ func (s *Storage) UpdateItem(key string, updateItem models.UpdateItemRequest) er
 		s.log.Info("needed item not founded")
 		return lib.ErrItemIsNotFounded
 	}
+	s.calculateTotal(&cart)
 	return s.saveCart(key, cart)
 }
 func (s *Storage) ClearCart(key string) error {
