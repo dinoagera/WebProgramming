@@ -80,7 +80,7 @@ func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 		if item.ProductID == addItem.ProductID {
 			cart.Items[i].Quantity += addItem.Quantity
 			cart.Items[i].Price = addItem.Price
-			cart.Items[i].Name = addItem.Name
+			cart.Items[i].Category = addItem.Category
 			itemFound = true
 			break
 		}
