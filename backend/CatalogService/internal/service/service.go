@@ -14,11 +14,11 @@ type Service struct {
 func New(log *slog.Logger) *Service {
 	return &Service{log: log}
 }
-func (s *Service) GetCatalog() (models.Goods, error) {
+func (s *Service) GetCatalog() ([]models.Good, error) {
 	goods, err := s.getCatalog.GetCatalog()
 	if err != nil {
 		s.log.Info("failed to get catalog", "err", err)
-		return goods, err
+		return nil, err
 	}
 	return goods, nil
 }

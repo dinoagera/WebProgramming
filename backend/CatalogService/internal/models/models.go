@@ -1,8 +1,8 @@
 package models
 
-type Goods struct {
-	Goods []Good `json:"goods"`
-}
+// type Goods struct {
+// 	Goods []Good `json:"goods"`
+// }
 type Good struct {
 	ProductID string  `json:"product_id"`
 	Category  string  `json:"category"`
