@@ -2,9 +2,11 @@ package storage
 
 import (
 	"catalogservice/internal/models"
+	"catalogservice/lib"
 	"context"
 	"log/slog"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -31,7 +33,7 @@ func New(log *slog.Logger, storgaePath string) (*Storage, error) {
 	}, nil
 }
 func (s *Storage) GetCatalog() ([]models.Good, error) {
-	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, size, price, color, tag, '/api/images/' || product_id as image_url FROM Goods`)
+	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, size, price, color, tag, '/api/images/' || product_id as image_url FROM goods`)
 	if err != nil {
 		s.log.Info("failed to get catalog query", "err", err)
 		return nil, err
@@ -44,7 +46,7 @@ func (s *Storage) GetCatalog() ([]models.Good, error) {
 			&good.ProductID,
 			&good.Category,
 			&good.Sex,
-			&good.Size,
+			&good.Sizes,
 			&good.Price,
 			&good.Color,
 			&good.Tag,
@@ -63,6 +65,16 @@ func (s *Storage) GetCatalog() ([]models.Good, error) {
 	return goods, nil
 }
 func (s *Storage) GetImage(productID string) ([]byte, error) {
-	//TODO:Дописать селект с по ID из БД
-	return nil, nil
+	rows := s.Pool.QueryRow(context.Background(), `SELECT imageData FROM goods WHERE product_id = $1`, productID)
+	var imageData []byte
+	err := rows.Scan(&imageData)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			s.log.Info("image not found", "product_id", productID)
+			return nil, lib.ErrImageNotFound
+		}
+		s.log.Info("failed to get image data", "err", err)
+		return nil, err
+	}
+	return imageData, nil
 }

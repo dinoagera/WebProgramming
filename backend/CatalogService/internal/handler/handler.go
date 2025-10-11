@@ -2,6 +2,7 @@ package handler
 
 import (
 	service "catalogservice/internal/service/interfaces"
+	"catalogservice/lib"
 	"encoding/json"
 	"log/slog"
 	"net/http"
@@ -44,6 +45,11 @@ func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 	}
 	imageData, err := h.getImage.GetImage(productID)
 	if err != nil {
+		if err == lib.ErrImageNotFound {
+			h.log.Info("image not found")
+			http.Error(w, "Image not found", http.StatusInternalServerError)
+			return
+		}
 		h.log.Info("failed to get image", "err", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return

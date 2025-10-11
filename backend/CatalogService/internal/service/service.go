@@ -3,6 +3,7 @@ package service
 import (
 	"catalogservice/internal/models"
 	storage "catalogservice/internal/storage/interfaces"
+	"catalogservice/lib"
 	"log/slog"
 )
 
@@ -30,6 +31,10 @@ func (s *Service) GetCatalog() ([]models.Good, error) {
 func (s *Service) GetImage(productID string) ([]byte, error) {
 	imageData, err := s.getImage.GetImage(productID)
 	if err != nil {
+		if err == lib.ErrImageNotFound {
+			s.log.Info("failed to get image", "err", err)
+			return nil, err
+		}
 		s.log.Info("failed to get image", "err", err)
 		return nil, err
 	}
