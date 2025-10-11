@@ -31,7 +31,7 @@ func New(log *slog.Logger, storgaePath string) (*Storage, error) {
 	}, nil
 }
 func (s *Storage) GetCatalog() ([]models.Good, error) {
-	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, size, price, color, tag FROM Goods`)
+	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, size, price, color, tag, '/api/images/' || product_id as image_url FROM Goods`)
 	if err != nil {
 		s.log.Info("failed to get catalog query", "err", err)
 		return nil, err
@@ -48,6 +48,7 @@ func (s *Storage) GetCatalog() ([]models.Good, error) {
 			&good.Price,
 			&good.Color,
 			&good.Tag,
+			&good.ImageURL,
 		)
 		if err != nil {
 			s.log.Info("failed to scan to struct", "err", err)
@@ -60,4 +61,8 @@ func (s *Storage) GetCatalog() ([]models.Good, error) {
 		return nil, err
 	}
 	return goods, nil
+}
+func (s *Storage) GetImage(productID string) ([]byte, error) {
+	//TODO:Дописать селект с по ID из БД
+	return nil, nil
 }

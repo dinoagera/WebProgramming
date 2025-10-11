@@ -9,10 +9,15 @@ import (
 type Service struct {
 	log        *slog.Logger
 	getCatalog storage.GetCatalog
+	getImage   storage.GetImage
 }
 
-func New(log *slog.Logger) *Service {
-	return &Service{log: log}
+func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetImage) *Service {
+	return &Service{
+		log:        log,
+		getCatalog: getCatalog,
+		getImage:   getImage,
+	}
 }
 func (s *Service) GetCatalog() ([]models.Good, error) {
 	goods, err := s.getCatalog.GetCatalog()
@@ -21,4 +26,12 @@ func (s *Service) GetCatalog() ([]models.Good, error) {
 		return nil, err
 	}
 	return goods, nil
+}
+func (s *Service) GetImage(productID string) ([]byte, error) {
+	imageData, err := s.getImage.GetImage(productID)
+	if err != nil {
+		s.log.Info("failed to get image", "err", err)
+		return nil, err
+	}
+	return imageData, nil
 }
