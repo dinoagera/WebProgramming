@@ -1,4 +1,4 @@
-FROM golang:1.24-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 
@@ -19,4 +19,6 @@ COPY --from=builder /app/migrations ./migrations
 
 COPY .env .env
 
-CMD ["sh", "-c", "goose -dir ./migrations postgres \"$DB_URL\" up && ./main"]
+EXPOSE 8082
+
+CMD ["sh", "-c", "echo $DB_URL && goose -dir ./migrations postgres \"$DB_URL\" up && ./main"]

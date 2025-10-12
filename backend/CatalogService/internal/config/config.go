@@ -22,7 +22,7 @@ func InitConfig(log *slog.Logger) *Config {
 		os.Exit(1)
 	}
 	var cfg Config
-	if err := cleanenv.ReadConfig(cfgPath, cfg); err != nil {
+	if err := cleanenv.ReadConfig(cfgPath, &cfg); err != nil {
 		log.Info("failed to read config", "err", err)
 		os.Exit(1)
 	}
