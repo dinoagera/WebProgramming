@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 body {
+    margin: 0;
     font-family: "Inter", sans-serif;
     background-color: #FBFCE6;
     color: #2C2C2C
@@ -11,14 +12,24 @@ a {
     text-decoration: none;
 
 }
+
 ul {
     list-style: none;
     padding: 0;
-    margin: 1;
+    margin: 0;
 }    
 
+.container{
+    box-sizing: border-box;
+
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px;
+}
+
 .header {
-  padding: 5px 0  ; 
+  padding: 5px 0 ; 
   
   position: relative;
   z-index: 10;
@@ -27,8 +38,10 @@ ul {
 .header .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
 }
+
 
 .header_logo{
 
@@ -80,6 +93,240 @@ ul {
     height: 24px;
 }
 
-.container{
-    
+
+
+.hero-section {
+    padding: 25px 0; /* Отступы сверху и снизу */
+    background-color: #F3E07F ;
 }
+
+.hero__container {
+    display: flex; /* Используем Grid для двух колонок */
+    grid-template-columns: 1fr 1fr; /* Две колонки одинаковой ширины */
+    gap: 20px; /* Расстояние между колонками */
+    align-items: center; /* Выравнивание элементов по вертикали по центру */
+    max-width: 1400px; /* Максимальная ширина, можно настроить */
+    max-height: 1900px;
+    margin: auto; /* Центрирование контейнера */
+    /* Добавляем отступы по бокам для меньших экранов, если .container их еще не имеет */
+    padding: 0 15px; 
+
+}
+
+
+.hero__content {
+    /* Чтобы текст и кнопка не прижимались к краям на маленьких экранах */
+    padding-right: 40px; 
+}
+
+.hero__title {
+    font-size: 40px;
+
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.hero__image-small img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 30%;
+    height: auto;
+    border-radius: 30px; /* Закругление углов для маленького изображения */
+    background-color: #FBFCE6;
+}
+
+.hero__text {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    max-width: 600px; /* Ограничиваем ширину текста */
+}
+.hero__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 600px; 
+    height: 50px; 
+    background-color: #FBFCE6; 
+    color: #2C2C2C;
+
+    border-radius: 30px; 
+    text-transform: uppercase;
+    transition: opacity 0.3s;
+}
+
+.hero__image-large img {
+    max-width: 92%;
+    height: auto;
+    display: block; /* Убираем лишний пробел под изображением */
+    border-radius: 30px; /* Закругление углов */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Небольшая тень для эффекта */
+}
+
+/* --- Секция "Наша философия" --- */
+
+.philosophy-section {
+    padding: 60px 0; /* Отступы сверху и снизу */
+}
+
+/* Стили для подзаголовка */
+.philosophy__subtitle {
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.1em; /* Небольшой трекинг, чтобы выглядело как на макете */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Стили для цитаты */
+.philosophy__quote {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    max-width: 1200px; /* Ограничиваем ширину цитаты */
+    margin: 0 auto 10px; /* Центрируем и добавляем нижний отступ */
+}
+
+/* Стили для дополнительного текста */
+.philosophy__details {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Две колонки */
+    gap: 20px;
+    max-width: 900px; /* Ограничиваем ширину текстового блока */
+    margin: 0 auto 10px; /* Центрируем и добавляем отступ */
+}
+
+.philosophy__text-column p {
+    font-size: 13px;
+    line-height: 1.6;
+
+}
+
+/* На макете виден только текст в правой колонке. 
+   Мы используем пустую левую колонку для отступа. */
+.philosophy__details .philosophy__text-column:first-child {
+    /* Левая колонка остается пустой, чтобы текст был справа */
+}
+
+
+/* Стили для изображения */
+.philosophy__image-wrapper {
+    max-width: 1000px; /* Задаем максимальную ширину изображения */
+    margin: 0 auto; /* Центрируем */
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.philosophy__image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* --- Секция "Почему нас выбирают?" --- */
+
+.advantages-section {
+    padding: 80px 0;
+}
+
+.advantages__title {
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.advantages__quote {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    color: #2C2C2C;
+}
+
+/* --- Сетка галереи --- */
+
+.advantages__gallery {
+    display: grid;
+    /* Создаем сетку из 4 колонок (или 3, чтобы центральный блок был шире) */
+    grid-template-columns: repeat(4, 1fr); 
+    grid-template-rows: auto auto; /* Две строки */
+    gap: 15px;
+    max-width: 1000px; /* Ограничиваем общую ширину галереи */
+    margin: 0 auto 40px;
+}
+
+/* Общий стиль для элементов галереи */
+.gallery__item {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.gallery__item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Позиционирование элементов в сетке: */
+
+/* Центральное, большое фото (item-3) */
+.gallery__item.item-3 {
+    /* Растягиваем на 2 колонки и 2 строки */
+    grid-column: 2 / span 2; 
+    grid-row: 1 / span 2;
+    border-radius: 30px;
+}
+
+/* Верхний левый (item-1) */
+.gallery__item.item-1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    /* Для квадратного вида */
+    border-radius: 30px;
+}
+
+/* Верхний правый (item-2) */
+.gallery__item.item-2 {
+    grid-column: 4 / 5;
+    grid-row: 1 / 2;
+    /* Для квадратного вида */
+    border-radius: 30px;
+}
+
+/* Нижний левый (item-4) */
+.gallery__item.item-4 {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    /* Для квадратного вида */
+    border-radius: 30px;
+}
+
+/* Нижний правый (item-5) */
+.gallery__item.item-5 {
+    grid-column: 4 / 5;
+    grid-row: 2 / 3;
+    /* Для квадратного вида */
+    border-radius: 30px;
+}
+
+/* Стиль для текста под галереей */
+.advantages__text-bottom {
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
