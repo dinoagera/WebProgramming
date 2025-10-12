@@ -11,7 +11,7 @@ COPY . .
 RUN go build -o /app/main ./cmd/main.go
 RUN go install github.com/pressly/goose/v3/cmd/goose@latest
 
-FROM apline:3.18
+FROM alpine:3.18
 
 COPY --from=builder /app/main /main
 COPY --from=builder /go/bin/goose /usr/local/bin/goose

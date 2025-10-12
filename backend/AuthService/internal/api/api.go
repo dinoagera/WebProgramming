@@ -26,7 +26,7 @@ type API struct {
 func InitApi(log *slog.Logger, cfg *config.Config) *API {
 	storage, err := storage.New(log, cfg.StoragePath)
 	if err != nil {
-		log.Info("failed to init storage")
+		log.Info("failed to init storage", "err", err)
 		os.Exit(1)
 	}
 	srv := service.New(log, storage, storage)
