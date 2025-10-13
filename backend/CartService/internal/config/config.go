@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	ServerAddr    string        `env:"SERVER_ADDRESS" env-default:":8081"`
+	ServerAddr    string        `env:"SERVER_ADDRESS" env-required:"true"`
 	RedisAddr     string        `env:"REDIS_ADDRESS" env-default:"localhost:6379"`
 	RedisPassword string        `env:"REDIS_PASSWORD"`
 	DB            int           `env:"REDIS_DB"`
@@ -17,8 +17,8 @@ type Config struct {
 	MaxRetries    int           `env:"MAX_RETRIES"`
 	DialTimeout   time.Duration `env:"DialTimeout"`
 	Timeout       time.Duration `env:"Timeout"`
-	ReadTimeout   time.Duration `env:"HTTPReadTimeout"`
-	IdleTimeout   time.Duration `env:"HTTPidleTimeout"`
+	ReadTimeout   time.Duration `env:"HTTPReadTimeout" env-default:"5s"`
+	IdleTimeout   time.Duration `env:"HTTPidleTimeout" env-default:"60s"`
 }
 
 func InitConfig(log *slog.Logger) *Config {
