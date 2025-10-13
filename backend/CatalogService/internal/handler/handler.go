@@ -25,6 +25,11 @@ func New(log *slog.Logger, getCatalog service.GetCatalog, getImage service.GetIm
 func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 	goods, err := h.getCatalog.GetCatalog()
 	if err != nil {
+		if err == lib.ErrCatalogIsEmpty {
+			h.log.Info("catalog is empty", "err", err)
+			http.Error(w, "Catalog is empty", http.StatusInternalServerError)
+			return
+		}
 		h.log.Info("failed to get catalog", "err", err)
 		http.Error(w, "Internal server", http.StatusInternalServerError)
 		return

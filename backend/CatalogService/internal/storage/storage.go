@@ -4,18 +4,21 @@ import (
 	"catalogservice/internal/models"
 	"catalogservice/lib"
 	"context"
+	"fmt"
 	"log/slog"
+	"os"
+	"path/filepath"
 
-	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Storage struct {
-	log  *slog.Logger
-	Pool *pgxpool.Pool
+	log           *slog.Logger
+	Pool          *pgxpool.Pool
+	imageBasePath string
 }
 
-func New(log *slog.Logger, storgaePath string) (*Storage, error) {
+func New(log *slog.Logger, storgaePath string, imageBasePath string) (*Storage, error) {
 	ctx := context.Background()
 	pool, err := pgxpool.New(ctx, storgaePath)
 	if err != nil {
@@ -28,18 +31,24 @@ func New(log *slog.Logger, storgaePath string) (*Storage, error) {
 		return nil, err
 	}
 	return &Storage{
-		log:  log,
-		Pool: pool,
+		log:           log,
+		Pool:          pool,
+		imageBasePath: imageBasePath,
 	}, nil
 }
+
 func (s *Storage) GetCatalog() ([]models.Good, error) {
-	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, size, price, color, tag, '/api/images/' || product_id as image_url FROM goods`)
+	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, sizes, price, color, tag, '/api/images/' || product_id as image_url FROM goods`)
 	if err != nil {
 		s.log.Info("failed to get catalog query", "err", err)
 		return nil, err
 	}
 	var goods []models.Good
 	defer rows.Close()
+	if !rows.Next() {
+		s.log.Info("No goods found in database")
+		return []models.Good{}, lib.ErrCatalogIsEmpty
+	}
 	for rows.Next() {
 		var good models.Good
 		err := rows.Scan(
@@ -65,16 +74,29 @@ func (s *Storage) GetCatalog() ([]models.Good, error) {
 	return goods, nil
 }
 func (s *Storage) GetImage(productID string) ([]byte, error) {
-	rows := s.Pool.QueryRow(context.Background(), `SELECT imageData FROM goods WHERE product_id = $1`, productID)
-	var imageData []byte
-	err := rows.Scan(&imageData)
+	numericID := filepath.Base(productID)
+	filename := fmt.Sprintf("productID%s.png", numericID)
+	imagePath := filepath.Join(s.imageBasePath, filename)
+	files, err := filepath.Glob(filepath.Join(s.imageBasePath, "productID*.png"))
 	if err != nil {
-		if err == pgx.ErrNoRows {
-			s.log.Info("image not found", "product_id", productID)
-			return nil, lib.ErrImageNotFound
-		}
-		s.log.Info("failed to get image data", "err", err)
+		s.log.Info("DEBUG: Failed to list files", "err", err)
+	} else {
+		s.log.Info("DEBUG: Available product images", "files", files)
+	}
+	if _, err := os.Stat(imagePath); os.IsNotExist(err) {
+		s.log.Info("PNG image not found in filesystem",
+			"product_id", productID,
+			"path", imagePath,
+			"file_exists", false)
+		return nil, lib.ErrImageNotFound
+	} else {
+		s.log.Info("DEBUG: File exists!", "path", imagePath)
+	}
+	imageData, err := os.ReadFile(imagePath)
+	if err != nil {
+		s.log.Info("failed to read PNG file", "err", err, "path", imagePath)
 		return nil, err
 	}
+	s.log.Info("successfully loaded PNG image from filesystem", "product_id", productID, "size", len(imageData))
 	return imageData, nil
 }

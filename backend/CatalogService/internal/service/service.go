@@ -23,6 +23,10 @@ func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetIm
 func (s *Service) GetCatalog() ([]models.Good, error) {
 	goods, err := s.getCatalog.GetCatalog()
 	if err != nil {
+		if err == lib.ErrCatalogIsEmpty {
+			s.log.Info("catalog is empty")
+			return nil, err
+		}
 		s.log.Info("failed to get catalog", "err", err)
 		return nil, err
 	}

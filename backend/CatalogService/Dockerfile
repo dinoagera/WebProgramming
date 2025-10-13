@@ -16,6 +16,7 @@ FROM alpine:3.18
 COPY --from=builder /app/main /main
 COPY --from=builder /go/bin/goose /usr/local/bin/goose
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/images ./images
 
 COPY .env .env
 

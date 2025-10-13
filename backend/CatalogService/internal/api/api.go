@@ -22,7 +22,7 @@ type API struct {
 }
 
 func InitAPI(log *slog.Logger, cfg *config.Config) *API {
-	db, err := storage.New(log, cfg.StoragePath)
+	db, err := storage.New(log, cfg.StoragePath, cfg.ImageBasePath)
 	if err != nil {
 		log.Info("failed to init storage", "err", err)
 		os.Exit(1)
@@ -55,6 +55,7 @@ func (api *API) StartServer() {
 	}
 }
 func (api *API) setupRouter() {
-	api.router.HandleFunc("/getCatalog", api.handler.GetCatalog).Methods(http.MethodGet)
-	api.router.HandleFunc("/getImage", api.handler.GetImage).Methods(http.MethodGet)
+	public := api.router.PathPrefix("/api").Subrouter()
+	public.HandleFunc("/getCatalog", api.handler.GetCatalog).Methods(http.MethodGet)
+	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
 }

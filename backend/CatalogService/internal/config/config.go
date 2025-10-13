@@ -9,10 +9,11 @@ import (
 )
 
 type Config struct {
-	StoragePath string        `env:"DB_URL" env-required:"true"`
-	Address     string        `env:"SERVER_ADDRESS" env-required:"true"`
-	ReadTimeout time.Duration `env:"HTTPReadTimeout" env-default:"5s"`
-	IdleTimeout time.Duration `env:"HTTPidleTimeout" env-default:"60s"`
+	StoragePath   string        `env:"DB_URL" env-required:"true"`
+	Address       string        `env:"SERVER_ADDRESS" env-required:"true"`
+	ReadTimeout   time.Duration `env:"HTTPReadTimeout" env-default:"5s"`
+	IdleTimeout   time.Duration `env:"HTTPidleTimeout" env-default:"60s"`
+	ImageBasePath string        `env:"ImageBasePath"`
 }
 
 func InitConfig(log *slog.Logger) *Config {
