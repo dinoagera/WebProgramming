@@ -56,6 +56,6 @@ func (api *API) StartServer() {
 }
 func (api *API) setupRouter() {
 	public := api.router.PathPrefix("/api").Subrouter()
-	public.HandleFunc("/getCatalog", api.handler.GetCatalog).Methods(http.MethodGet)
+	public.HandleFunc("/getcatalog", api.handler.GetCatalog).Methods(http.MethodGet)
 	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
 }

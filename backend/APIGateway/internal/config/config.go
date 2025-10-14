@@ -12,6 +12,7 @@ type Config struct {
 	Address         string        `env:"SERVER_ADDRESS" env-reqired:"true"`
 	HTTPReadTimeout time.Duration `env:"HTTPReadTimeout" env-defautl:"5s"`
 	HTTPidleTimeout time.Duration `env:"HTTPReadTimeout" env-defautl:"60s"`
+	CatalogAddress  string        `env:"CatalogAddress"`
 }
 
 func InitConfig(log *slog.Logger) *Config {
