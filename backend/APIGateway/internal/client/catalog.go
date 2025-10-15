@@ -33,7 +33,7 @@ func NewCatalogClient(cfg *config.Config) *CatalogClient {
 	}
 }
 func (c *CatalogClient) GetCatalog() ([]models.Good, error) {
-	url := fmt.Sprintf("%s/api/getсatalog", c.baseURL)
+	url := fmt.Sprintf("%s/api/getcatalog", c.baseURL)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (c *CatalogClient) GetImage(productID string) ([]byte, error) {
 	if productID == "" {
 		return nil, fmt.Errorf("product ID is required")
 	}
-	url := fmt.Sprintf("%s/api/images/%s", c.baseURL, productID)
+	url := fmt.Sprintf("%s/api/image/%s", c.baseURL, productID)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)

@@ -27,5 +27,10 @@ func (s *Service) GetCatalog() ([]models.Good, error) {
 }
 
 func (s *Service) GetImage(productID string) ([]byte, error) {
-	return nil, nil
+	image, err := s.catalogService.GetImage(productID)
+	if err != nil {
+		s.log.Info("failed to get image", "err", err)
+		return nil, err
+	}
+	return image, nil
 }

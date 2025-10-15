@@ -38,17 +38,13 @@ func New(log *slog.Logger, storgaePath string, imageBasePath string) (*Storage, 
 }
 
 func (s *Storage) GetCatalog() ([]models.Good, error) {
-	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, sizes, price, color, tag, '/api/images/' || product_id as image_url FROM goods`)
+	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, sizes, price, color, tag, '/api/image/' || product_id as image_url FROM goods`)
 	if err != nil {
 		s.log.Info("failed to get catalog query", "err", err)
 		return nil, err
 	}
 	var goods []models.Good
 	defer rows.Close()
-	if !rows.Next() {
-		s.log.Info("No goods found in database")
-		return []models.Good{}, lib.ErrCatalogIsEmpty
-	}
 	for rows.Next() {
 		var good models.Good
 		err := rows.Scan(
@@ -70,6 +66,9 @@ func (s *Storage) GetCatalog() ([]models.Good, error) {
 	if err := rows.Err(); err != nil {
 		s.log.Info("failed to reading rows", "err", err)
 		return nil, err
+	}
+	if len(goods) == 0 {
+		return []models.Good{}, lib.ErrCatalogIsEmpty
 	}
 	return goods, nil
 }

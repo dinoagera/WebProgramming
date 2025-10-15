@@ -42,7 +42,7 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 	})
 }
 func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
-	productID := strings.TrimPrefix(r.URL.Path, "/api/images/")
+	productID := strings.TrimPrefix(r.URL.Path, "/api/image/")
 	if productID == "" {
 		h.log.Info("request have not product id")
 		http.Error(w, "Product ID required", http.StatusBadRequest)
