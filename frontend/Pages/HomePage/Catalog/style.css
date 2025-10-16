@@ -1,0 +1,409 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background-color:#F3E07F;
+    color: #2C2C2C
+}
+
+a {
+    color: #2C2C2C;
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}    
+
+.container{
+    box-sizing: border-box;
+
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px;
+}
+
+.header {
+  padding: 5px 0 ; 
+  background-color:#FBFCE6;
+  position: relative;
+  z-index: 10;
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.header_logo{
+
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 165px;
+  height: 50px;
+
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: uppercase;
+
+  background:  #FBFCE6;
+  border-radius: 5px;
+
+  transition: opacity 0.3s;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.header__list {
+    display: flex; 
+    gap: 15px; 
+    text-transform: uppercase;
+}
+
+.header__nav a {
+  font-size: 14px;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.header__nav a.active {
+  opacity: 1;
+}
+
+.header__nav a:hover {
+  opacity: 0.9;
+}
+.header__icons img {
+    width: 24px; 
+    height: 24px;
+}
+
+/* --- Футер (Подвал) --- */
+
+.footer {
+    padding-top: 50px;
+    padding-bottom: 30px;
+    background-color: #FBFCE6; 
+}
+
+.footer__top {
+    display: flex;
+    justify-content: space-between; 
+    margin-bottom: 60px;
+}
+
+.footer__col {
+    
+}
+
+
+.footer__col--logo {
+    flex-basis: 10%;
+}
+
+.footer__logo-link img {
+    
+    width: 120px;
+    height: auto;
+}
+
+/* Стили для списков ссылок (Каталог и Соцсети) */
+.footer__list {
+    margin: 0;
+    padding: 0;
+}
+
+.footer__list li {
+    margin-bottom: 10px;
+}
+
+.footer__list a {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize; 
+    opacity: 0.9;
+}
+
+/* Стили для блока социального сообщения */
+.footer__col--social-message {
+    flex-basis: 20%;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+/* Разделитель */
+.footer__divider {
+    height: 1px;
+    background-color: #D3D3D3; /* Серый цвет для разделителя */
+    max-width: 1000px; 
+    margin: 0 auto 40px; 
+}
+
+/* Нижняя секция (Юридическая информация) */
+.footer__bottom {
+    display: flex;
+    justify-content: center; /* Центрируем список ссылок */
+}
+
+.footer__legal-list {
+    display: flex;
+    gap: 10px; /* Расстояние между ссылками */
+}
+
+.footer__legal-list a {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+
+/* ---------------------------------------------------- */
+/* ДОБАВЛЕННЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ КАТАЛОГА */
+/* ---------------------------------------------------- */
+
+.catalog-page {
+    background-color: #FBFCE6;
+    padding: 20px 0 80px;
+}
+
+/* Стили для навбара каталога */
+.catalog__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 0 15px;
+}
+
+.catalog__links {
+    display: flex;
+    gap: 15px;
+}
+.catalog__links a {
+    font-size: 14px;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+.catalog__links a:first-child {
+     opacity: 1;
+     font-weight: 500;
+}
+.catalog__icons {
+    display: flex;
+    gap: 10px;
+}
+.catalog__icons img {
+     width: 18px;
+     height: 18px;
+}
+
+/* Стили для кнопок категорий */
+.categories-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding: 0 15px;
+}
+
+.category-btn {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    border: 1px solid #2C2C2C;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.category-btn--active {
+    background-color: #FBFCE6;
+    border-color: #FBFCE6;
+}
+
+/* Контейнер для фильтров справа */
+.filter-sort-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 0 15px;
+}
+
+.filter-sort-bar a {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.7;
+}
+.filter-sort-bar img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+/* --- Сетка товаров --- */
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 10px 15px;
+}
+
+/* Карточка товара */
+.product-card {
+    background-color: #FBFCE6;
+    border-radius: 20px;
+    padding: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card__heart {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+}
+
+.product-card__image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.product-card__details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.product-card__info p {
+    margin: 0;
+    line-height: 1.3;
+}
+
+.product-card__name {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.product-card__category {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.product-card__price {
+    font-size: 18px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.product-card__old-price {
+    font-size: 12px;
+    opacity: 0.5;
+    text-decoration: line-through;
+    display: block;
+}
+categories-filter .container {
+    /* Главный контейнер для разделения двух групп */
+    display: flex;
+    justify-content: space-between; /* РАСТЯГИВАЕТ: Группа кнопок влево, Группа фильтров вправо */
+    align-items: center;
+    padding-top: 20px; 
+    padding-bottom: 20px;
+}
+
+/* Стили для группы кнопок */
+.category-buttons {
+    display: flex;
+    gap: 10px; /* Расстояние между кнопками */
+}
+
+/* Стили для отдельных кнопок */
+.category-btn {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    border: 1px solid #2C2C2C; /* Черная рамка для неактивных */
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.category-btn--active {
+    background-color: #FBFCE6; /* Активная кнопка - желтый фон */
+    border-color: #FBFCE6; /* Желтая рамка */
+}
+
+/* Стили для группы фильтров и сортировки */
+.filter-sort-bar {
+    display: flex;
+    gap: 20px; /* Расстояние между ссылками "Фильтры" и "Сортировка" */
+    align-items: center;
+}
+
+.filter-sort-bar a {
+    /* Общий стиль для ссылок с иконками */
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.7;
+}
+
+.filter-sort-bar img {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}
+
+.more-button-wrapper {
+    display: flex;
+    justify-content: center; /* Центрируем кнопку */
+    padding-top: 0 20px;
+}
+
+.more-btn {
+    /* Переопределяем общий .btn для кнопки "ЕЩЁ" */
+    width: 100%; 
+    max-width: 1300px; /* Ширина, равная сетке товаров */
+    height: 60px; 
+    background-color: #FBFCE6; /* Желтый фон, как на макете */
+    color: #2C2C2C;
+    border-radius: 30px;
+    border: none;
+    font-weight: 700;
+    font-size: 18px;
+    padding-top: 15px 20px;
+}
