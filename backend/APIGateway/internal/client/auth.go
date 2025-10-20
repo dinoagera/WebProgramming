@@ -58,6 +58,39 @@ func (a *AuthClient) Register(email, password string) error {
 	return nil
 }
 
-// func (a *AuthClient) Login(email, password string) (string, error) {
-// 	url := fmt.Sprintf("%s/api/login")
-// }
+func (a *AuthClient) Login(email, password string) (string, error) {
+	url := fmt.Sprintf("%s/api/login", a.baseURL)
+	requestBody := models.AuthRequest{
+		Email:    email,
+		Password: password,
+	}
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		return "", err
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := a.httpClient.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("failed to read response body: %w", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		errorMsg := string(body)
+		return "", errors.New(errorMsg)
+	}
+	var response struct {
+		Token string `json:"token"`
+	}
+	if err := json.Unmarshal(body, &response); err != nil {
+		return "", fmt.Errorf("failed to parse response: %w", err)
+	}
+	return response.Token, nil
+}

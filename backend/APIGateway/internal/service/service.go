@@ -43,3 +43,11 @@ func (s *Service) Register(email, password string) error {
 	}
 	return nil
 }
+func (s *Service) Login(email, password string) (string, error) {
+	token, err := s.authServce.Login(email, password)
+	if err != nil {
+		s.log.Info("failed to register", "err", err)
+		return "", err
+	}
+	return token, nil
+}

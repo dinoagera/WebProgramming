@@ -106,7 +106,18 @@ func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	err := validator.ValidatePassword(req.Password)
+	err := validator.ValidateEmail(req.Email)
+	switch {
+	case errors.Is(err, liberror.ErrEmailEmpty):
+		h.log.Info("failed to register", "err", err)
+		http.Error(w, "email is empty", http.StatusBadRequest)
+		return
+	case errors.Is(err, liberror.ErrEmailNotAllowed):
+		h.log.Info("failed to register", "err", err)
+		http.Error(w, "email is not allowed", http.StatusBadRequest)
+		return
+	}
+	err = validator.ValidatePassword(req.Password)
 	if err != nil {
 		http.Error(w, "Password less 6 symbol", http.StatusBadRequest)
 		return
@@ -117,6 +128,7 @@ func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to login", http.StatusInternalServerError)
 		return
 	}
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"token": token,
 	})

@@ -53,4 +53,5 @@ func (api *API) setupRouter() {
 	public.HandleFunc("/getcatalog", api.handler.GetCatalog).Methods(http.MethodGet)
 	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
 	public.HandleFunc("/register", api.handler.Register).Methods(http.MethodPost)
+	public.HandleFunc("/login", api.handler.Login).Methods(http.MethodPost)
 }

@@ -81,3 +81,21 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{"message": "user created successfully"})
 }
+func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
+	var req models.AuthRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.log.Info("decode to failed in login handler", "err:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	token, err := h.authService.Login(req.Email, req.Password)
+	if err != nil {
+		h.log.Info("failed to register", "err:", err)
+		http.Error(w, fmt.Sprintf("error:%s", err), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"token": token,
+	})
+}
