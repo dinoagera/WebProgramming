@@ -2,7 +2,7 @@ package storage
 
 import (
 	"authservice/internal/domain/models"
-	"authservice/internal/handler"
+	liberror "authservice/lib/errors"
 	"context"
 	"log/slog"
 	"time"
@@ -41,7 +41,7 @@ func (s *Storage) CreateUser(email, passHash string) error {
 	}
 	if exists {
 		s.log.Info("user is busy", "email", email)
-		return handler.ErrEmailBusy
+		return liberror.ErrEmailBusy
 	}
 	_, err = s.Pool.Exec(context.Background(), `INSERT INTO users (email, pass_hash, created_at) VALUES ($1,$2,$3)`, email, passHash, time.Now())
 	if err != nil {

@@ -2,17 +2,12 @@ package handler
 
 import (
 	service "authservice/internal/service/interfaces"
+	liberror "authservice/lib/errors"
 	"authservice/lib/validator"
 	"encoding/json"
 	"errors"
 	"log/slog"
 	"net/http"
-)
-
-var (
-	ErrEmailEmpty      = errors.New("email is empty")
-	ErrEmailNotAllowed = errors.New("email is not allowed")
-	ErrEmailBusy       = errors.New("email is busy")
 )
 
 type Handler struct {
@@ -59,18 +54,23 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	}
 	err := validator.ValidateEmail(req.Email)
 	switch {
-	case errors.Is(err, ErrEmailEmpty):
+	case errors.Is(err, liberror.ErrEmailEmpty):
 		h.log.Info("failed to register", "err", err)
 		http.Error(w, "email is empty", http.StatusBadRequest)
 		return
-	case errors.Is(err, ErrEmailNotAllowed):
+	case errors.Is(err, liberror.ErrEmailNotAllowed):
 		h.log.Info("failed to register", "err", err)
 		http.Error(w, "email is not allowed", http.StatusBadRequest)
 		return
 	}
+	err = validator.ValidatePassword(req.Password)
+	if err != nil {
+		http.Error(w, "Password less 6 symbol", http.StatusBadRequest)
+		return
+	}
 	err = h.register.Register(req.Email, req.Password)
 	if err != nil {
-		if errors.Is(err, ErrEmailBusy) {
+		if errors.Is(err, liberror.ErrEmailBusy) {
 			h.log.Info("failed to register", "err", err)
 			http.Error(w, "email is busy", http.StatusBadRequest)
 			return

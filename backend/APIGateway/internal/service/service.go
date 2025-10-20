@@ -9,12 +9,14 @@ import (
 type Service struct {
 	log            *slog.Logger
 	catalogService client.CatalogService
+	authServce     client.AuthService
 }
 
-func New(log *slog.Logger, catalogService client.CatalogService) *Service {
+func New(log *slog.Logger, catalogService client.CatalogService, authService client.AuthService) *Service {
 	return &Service{
 		log:            log,
 		catalogService: catalogService,
+		authServce:     authService,
 	}
 }
 func (s *Service) GetCatalog() ([]models.Good, error) {
@@ -33,4 +35,11 @@ func (s *Service) GetImage(productID string) ([]byte, error) {
 		return nil, err
 	}
 	return image, nil
+}
+func (s *Service) Register(email, password string) error {
+	if err := s.authServce.Register(email, password); err != nil {
+		s.log.Info("failed to register", "err", err)
+		return err
+	}
+	return nil
 }

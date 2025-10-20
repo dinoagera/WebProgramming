@@ -29,7 +29,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "8082:8080"
     environment:
       REDIS_ADDRESS: "redis_container:6379"
       REDIS_PASSWORD: "${REDIS_PASSWORD}"

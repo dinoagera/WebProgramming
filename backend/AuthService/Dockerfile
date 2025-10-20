@@ -22,5 +22,3 @@ COPY .env .env
 EXPOSE 8080
 
 CMD ["sh", "-c", "goose -dir ./migrations postgres \"$DB_URL\" up && ./main"]
-
-

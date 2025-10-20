@@ -10,3 +10,7 @@ type Good struct {
 	Tag       string  `json:"tag"`
 	ImageURL  string  `json:"image_url"`
 }
+type AuthRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}

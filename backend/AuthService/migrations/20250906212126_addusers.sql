@@ -1,4 +1,4 @@
--- +goose Up
+-- -- +goose Up
 CREATE TABLE IF NOT EXISTS users (
     uid SERIAL PRIMARY KEY,
     email VARCHAR(50) NOT NULL,
@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS goose_db_version (
     is_applied BOOLEAN NOT NULL,
     tstamp TIMESTAMP DEFAULT NOW()
 );
--- +goose Down
+-- -- +goose Down
 DROP TABLE users;

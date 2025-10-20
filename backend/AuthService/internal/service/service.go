@@ -1,8 +1,8 @@
 package service
 
 import (
-	"authservice/internal/handler"
 	storage "authservice/internal/storage/interfaces"
+	liberror "authservice/lib/errors"
 	lib "authservice/lib/jwt"
 	"errors"
 	"log/slog"
@@ -31,9 +31,9 @@ func (s *Service) Register(email, password string) error {
 	}
 	err = s.createUser.CreateUser(email, string(passHash))
 	if err != nil {
-		if errors.Is(err, handler.ErrEmailBusy) {
+		if errors.Is(err, liberror.ErrEmailBusy) {
 			s.log.Info("email is busy", "email", email)
-			return handler.ErrEmailBusy
+			return liberror.ErrEmailBusy
 		} else {
 			return err
 		}

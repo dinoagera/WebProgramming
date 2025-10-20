@@ -22,8 +22,9 @@ type API struct {
 
 func InitAPI(log *slog.Logger, cfg *config.Config) *API {
 	clientCatalog := client.NewCatalogClient(cfg)
-	service := service.New(log, clientCatalog)
-	handler := handler.New(log, service)
+	clientAuth := client.NewAuthClient(cfg)
+	service := service.New(log, clientCatalog, clientAuth)
+	handler := handler.New(log, service, service)
 	return &API{
 		log:     log,
 		cfg:     cfg,
@@ -51,4 +52,5 @@ func (api *API) setupRouter() {
 	public := api.router.PathPrefix("/api").Subrouter()
 	public.HandleFunc("/getcatalog", api.handler.GetCatalog).Methods(http.MethodGet)
 	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
+	public.HandleFunc("/register", api.handler.Register).Methods(http.MethodPost)
 }

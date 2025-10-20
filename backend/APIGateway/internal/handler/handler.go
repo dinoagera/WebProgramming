@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"apigateway/internal/models"
 	service "apigateway/internal/service/interfaces"
 	"apigateway/lib"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"strings"
@@ -12,12 +14,14 @@ import (
 type Handler struct {
 	log            *slog.Logger
 	catalogService service.CatalogService
+	authService    service.AuthService
 }
 
-func New(log *slog.Logger, catalogService service.CatalogService) *Handler {
+func New(log *slog.Logger, catalogService service.CatalogService, authService service.AuthService) *Handler {
 	return &Handler{
 		log:            log,
 		catalogService: catalogService,
+		authService:    authService,
 	}
 }
 func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
@@ -60,4 +64,20 @@ func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "image/jpeg")
 	w.Write(imageData)
+}
+func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
+	var req models.AuthRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.log.Info("decode to failed in register handler", "err:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	err := h.authService.Register(req.Email, req.Password)
+	if err != nil {
+		h.log.Info("failed to register", "err:", err)
+		http.Error(w, fmt.Sprintf("error:%s", err), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"message": "user created successfully"})
 }
