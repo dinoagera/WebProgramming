@@ -23,8 +23,9 @@ type API struct {
 func InitAPI(log *slog.Logger, cfg *config.Config) *API {
 	clientCatalog := client.NewCatalogClient(cfg)
 	clientAuth := client.NewAuthClient(cfg)
-	service := service.New(log, clientCatalog, clientAuth)
-	handler := handler.New(log, service, service)
+	clientCart := client.NewCartClient(cfg)
+	service := service.New(log, clientCatalog, clientAuth, clientCart)
+	handler := handler.New(log, service, service, service)
 	return &API{
 		log:     log,
 		cfg:     cfg,

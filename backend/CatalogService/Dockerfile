@@ -20,6 +20,6 @@ COPY --from=builder /app/image ./image
 
 COPY .env .env
 
-EXPOSE 8082
+EXPOSE 8080
 
 CMD ["sh", "-c", "echo $DB_URL && goose -dir ./migrations postgres \"$DB_URL\" up && ./main"]

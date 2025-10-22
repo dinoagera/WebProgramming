@@ -14,6 +14,7 @@ type Config struct {
 	HTTPidleTimeout time.Duration `env:"HTTPReadTimeout" env-defautl:"60s"`
 	CatalogAddress  string        `env:"CatalogAddress"`
 	AuthAddress     string        `env:"AuthAddress"`
+	CartAddress     string        `env:"CartAddress"`
 }
 
 func InitConfig(log *slog.Logger) *Config {

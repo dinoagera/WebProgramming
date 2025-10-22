@@ -10,3 +10,6 @@ type AuthService interface {
 	Register(email, password string) error
 	Login(email, password string) (string, error)
 }
+type CartService interface {
+	GetCart(userID int64) (models.Cart, error)
+}

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"apigateway/internal/middleware/auth"
 	"apigateway/internal/models"
 	service "apigateway/internal/service/interfaces"
 	"apigateway/lib"
@@ -15,13 +16,15 @@ type Handler struct {
 	log            *slog.Logger
 	catalogService service.CatalogService
 	authService    service.AuthService
+	cartService    service.CartService
 }
 
-func New(log *slog.Logger, catalogService service.CatalogService, authService service.AuthService) *Handler {
+func New(log *slog.Logger, catalogService service.CatalogService, authService service.AuthService, cartService service.CartService) *Handler {
 	return &Handler{
 		log:            log,
 		catalogService: catalogService,
 		authService:    authService,
+		cartService:    cartService,
 	}
 }
 func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
@@ -97,5 +100,25 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"token": token,
+	})
+}
+func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.GetUserIDFromContext(r.Context())
+	if !ok {
+		h.log.Info("faield to get userID")
+		http.Error(w, "Unauthorization", http.StatusUnauthorized)
+		return
+	}
+	cart, err := h.cartService.GetCart(userID)
+	if err != nil {
+		h.log.Info("failed to get cart", "err", err)
+		http.Error(w, "failed to get cart", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "get cart is successfully",
+		"cart":   cart,
 	})
 }

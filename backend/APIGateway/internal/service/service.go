@@ -4,19 +4,22 @@ import (
 	"apigateway/internal/client"
 	"apigateway/internal/models"
 	"log/slog"
+	"strconv"
 )
 
 type Service struct {
 	log            *slog.Logger
 	catalogService client.CatalogService
 	authServce     client.AuthService
+	cartService    client.CartService
 }
 
-func New(log *slog.Logger, catalogService client.CatalogService, authService client.AuthService) *Service {
+func New(log *slog.Logger, catalogService client.CatalogService, authService client.AuthService, cartService client.CartService) *Service {
 	return &Service{
 		log:            log,
 		catalogService: catalogService,
 		authServce:     authService,
+		cartService:    cartService,
 	}
 }
 func (s *Service) GetCatalog() ([]models.Good, error) {
@@ -50,4 +53,14 @@ func (s *Service) Login(email, password string) (string, error) {
 		return "", err
 	}
 	return token, nil
+}
+
+func (s *Service) GetCart(userID int64) (models.Cart, error) {
+	userIDStr := strconv.Itoa(int(userID))
+	cart, err := s.cartService.GetCart(userIDStr)
+	if err != nil {
+		s.log.Info("failed to get cart", "err", err)
+		return models.Cart{}, err
+	}
+	return cart, nil
 }
