@@ -3,6 +3,7 @@ package client
 import (
 	"apigateway/internal/config"
 	"apigateway/internal/models"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -54,5 +55,39 @@ func (c *CartClient) GetCart(userID string) (models.Cart, error) {
 		return cart, nil
 	default:
 		return models.Cart{}, err
+	}
+}
+func (c *CartClient) AddItem(userID string, productID string, quantity int, price float64, category string) error {
+	url := fmt.Sprintf("%s/api/additem", c.baseURL)
+	requestBody := models.AddItemRequest{
+		ProductID: productID,
+		Quantity:  quantity,
+		Price:     price,
+		Category:  category,
+	}
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Add("X-User-ID", userID)
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
+		return nil
+	default:
+		return fmt.Errorf("%s", string(body))
 	}
 }

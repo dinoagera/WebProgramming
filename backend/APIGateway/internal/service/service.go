@@ -64,3 +64,12 @@ func (s *Service) GetCart(userID int64) (models.Cart, error) {
 	}
 	return cart, nil
 }
+func (s *Service) AddItem(userID int64, productID string, quantity int, price float64, category string) error {
+	userIDStr := strconv.Itoa(int(userID))
+	err := s.cartService.AddItem(userIDStr, productID, quantity, price, category)
+	if err != nil {
+		s.log.Info("failed to add item", "err", err)
+		return err
+	}
+	return nil
+}

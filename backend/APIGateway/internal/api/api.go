@@ -4,6 +4,7 @@ import (
 	"apigateway/internal/client"
 	"apigateway/internal/config"
 	"apigateway/internal/handler"
+	"apigateway/internal/middleware/auth"
 	"apigateway/internal/service"
 	"log/slog"
 	"net/http"
@@ -55,4 +56,7 @@ func (api *API) setupRouter() {
 	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
 	public.HandleFunc("/register", api.handler.Register).Methods(http.MethodPost)
 	public.HandleFunc("/login", api.handler.Login).Methods(http.MethodPost)
+	protected := api.router.PathPrefix("/api").Subrouter()
+	protected.Use(auth.New(api.log, api.cfg.JWTSecret))
+	protected.HandleFunc("/getcart", api.handler.GetCart).Methods(http.MethodGet)
 }

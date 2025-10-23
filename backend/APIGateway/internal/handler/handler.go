@@ -122,3 +122,28 @@ func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
 		"cart":   cart,
 	})
 }
+func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.GetUserIDFromContext(r.Context())
+	if !ok {
+		h.log.Info("failed to get userID")
+		http.Error(w, "Unauthorization", http.StatusUnauthorized)
+		return
+	}
+	var addItemRequest models.AddItemRequest
+	if err := json.NewDecoder(r.Body).Decode(&addItemRequest); err != nil {
+		h.log.Info("decode to failed in add item handler", "err:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	err := h.cartService.AddItem(userID, addItemRequest.ProductID, addItemRequest.Quantity, addItemRequest.Price, addItemRequest.Category)
+	if err != nil {
+		h.log.Info("failed to add item", "err:", err)
+		http.Error(w, "Failed to add item", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "item is added",
+	})
+}

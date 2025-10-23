@@ -15,6 +15,7 @@ type Config struct {
 	CatalogAddress  string        `env:"CatalogAddress"`
 	AuthAddress     string        `env:"AuthAddress"`
 	CartAddress     string        `env:"CartAddress"`
+	JWTSecret       string        `env:"JWT_SECRET"`
 }
 
 func InitConfig(log *slog.Logger) *Config {
