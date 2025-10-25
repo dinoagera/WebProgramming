@@ -147,3 +147,28 @@ func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
 		"status": "item is added",
 	})
 }
+func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.GetUserIDFromContext(r.Context())
+	if !ok {
+		h.log.Info("failed to get userID")
+		http.Error(w, "Unauthorization", http.StatusUnauthorized)
+		return
+	}
+	var removeItemRequest models.RemoveItemRequest
+	if err := json.NewDecoder(r.Body).Decode(&removeItemRequest); err != nil {
+		h.log.Info("decode to failed in remove item handler", "err:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	err := h.cartService.RemoveItem(userID, removeItemRequest.ProductID)
+	if err != nil {
+		h.log.Info("failed to remove item", "err:", err)
+		http.Error(w, "Failed to remove item", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "item is removed",
+	})
+}

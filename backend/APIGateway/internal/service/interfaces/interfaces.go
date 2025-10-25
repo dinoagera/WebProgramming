@@ -13,4 +13,5 @@ type AuthService interface {
 type CartService interface {
 	GetCart(userID int64) (models.Cart, error)
 	AddItem(userID int64, productID string, quantity int, price float64, category string) error
+	RemoveItem(userID int64, productID string) error
 }

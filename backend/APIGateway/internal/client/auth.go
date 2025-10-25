@@ -44,7 +44,7 @@ func (a *AuthClient) Register(email, password string) error {
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
 	resp, err := a.httpClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to execute request: %w", err)
@@ -72,7 +72,7 @@ func (a *AuthClient) Login(email, password string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
 	resp, err := a.httpClient.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("failed to execute request: %w", err)

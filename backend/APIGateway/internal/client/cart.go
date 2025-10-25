@@ -95,6 +95,34 @@ func (c *CartClient) AddItem(userID string, productID string, quantity int, pric
 		return fmt.Errorf("%s", string(body))
 	}
 }
-func (c *CartClient) RemoveItem() {
-
+func (c *CartClient) RemoveItem(userID string, productID string) error {
+	url := fmt.Sprintf("%s/api/removeitem", c.baseURL)
+	requestBody := models.RemoveItemRequest{
+		ProductID: productID,
+	}
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("X-User-ID", userID)
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
+		return nil
+	default:
+		return fmt.Errorf("%s", string(body))
+	}
 }

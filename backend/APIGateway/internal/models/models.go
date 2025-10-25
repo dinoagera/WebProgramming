@@ -36,3 +36,6 @@ type UpdateItemRequest struct {
 	ProductID     string `json:"product_id"`
 	TypeOperation int    `json:"type_operation" `
 }
+type RemoveItemRequest struct {
+	ProductID string `json:"product_id"`
+}

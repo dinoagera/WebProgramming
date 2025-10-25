@@ -73,3 +73,12 @@ func (s *Service) AddItem(userID int64, productID string, quantity int, price fl
 	}
 	return nil
 }
+func (s *Service) RemoveItem(userID int64, productID string) error {
+	userIDStr := strconv.Itoa(int(userID))
+	err := s.cartService.RemoveItem(userIDStr, productID)
+	if err != nil {
+		s.log.Info("failed to remove item", "err", err)
+		return err
+	}
+	return nil
+}
