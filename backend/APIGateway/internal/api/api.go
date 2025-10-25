@@ -61,5 +61,6 @@ func (api *API) setupRouter() {
 	protected.HandleFunc("/getcart", api.handler.GetCart).Methods(http.MethodGet)
 	protected.HandleFunc("/additem", api.handler.AddItem).Methods(http.MethodPost)
 	protected.HandleFunc("/removeitem", api.handler.RemoveItem).Methods(http.MethodPost)
-
+	protected.HandleFunc("/updateitem", api.handler.UpdateItem).Methods(http.MethodPost)
+	protected.HandleFunc("/clearcart", api.handler.ClearCart).Methods(http.MethodGet)
 }

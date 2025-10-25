@@ -197,3 +197,22 @@ func (h *Handler) UpdateItem(w http.ResponseWriter, r *http.Request) {
 		"status": "item is updated",
 	})
 }
+func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.GetUserIDFromContext(r.Context())
+	if !ok {
+		h.log.Info("failed to get userID")
+		http.Error(w, "Unauthorization", http.StatusUnauthorized)
+		return
+	}
+	err := h.cartService.ClearCart(userID)
+	if err != nil {
+		h.log.Info("failed to update item", "err:", err)
+		http.Error(w, "Failed to update item", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "cart is cleared",
+	})
+}

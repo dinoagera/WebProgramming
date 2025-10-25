@@ -91,3 +91,12 @@ func (s *Service) UpdateItem(userID int64, productID string, typeOperation int) 
 	}
 	return nil
 }
+func (s *Service) ClearCart(userID int64) error {
+	userIDStr := strconv.Itoa(int(userID))
+	err := s.cartService.ClearCart(userIDStr)
+	if err != nil {
+		s.log.Info("failed to clear cart", "err", err)
+		return err
+	}
+	return nil
+}

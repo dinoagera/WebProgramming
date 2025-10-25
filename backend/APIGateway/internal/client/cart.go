@@ -158,3 +158,27 @@ func (c *CartClient) UpdateItem(userID string, productID string, typeOperation i
 		return fmt.Errorf("%s", string(body))
 	}
 }
+func (c *CartClient) ClearCart(userID string) error {
+	url := fmt.Sprintf("%s/api/clearcart", c.baseURL)
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("X-User-ID", userID)
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
+		return nil
+	default:
+		return fmt.Errorf("%s", string(body))
+	}
+}
