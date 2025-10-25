@@ -172,3 +172,28 @@ func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
 		"status": "item is removed",
 	})
 }
+func (h *Handler) UpdateItem(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.GetUserIDFromContext(r.Context())
+	if !ok {
+		h.log.Info("failed to get userID")
+		http.Error(w, "Unauthorization", http.StatusUnauthorized)
+		return
+	}
+	var updateItemRequest models.UpdateItemRequest
+	if err := json.NewDecoder(r.Body).Decode(&updateItemRequest); err != nil {
+		h.log.Info("decode to failed in update item handler", "err:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	err := h.cartService.UpdateItem(userID, updateItemRequest.ProductID, updateItemRequest.TypeOperation)
+	if err != nil {
+		h.log.Info("failed to update item", "err:", err)
+		http.Error(w, "Failed to update item", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "item is updated",
+	})
+}

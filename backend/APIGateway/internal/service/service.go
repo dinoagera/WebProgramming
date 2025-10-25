@@ -82,3 +82,12 @@ func (s *Service) RemoveItem(userID int64, productID string) error {
 	}
 	return nil
 }
+func (s *Service) UpdateItem(userID int64, productID string, typeOperation int) error {
+	userIDStr := strconv.Itoa(int(userID))
+	err := s.cartService.UpdateItem(userIDStr, productID, typeOperation)
+	if err != nil {
+		s.log.Info("failed to update item", "err", err)
+		return err
+	}
+	return nil
+}

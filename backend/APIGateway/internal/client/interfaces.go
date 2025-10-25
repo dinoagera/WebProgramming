@@ -14,4 +14,5 @@ type CartService interface {
 	GetCart(userID string) (models.Cart, error)
 	AddItem(userID string, productID string, quantity int, price float64, category string) error
 	RemoveItem(userID string, productID string) error
+	UpdateItem(userID string, productID string, typeOperation int) error
 }
