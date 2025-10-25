@@ -80,7 +80,7 @@ func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
 	})
 }
 func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
-	var removeItem models.CartItem
+	var removeItem models.RemoveItemRequest
 	if err := json.NewDecoder(r.Body).Decode(&removeItem); err != nil {
 		h.log.Info("failed to decode to model remove item req", "err", err)
 		http.Error(w, "Internal Error", http.StatusInternalServerError)

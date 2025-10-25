@@ -11,6 +11,10 @@ import (
 	"time"
 )
 
+type CartResponse struct {
+	Status string      `json:"status"`
+	Cart   models.Cart `json:"cart"`
+}
 type CartClient struct {
 	baseURL    string
 	httpClient *http.Client
@@ -48,11 +52,11 @@ func (c *CartClient) GetCart(userID string) (models.Cart, error) {
 	}
 	switch resp.StatusCode {
 	case http.StatusOK:
-		var cart models.Cart
+		var cart CartResponse
 		if err := json.Unmarshal(body, &cart); err != nil {
 			return models.Cart{}, err
 		}
-		return cart, nil
+		return cart.Cart, nil
 	default:
 		return models.Cart{}, err
 	}
@@ -90,4 +94,7 @@ func (c *CartClient) AddItem(userID string, productID string, quantity int, pric
 	default:
 		return fmt.Errorf("%s", string(body))
 	}
+}
+func (c *CartClient) RemoveItem() {
+
 }

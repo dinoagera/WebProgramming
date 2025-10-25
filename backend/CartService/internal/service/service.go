@@ -43,7 +43,7 @@ func (s *Service) AddItem(userID string, addItem models.AddItemRequest) error {
 	return nil
 }
 
-func (s *Service) RemoveItem(userID string, removeItem models.CartItem) error {
+func (s *Service) RemoveItem(userID string, removeItem models.RemoveItemRequest) error {
 	err := s.removeItem.RemoveItem(userID, removeItem)
 	if err != nil {
 		s.log.Info("failed to remove item", "err", err)

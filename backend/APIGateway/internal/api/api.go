@@ -59,4 +59,5 @@ func (api *API) setupRouter() {
 	protected := api.router.PathPrefix("/api").Subrouter()
 	protected.Use(auth.New(api.log, api.cfg.JWTSecret))
 	protected.HandleFunc("/getcart", api.handler.GetCart).Methods(http.MethodGet)
+	protected.HandleFunc("/additem", api.handler.AddItem).Methods(http.MethodPost)
 }

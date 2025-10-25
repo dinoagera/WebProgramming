@@ -92,7 +92,7 @@ func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 	s.calculateTotal(&cart)
 	return s.saveCart(key, cart)
 }
-func (s *Storage) RemoveItem(key string, removeItem models.CartItem) error {
+func (s *Storage) RemoveItem(key string, removeItem models.RemoveItemRequest) error {
 	cart, err := s.GetCart(key)
 	if err != nil {
 		s.log.Info("failed to get cart", "err", err)
