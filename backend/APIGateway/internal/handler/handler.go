@@ -206,8 +206,8 @@ func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
 	}
 	err := h.cartService.ClearCart(userID)
 	if err != nil {
-		h.log.Info("failed to update item", "err:", err)
-		http.Error(w, "Failed to update item", http.StatusInternalServerError)
+		h.log.Info("failed to clear cart", "err:", err)
+		http.Error(w, "Failed to clear cart", http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

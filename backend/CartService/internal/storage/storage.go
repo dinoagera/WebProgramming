@@ -68,17 +68,20 @@ func (s *Storage) GetCart(key string) (models.Cart, error) {
 	return cart, nil
 }
 
-// Исправить валидацию, поставить кол-во по умолчанию 1.
 func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 	cart, err := s.GetCart(key)
 	if err != nil {
 		s.log.Info("failed to get cart", "err", err)
 		return err
 	}
+	quantity := addItem.Quantity
+	if quantity <= 0 {
+		quantity = 1
+	}
 	itemFound := false
 	for i, item := range cart.Items {
 		if item.ProductID == addItem.ProductID {
-			cart.Items[i].Quantity += addItem.Quantity
+			cart.Items[i].Quantity += quantity
 			cart.Items[i].Price = addItem.Price
 			cart.Items[i].Category = addItem.Category
 			itemFound = true
@@ -86,7 +89,12 @@ func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 		}
 	}
 	if !itemFound {
-		item := models.CartItem(addItem)
+		item := models.CartItem{
+			ProductID: addItem.ProductID,
+			Quantity:  quantity,
+			Price:     addItem.Price,
+			Category:  addItem.Category,
+		}
 		cart.Items = append(cart.Items, item)
 	}
 	s.calculateTotal(&cart)
