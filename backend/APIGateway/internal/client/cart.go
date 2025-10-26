@@ -160,7 +160,7 @@ func (c *CartClient) UpdateItem(userID string, productID string, typeOperation i
 }
 func (c *CartClient) ClearCart(userID string) error {
 	url := fmt.Sprintf("%s/api/clearcart", c.baseURL)
-	req, err := http.NewRequest("POST", url, nil)
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err
 	}
@@ -171,14 +171,9 @@ func (c *CartClient) ClearCart(userID string) error {
 		return err
 	}
 	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return err
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("clear cart failed: status %d, body: %s", resp.StatusCode, string(body))
 	}
-	switch resp.StatusCode {
-	case http.StatusOK:
-		return nil
-	default:
-		return fmt.Errorf("%s", string(body))
-	}
+	return nil
 }
