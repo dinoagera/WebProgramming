@@ -39,6 +39,7 @@ func (h *Handler) getKey(r *http.Request) (string, error) {
 func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
 	userID, err := h.getKey(r)
 	if err != nil {
+		h.log.Info("failed to get key", "err", err)
 		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
 	}
@@ -64,6 +65,7 @@ func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
 	}
 	userID, err := h.getKey(r)
 	if err != nil {
+		h.log.Info("failed to get key", "err", err)
 		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
 	}
@@ -88,6 +90,7 @@ func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
 	}
 	userID, err := h.getKey(r)
 	if err != nil {
+		h.log.Info("failed to get key", "err", err)
 		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
 	}
@@ -131,6 +134,7 @@ func (h *Handler) UpdateItem(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
 	userID, err := h.getKey(r)
 	if err != nil {
+		h.log.Info("failed to get key", "err", err)
 		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
 	}
