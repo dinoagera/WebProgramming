@@ -1,7 +1,10 @@
 package client
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"paymentservice/internal/config"
 	"time"
@@ -27,5 +30,30 @@ func NewClient(cfg *config.Config) *Client {
 }
 
 func (c *Client) GetTotalPrice(userID string) (float64, error) {
-	url := fmt.Sprintf("%s/api/")
+	url := fmt.Sprintf("%s/api/gettotalprice?user_id=%s", c.baseURL, userID)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return 0.0, err
+	}
+	req.Header.Set("Accept", "application/json")
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return 0.0, err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return 0.0, err
+	}
+	var response struct {
+		Price float64 `json:"price"`
+	}
+	if resp.StatusCode != http.StatusOK {
+		errorMsg := string(body)
+		return 0.0, errors.New(errorMsg)
+	}
+	if err := json.Unmarshal(body, &response); err != nil {
+		return 0.0, err
+	}
+	return response.Price, nil
 }

@@ -153,9 +153,10 @@ func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
 	})
 }
 func (h *Handler) GetTotalPrice(w http.ResponseWriter, r *http.Request) {
-	userID, err := h.getKey(r)
-	if err != nil {
-		h.log.Info("failed to get key", "err", err)
+
+	userID := r.URL.Query().Get("user_id")
+	if userID == "" {
+		h.log.Info("failed to get key, user_id is empty")
 		http.Error(w, "not authorization", http.StatusUnauthorized)
 		return
 	}
