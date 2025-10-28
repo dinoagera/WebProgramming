@@ -24,8 +24,8 @@ type API struct {
 
 func InitApi(log *slog.Logger, cfg *config.Config, client *redis.Client) *API {
 	storage := storage.New(log, client, cfg)
-	srv := service.New(log, storage, storage, storage, storage, storage)
-	handler := handler.New(log, srv, srv, srv, srv, srv)
+	srv := service.New(log, storage, storage, storage, storage, storage, storage)
+	handler := handler.New(log, srv, srv, srv, srv, srv, srv)
 	api := &API{
 		log:     log,
 		cfg:     cfg,
@@ -59,4 +59,5 @@ func (api *API) setupRouter() {
 	public.HandleFunc("/removeitem", api.handler.RemoveItem).Methods(http.MethodPost)
 	public.HandleFunc("/updateitem", api.handler.UpdateItem).Methods(http.MethodPost)
 	public.HandleFunc("/clearcart", api.handler.ClearCart).Methods(http.MethodGet)
+	public.HandleFunc("/gettotalprice", api.handler.GetTotalPrice).Methods(http.MethodGet)
 }

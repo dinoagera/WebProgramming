@@ -19,3 +19,6 @@ type UpdateItem interface {
 type ClearCart interface {
 	ClearCart(userID string) error
 }
+type GetTotalPrice interface {
+	GetTotalPrice(userID string) (float64, error)
+}

@@ -10,22 +10,24 @@ import (
 )
 
 type Handler struct {
-	log        *slog.Logger
-	getCart    service.GetCart
-	addItem    service.AddItem
-	removeItem service.RemoveItem
-	updateItem service.UpdateItem
-	clearCart  service.ClearCart
+	log           *slog.Logger
+	getCart       service.GetCart
+	addItem       service.AddItem
+	removeItem    service.RemoveItem
+	updateItem    service.UpdateItem
+	clearCart     service.ClearCart
+	gettotalprice service.GetTotalPrice
 }
 
-func New(log *slog.Logger, getCart service.GetCart, addItem service.AddItem, removeItem service.RemoveItem, updateItem service.UpdateItem, clearCart service.ClearCart) *Handler {
+func New(log *slog.Logger, getCart service.GetCart, addItem service.AddItem, removeItem service.RemoveItem, updateItem service.UpdateItem, clearCart service.ClearCart, gettotalprice service.GetTotalPrice) *Handler {
 	return &Handler{
-		log:        log,
-		getCart:    getCart,
-		addItem:    addItem,
-		removeItem: removeItem,
-		updateItem: updateItem,
-		clearCart:  clearCart,
+		log:           log,
+		getCart:       getCart,
+		addItem:       addItem,
+		removeItem:    removeItem,
+		updateItem:    updateItem,
+		clearCart:     clearCart,
+		gettotalprice: gettotalprice,
 	}
 }
 func (h *Handler) getKey(r *http.Request) (string, error) {
@@ -148,5 +150,24 @@ func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"status": "cart is cleared successfully",
+	})
+}
+func (h *Handler) GetTotalPrice(w http.ResponseWriter, r *http.Request) {
+	userID, err := h.getKey(r)
+	if err != nil {
+		h.log.Info("failed to get key", "err", err)
+		http.Error(w, "not authorization", http.StatusUnauthorized)
+		return
+	}
+	price, err := h.gettotalprice.GetTotalPrice(userID)
+	if err != nil {
+		h.log.Info("failed to get total price", "err", err)
+		http.Error(w, "failed to get total price", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"price": price,
 	})
 }

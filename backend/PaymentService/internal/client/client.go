@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"net/http"
 	"paymentservice/internal/config"
 	"time"
@@ -25,6 +26,6 @@ func NewClient(cfg *config.Config) *Client {
 	}
 }
 
-// func (c *Client) GetAmountPrice(userID string) (float64, error) {
-
-// }
+func (c *Client) GetTotalPrice(userID string) (float64, error) {
+	url := fmt.Sprintf("%s/api/")
+}

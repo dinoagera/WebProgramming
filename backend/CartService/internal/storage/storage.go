@@ -160,3 +160,11 @@ func (s *Storage) ClearCart(key string) error {
 	}
 	return nil
 }
+func (s *Storage) GetTotalPrice(userID string) (float64, error) {
+	cart, err := s.GetCart(userID)
+	if err != nil {
+		s.log.Info("failed to get cart", "err", err)
+		return 0.0, err
+	}
+	return cart.Total, nil
+}

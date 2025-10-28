@@ -7,22 +7,24 @@ import (
 )
 
 type Service struct {
-	log        *slog.Logger
-	getCart    storage.GetCart
-	addItem    storage.AddItem
-	removeItem storage.RemoveItem
-	updateItem storage.UpdateItem
-	clearCart  storage.ClearCart
+	log           *slog.Logger
+	getCart       storage.GetCart
+	addItem       storage.AddItem
+	removeItem    storage.RemoveItem
+	updateItem    storage.UpdateItem
+	clearCart     storage.ClearCart
+	gettotalprice storage.GetTotalPrice
 }
 
-func New(log *slog.Logger, getCart storage.GetCart, addItem storage.AddItem, removeItem storage.RemoveItem, updateItem storage.UpdateItem, clearCart storage.ClearCart) *Service {
+func New(log *slog.Logger, getCart storage.GetCart, addItem storage.AddItem, removeItem storage.RemoveItem, updateItem storage.UpdateItem, clearCart storage.ClearCart, gettotalprice storage.GetTotalPrice) *Service {
 	return &Service{
-		log:        log,
-		getCart:    getCart,
-		addItem:    addItem,
-		updateItem: updateItem,
-		removeItem: removeItem,
-		clearCart:  clearCart,
+		log:           log,
+		getCart:       getCart,
+		addItem:       addItem,
+		updateItem:    updateItem,
+		removeItem:    removeItem,
+		clearCart:     clearCart,
+		gettotalprice: gettotalprice,
 	}
 }
 func (s *Service) GetCart(userID string) (models.Cart, error) {
@@ -66,4 +68,12 @@ func (s *Service) ClearCart(userID string) error {
 		return err
 	}
 	return nil
+}
+func (s *Service) GetTotalPrice(userID string) (float64, error) {
+	price, err := s.gettotalprice.GetTotalPrice(userID)
+	if err != nil {
+		s.log.Info("failed to get total cart", "err", err)
+		return 0.0, err
+	}
+	return price, nil
 }
