@@ -45,3 +45,5 @@ func (h *Handler) Purchase(w http.ResponseWriter, r *http.Request) {
 		"message": fmt.Sprintf("purchase is compeleted, total price:%f", price),
 	})
 }
+
+// func (h *Handler) AcceptPurchase()
