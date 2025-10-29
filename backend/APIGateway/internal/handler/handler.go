@@ -27,6 +27,71 @@ func New(log *slog.Logger, catalogService service.CatalogService, authService se
 		cartService:    cartService,
 	}
 }
+
+// @Summary SignUp
+// @Tags auth
+// @Description create account
+// @ID create-account
+// @Accept json
+// @Produce json
+// @Param input body models.AuthRequest true "account info"
+// @Success 201 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Router /register [post]
+func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
+	var req models.AuthRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.log.Info("decode to failed in register handler", "err:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	err := h.authService.Register(req.Email, req.Password)
+	if err != nil {
+		h.log.Info("failed to register", "err:", err)
+		http.Error(w, fmt.Sprintf("error:%s", err), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"message": "user created successfully"})
+}
+
+// @Summary SignIn
+// @Tags auth
+// @Description login account
+// @ID login-account
+// @Accept json
+// @Produce json
+// @Param input body models.AuthRequest true "account info"
+// @Success 200 {object} map[string]string "Return JWT token"
+// @Failure 400 {object} map[string]string "Validation error"
+// @Router /login [post]
+func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
+	var req models.AuthRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.log.Info("decode to failed in login handler", "err:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	token, err := h.authService.Login(req.Email, req.Password)
+	if err != nil {
+		h.log.Info("failed to register", "err:", err)
+		http.Error(w, fmt.Sprintf("error:%s", err), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"token": token,
+	})
+}
+
+// @Summary GetAllCatalog
+// @Tags catalog
+// @Description Return all goods in catalog
+// @ID get-all-catalog
+// @Produce json
+// @Success 200 {array} []models.Good
+// @Failure 400 {object} map[string]string
+// @Router /getcatalog [get]
 func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 	goods, err := h.catalogService.GetCatalog()
 	if err != nil {
@@ -47,6 +112,16 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 		"catalog": goods,
 	})
 }
+
+// @Summary Get image
+// @Tags catalog
+// @Description Return product image by ID
+// @ID get-image
+// @Produce image/png
+// @Param productid path string true "productID"
+// @Success 200 {file} byte "Product image"
+// @Failure 400 {object} map[string]string
+// @Router /image/{productID} [get]
 func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 	productID := strings.TrimPrefix(r.URL.Path, "/api/image/")
 	if productID == "" {
@@ -68,40 +143,17 @@ func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/jpeg")
 	w.Write(imageData)
 }
-func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
-	var req models.AuthRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.log.Info("decode to failed in register handler", "err:", err)
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
-	err := h.authService.Register(req.Email, req.Password)
-	if err != nil {
-		h.log.Info("failed to register", "err:", err)
-		http.Error(w, fmt.Sprintf("error:%s", err), http.StatusBadRequest)
-		return
-	}
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(map[string]string{"message": "user created successfully"})
-}
-func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
-	var req models.AuthRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.log.Info("decode to failed in login handler", "err:", err)
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
-	token, err := h.authService.Login(req.Email, req.Password)
-	if err != nil {
-		h.log.Info("failed to register", "err:", err)
-		http.Error(w, fmt.Sprintf("error:%s", err), http.StatusBadRequest)
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{
-		"token": token,
-	})
-}
+
+// @Summary Get cart
+// @Tags cart
+// @Description Return user cart by user_id from JWT token
+// @ID get-cart
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} models.Cart
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /getcart [get]
 func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.GetUserIDFromContext(r.Context())
 	if !ok {
@@ -122,6 +174,19 @@ func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
 		"cart":   cart,
 	})
 }
+
+// @Summary Add Item
+// @Tags cart
+// @Description Add item to cart
+// @ID add-item
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param input body models.AddItemRequest true "item info"
+// @Success 200 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /additem [post]
 func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.GetUserIDFromContext(r.Context())
 	if !ok {
@@ -147,6 +212,19 @@ func (h *Handler) AddItem(w http.ResponseWriter, r *http.Request) {
 		"status": "item is added",
 	})
 }
+
+// @Summary Remove Item
+// @Tags cart
+// @Description Remove item from cart by product_id
+// @ID remove-item
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param input body models.RemoveItemRequest true "product id"
+// @Success 200 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /removeitem [post]
 func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.GetUserIDFromContext(r.Context())
 	if !ok {
@@ -172,6 +250,19 @@ func (h *Handler) RemoveItem(w http.ResponseWriter, r *http.Request) {
 		"status": "item is removed",
 	})
 }
+
+// @Summary Update Item
+// @Tags cart
+// @Description Update item up or down quantity, 0 - down , >0 - up
+// @ID update-item
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param input body models.UpdateItemRequest true "product id"
+// @Success 200 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /updateitem [post]
 func (h *Handler) UpdateItem(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.GetUserIDFromContext(r.Context())
 	if !ok {
@@ -197,6 +288,17 @@ func (h *Handler) UpdateItem(w http.ResponseWriter, r *http.Request) {
 		"status": "item is updated",
 	})
 }
+
+// @Summary Clear Cart
+// @Tags cart
+// @Description Clear cart by user id from JWT token
+// @ID clear-cart
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /clearcart [get]
 func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.GetUserIDFromContext(r.Context())
 	if !ok {

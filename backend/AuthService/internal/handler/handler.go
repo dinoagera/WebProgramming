@@ -90,10 +90,8 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param input body RegisterFormat true "account info"
-// @Success 201 {object} map[string]string
+// @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
-// @Failure 409 {object} map[string]string
-// @Failure 500 {object} map[string]string
 // @Router /login [post]
 func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {

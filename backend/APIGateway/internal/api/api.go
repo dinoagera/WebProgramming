@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type API struct {
@@ -51,12 +52,19 @@ func (api *API) StartServer() {
 	}
 }
 func (api *API) setupRouter() {
-	public := api.router.PathPrefix("/api").Subrouter()
+	api.router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+	// API routes
+	apiRouter := api.router.PathPrefix("/api").Subrouter()
+	// Public routes
+	public := apiRouter.PathPrefix("").Subrouter()
 	public.HandleFunc("/getcatalog", api.handler.GetCatalog).Methods(http.MethodGet)
 	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
-	public.HandleFunc("/register", api.handler.Register).Methods(http.MethodPost)
-	public.HandleFunc("/login", api.handler.Login).Methods(http.MethodPost)
-	protected := api.router.PathPrefix("/api").Subrouter()
+	// Auth routes (public)
+	authRoutes := apiRouter.PathPrefix("").Subrouter()
+	authRoutes.HandleFunc("/register", api.handler.Register).Methods(http.MethodPost)
+	authRoutes.HandleFunc("/login", api.handler.Login).Methods(http.MethodPost)
+	// Protected routes
+	protected := apiRouter.PathPrefix("").Subrouter()
 	protected.Use(auth.New(api.log, api.cfg.JWTSecret))
 	protected.HandleFunc("/getcart", api.handler.GetCart).Methods(http.MethodGet)
 	protected.HandleFunc("/additem", api.handler.AddItem).Methods(http.MethodPost)
