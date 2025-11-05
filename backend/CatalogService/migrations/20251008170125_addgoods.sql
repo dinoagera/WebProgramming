@@ -8,6 +8,14 @@ CREATE TABLE IF NOT EXISTS goods (
     color VARCHAR(50) NOT NULL,
     tag VARCHAR(50) NOT NULL
 );
+CREATE TABLE IF NOT EXISTS favourites (
+    uid INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    added_at TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (uid, product_id),
+    FOREIGN KEY (uid) REFERENCES users(uid) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES goods(product_id) ON DELETE CASCADE
+);
 INSERT INTO goods (category, sex, sizes, price, color, tag)
 VALUES 
   ('кроксы', 'unisex', '{36,37,38,39,40,41,42,43,45,46}', 3300, 'черный', 'со скидкой'),

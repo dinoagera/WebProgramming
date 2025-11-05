@@ -8,3 +8,6 @@ type GetCatalog interface {
 type GetImage interface {
 	GetImage(productID string) ([]byte, error)
 }
+type GetFavourites interface {
+	GetFavourites(userID string) ([]models.Favourites, error)
+}
