@@ -105,7 +105,7 @@ func (h *Handler) AddFavourite(w http.ResponseWriter, r *http.Request) {
 	var req models.AddRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.log.Info("failed to decode to model update item req", "err", err)
-		http.Error(w, "Internal Error", http.StatusInternalServerError)
+		http.Error(w, "Internal Error", http.StatusBadRequest)
 		return
 	}
 	err = h.addFavourite.AddFavourite(userID, req.ProductID)

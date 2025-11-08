@@ -58,4 +58,6 @@ func (api *API) setupRouter() {
 	public := api.router.PathPrefix("/api").Subrouter()
 	public.HandleFunc("/getcatalog", api.handler.GetCatalog).Methods(http.MethodGet)
 	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
+	public.HandleFunc("/getfavourites", api.handler.GetFavourites).Methods(http.MethodGet)
+	public.HandleFunc("/addfavourite", api.handler.AddFavourite).Methods(http.MethodPost)
 }
