@@ -99,3 +99,50 @@ func (s *Storage) GetImage(productID string) ([]byte, error) {
 	s.log.Info("successfully loaded PNG image from filesystem", "product_id", productID, "size", len(imageData))
 	return imageData, nil
 }
+func (s *Storage) GetFavourites(userID int) ([]models.Favourites, error) {
+	rows, err := s.Pool.Query(context.Background(),
+		`SELECT 
+		g.product_id,
+		g.category,
+		g.sex,
+		g.sizes, 
+		g.price, 
+		g.color, 
+		g.tag, '/api/image/' || g.product_id as image_url 
+		FROM favourites f
+		JOIN goods g ON f.product_id = g.product_id
+		JOIN users u ON f.uid = u.uid
+		WHERE u.uid = $1 `, userID)
+	if err != nil {
+		s.log.Info("failed to get catalog query", "err", err)
+		return nil, err
+	}
+	var favourites []models.Favourites
+	defer rows.Close()
+	for rows.Next() {
+		var good models.Favourites
+		err := rows.Scan(
+			&good.ProductID,
+			&good.Category,
+			&good.Sex,
+			&good.Sizes,
+			&good.Price,
+			&good.Color,
+			&good.Tag,
+			&good.ImageURL,
+		)
+		if err != nil {
+			s.log.Info("failed to scan to struct", "err", err)
+			return nil, err
+		}
+		favourites = append(favourites, good)
+	}
+	if err := rows.Err(); err != nil {
+		s.log.Info("failed to reading rows", "err", err)
+		return nil, err
+	}
+	if len(favourites) == 0 {
+		return []models.Favourites{}, lib.ErrFavouritesIsEmpty
+	}
+	return favourites, nil
+}

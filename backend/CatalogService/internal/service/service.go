@@ -51,12 +51,12 @@ func (s *Service) GetFavourites(userID string) ([]models.Favourites, error) {
 	userIDInt, err := strconv.Atoi(userID)
 	if err != nil {
 		s.log.Info("failed to convert string to int", "err", err)
-		return []models.Favourites{}, err
+		return nil, err
 	}
 	favourites, err := s.getFavourites.GetFavourites(userIDInt)
 	if err != nil {
 		s.log.Info("failed get favourites", "err", err)
-		return []models.Favourites{}, err
+		return nil, err
 	}
 	return favourites, nil
 }
