@@ -146,3 +146,20 @@ func (s *Storage) GetFavourites(userID int) ([]models.Favourites, error) {
 	}
 	return favourites, nil
 }
+func (s *Storage) AddFavourite(userID, productID int) error {
+	res, err := s.Pool.Exec(context.Background(), `INSERT INTO favourites(uid, product_id)
+	SELECT $1, $2 
+	WHERE NOT EXISTS (
+	SELECT 1 FROM favourites WHERE uid=$1 AND product_id=$2)
+	`, userID, productID)
+	if err != nil {
+		s.log.Info("failed to exec query", "err", err)
+		return err
+	}
+	rowsAffected := res.RowsAffected()
+	if rowsAffected == 0 {
+		s.log.Info("product already in favourites", "userID", userID, "productID", productID)
+		return lib.ErrAlreadyInFavourites
+	}
+	return nil
+}

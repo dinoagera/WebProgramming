@@ -27,8 +27,8 @@ func InitAPI(log *slog.Logger, cfg *config.Config) *API {
 		log.Info("failed to init storage", "err", err)
 		os.Exit(1)
 	}
-	srv := service.New(log, db, db, db)
-	handler := handler.New(log, srv, srv, srv)
+	srv := service.New(log, db, db, db, db)
+	handler := handler.New(log, srv, srv, srv, srv)
 	api := &API{
 		log:     log,
 		cfg:     cfg,

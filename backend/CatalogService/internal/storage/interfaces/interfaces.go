@@ -11,3 +11,6 @@ type GetImage interface {
 type GetFavourites interface {
 	GetFavourites(userID int) ([]models.Favourites, error)
 }
+type AddFavourite interface {
+	AddFavourite(userID, productID int) error
+}

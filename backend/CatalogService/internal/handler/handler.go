@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"catalogservice/internal/models"
 	service "catalogservice/internal/service/interfaces"
 	"catalogservice/lib"
 	"encoding/json"
@@ -14,14 +15,16 @@ type Handler struct {
 	getCatalog    service.GetCatalog
 	getImage      service.GetImage
 	getFavourites service.GetFavourites
+	addFavourite  service.AddFavourite
 }
 
-func New(log *slog.Logger, getCatalog service.GetCatalog, getImage service.GetImage, getFavourites service.GetFavourites) *Handler {
+func New(log *slog.Logger, getCatalog service.GetCatalog, getImage service.GetImage, getFavourites service.GetFavourites, addFavourite service.AddFavourite) *Handler {
 	return &Handler{
 		log:           log,
 		getCatalog:    getCatalog,
 		getImage:      getImage,
 		getFavourites: getFavourites,
+		addFavourite:  addFavourite,
 	}
 }
 func (h *Handler) getKey(r *http.Request) (string, error) {
@@ -90,5 +93,35 @@ func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"status":     "get catalog is successfully",
 		"favourites": favourites,
+	})
+}
+func (h *Handler) AddFavourite(w http.ResponseWriter, r *http.Request) {
+	userID, err := h.getKey(r)
+	if err != nil {
+		h.log.Info("failed to get key", "err", err)
+		http.Error(w, "not authorization", http.StatusUnauthorized)
+		return
+	}
+	var req models.AddRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.log.Info("failed to decode to model update item req", "err", err)
+		http.Error(w, "Internal Error", http.StatusInternalServerError)
+		return
+	}
+	err = h.addFavourite.AddFavourite(userID, req.ProductID)
+	if err != nil {
+		if err == lib.ErrAlreadyInFavourites {
+			h.log.Info("failed to add favourite", "err", err)
+			http.Error(w, "Favourite has already been added", http.StatusBadRequest)
+			return
+		}
+		h.log.Info("failed to add favourite", "err", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "favourite good is added",
 	})
 }

@@ -13,14 +13,16 @@ type Service struct {
 	getCatalog    storage.GetCatalog
 	getImage      storage.GetImage
 	getFavourites storage.GetFavourites
+	addFavourite  storage.AddFavourite
 }
 
-func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetImage, getFavourites storage.GetFavourites) *Service {
+func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetImage, getFavourites storage.GetFavourites, addFavourite storage.AddFavourite) *Service {
 	return &Service{
 		log:           log,
 		getCatalog:    getCatalog,
 		getImage:      getImage,
 		getFavourites: getFavourites,
+		addFavourite:  addFavourite,
 	}
 }
 func (s *Service) GetCatalog() ([]models.Good, error) {
@@ -59,4 +61,27 @@ func (s *Service) GetFavourites(userID string) ([]models.Favourites, error) {
 		return nil, err
 	}
 	return favourites, nil
+}
+func (s *Service) AddFavourite(userID, productID string) error {
+	userIDInt, err := strconv.Atoi(userID)
+	if err != nil {
+		s.log.Info("failed to convert string to int", "err", err)
+		return err
+	}
+	productIDInt, err := strconv.Atoi(productID)
+	if err != nil {
+		s.log.Info("failed to convert string to int", "err", err)
+		return err
+	}
+	err = s.addFavourite.AddFavourite(userIDInt, productIDInt)
+	if err != nil {
+		if err == lib.ErrAlreadyInFavourites {
+			s.log.Info("failed to add, goods is already added", "err", err)
+			return err
+		}
+		s.log.Info("failed to add favourite", "err", err)
+		return err
+	}
+	s.log.Info("favourite added", "userID", userID, "productID", productID)
+	return nil
 }
