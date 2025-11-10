@@ -84,6 +84,11 @@ func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
 	}
 	favourites, err := h.getFavourites.GetFavourites(userID)
 	if err != nil {
+		if err == lib.ErrFavouritesIsEmpty {
+			h.log.Info("favourites is empty", "err", err)
+			http.Error(w, "Favourites is empty", http.StatusOK)
+			return
+		}
 		h.log.Info("failed to get favourites", "err", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return

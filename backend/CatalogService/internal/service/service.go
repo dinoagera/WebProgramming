@@ -57,7 +57,7 @@ func (s *Service) GetFavourites(userID string) ([]models.Favourites, error) {
 	}
 	favourites, err := s.getFavourites.GetFavourites(userIDInt)
 	if err != nil {
-		s.log.Info("failed get favourites", "err", err)
+		s.log.Info("failed to get favourites", "err", err)
 		return nil, err
 	}
 	return favourites, nil

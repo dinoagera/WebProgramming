@@ -74,7 +74,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	}
 	token, err := h.authService.Login(req.Email, req.Password)
 	if err != nil {
-		h.log.Info("failed to register", "err:", err)
+		h.log.Info("failed to login", "err:", err)
 		http.Error(w, fmt.Sprintf("error:%s", err), http.StatusBadRequest)
 		return
 	}
