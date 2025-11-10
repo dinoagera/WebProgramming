@@ -14,6 +14,10 @@ type CatalogResponse struct {
 	Status  string        `json:"status"`
 	Catalog []models.Good `json:"catalog"`
 }
+type FavouritesResponse struct {
+	Status     string              `json:"status"`
+	Favourites []models.Favourites `json:"favourites"`
+}
 type CatalogClient struct {
 	baseURL    string
 	httpClient *http.Client
@@ -108,6 +112,34 @@ func (c *CatalogClient) GetImage(productID string) ([]byte, error) {
 
 	default:
 		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
+	}
+}
+func (c *CatalogClient) GetFavourites(userID string) ([]models.Favourites, error) {
+	url := fmt.Sprintf("%s/api/getfavourites", c.baseURL)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("X-User-ID", userID)
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
+		var favourites FavouritesResponse
+		if err := json.Unmarshal(body, &favourites); err != nil {
+			return nil, err
+		}
+		return favourites.Favourites, nil
+	default:
 		return nil, fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
 	}
 }

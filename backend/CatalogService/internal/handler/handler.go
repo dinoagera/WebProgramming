@@ -21,11 +21,12 @@ type Handler struct {
 
 func New(log *slog.Logger, getCatalog service.GetCatalog, getImage service.GetImage, getFavourites service.GetFavourites, addFavourite service.AddFavourite, removeFavourite service.RemoveFavourite) *Handler {
 	return &Handler{
-		log:           log,
-		getCatalog:    getCatalog,
-		getImage:      getImage,
-		getFavourites: getFavourites,
-		addFavourite:  addFavourite,
+		log:             log,
+		getCatalog:      getCatalog,
+		getImage:        getImage,
+		getFavourites:   getFavourites,
+		addFavourite:    addFavourite,
+		removeFavourite: removeFavourite,
 	}
 }
 func (h *Handler) getKey(r *http.Request) (string, error) {
@@ -87,7 +88,7 @@ func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if err == lib.ErrFavouritesIsEmpty {
 			h.log.Info("favourites is empty", "err", err)
-			http.Error(w, "Favourites is empty", http.StatusOK)
+			http.Error(w, "Favourites is empty", http.StatusBadRequest)
 			return
 		}
 		h.log.Info("failed to get favourites", "err", err)
@@ -155,4 +156,9 @@ func (h *Handler) RemoveFavourite(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "favourite good is deleted",
+	})
 }

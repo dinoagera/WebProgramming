@@ -60,4 +60,5 @@ func (api *API) setupRouter() {
 	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
 	public.HandleFunc("/getfavourites", api.handler.GetFavourites).Methods(http.MethodGet)
 	public.HandleFunc("/addfavourite", api.handler.AddFavourite).Methods(http.MethodPost)
+	public.HandleFunc("/removefavourite", api.handler.RemoveFavourite).Methods(http.MethodPost)
 }

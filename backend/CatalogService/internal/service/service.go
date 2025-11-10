@@ -19,11 +19,12 @@ type Service struct {
 
 func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetImage, getFavourites storage.GetFavourites, addFavourite storage.AddFavourite, removeFavourite storage.RemoveFavourite) *Service {
 	return &Service{
-		log:           log,
-		getCatalog:    getCatalog,
-		getImage:      getImage,
-		getFavourites: getFavourites,
-		addFavourite:  addFavourite,
+		log:             log,
+		getCatalog:      getCatalog,
+		getImage:        getImage,
+		getFavourites:   getFavourites,
+		addFavourite:    addFavourite,
+		removeFavourite: removeFavourite,
 	}
 }
 func (s *Service) GetCatalog() ([]models.Good, error) {

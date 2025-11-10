@@ -5,6 +5,7 @@ import "apigateway/internal/models"
 type CatalogService interface {
 	GetCatalog() ([]models.Good, error)
 	GetImage(productID string) ([]byte, error)
+	GetFavourites(userID string) ([]models.Favourites, error)
 }
 type AuthService interface {
 	Register(email, password string) error

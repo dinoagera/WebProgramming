@@ -7,6 +7,7 @@ import (
 type CatalogService interface {
 	GetCatalog() ([]models.Good, error)
 	GetImage(productID string) ([]byte, error)
+	GetFavourites(userID int64) ([]models.Favourites, error)
 }
 type AuthService interface {
 	Register(email, password string) error

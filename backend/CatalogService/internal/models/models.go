@@ -11,7 +11,6 @@ type Good struct {
 	ImageURL  string  `json:"image_url"`
 }
 type Favourites struct {
-	UserID    string  `json:"user_id"`
 	ProductID string  `json:"product_id"`
 	Category  string  `json:"category"`
 	Sex       string  `json:"sex"`

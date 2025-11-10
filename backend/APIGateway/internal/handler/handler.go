@@ -113,6 +113,36 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// @Summary GetFavouritesGoods
+// @Tags catalog
+// @Description Return all favourites goods by user
+// @ID get-favourites-goods
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {array} []models.Favourites
+// @Failure 400 {object} map[string]string
+// @Router /getcatalog [get]
+func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.GetUserIDFromContext(r.Context())
+	if !ok {
+		h.log.Info("faield to get userID")
+		http.Error(w, "Unauthorization", http.StatusUnauthorized)
+		return
+	}
+	cart, err := h.catalogService.GetFavourites(userID)
+	if err != nil {
+		h.log.Info("failed to get favourites", "err", err)
+		http.Error(w, "failed to get favourites", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "get cart is successfully",
+		"cart":   cart,
+	})
+}
+
 // @Summary Get image
 // @Tags catalog
 // @Description Return product image by ID
