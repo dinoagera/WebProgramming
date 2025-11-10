@@ -143,6 +143,44 @@ func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// @Summary Add Favourite
+// @Tags catalog
+// @Description Add item to favourites
+// @ID add-favourite
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param input body models.AddFavouriteRequest true "productID info"
+// @Success 200 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /additem [post]
+func (h *Handler) AddFavourite(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.GetUserIDFromContext(r.Context())
+	if !ok {
+		h.log.Info("failed to get userID")
+		http.Error(w, "Unauthorization", http.StatusUnauthorized)
+		return
+	}
+	var addFavouriteRequest models.AddFavouriteRequest
+	if err := json.NewDecoder(r.Body).Decode(&addFavouriteRequest); err != nil {
+		h.log.Info("decode to failed in add favourtie item handler", "err:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	err := h.catalogService.AddFavourite(userID, addFavouriteRequest.ProductID)
+	if err != nil {
+		h.log.Info("failed to add favourites", "err", err)
+		http.Error(w, "failed to add favourites", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "favourite item is added successfully",
+	})
+}
+
 // @Summary Get image
 // @Tags catalog
 // @Description Return product image by ID

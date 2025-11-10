@@ -49,3 +49,6 @@ type Favourites struct {
 	Tag       string  `json:"tag"`
 	ImageURL  string  `json:"image_url"`
 }
+type AddFavouriteRequest struct {
+	ProductID string `json:"product_id"`
+}

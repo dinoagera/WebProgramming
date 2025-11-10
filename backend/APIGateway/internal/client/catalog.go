@@ -3,6 +3,7 @@ package client
 import (
 	"apigateway/internal/config"
 	"apigateway/internal/models"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -141,5 +142,36 @@ func (c *CatalogClient) GetFavourites(userID string) ([]models.Favourites, error
 		return favourites.Favourites, nil
 	default:
 		return nil, fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
+	}
+}
+func (c *CatalogClient) AddFavourite(userID string, productID string) error {
+	url := fmt.Sprintf("%s/api/addfavourite", c.baseURL)
+	requestBody := models.AddFavouriteRequest{
+		ProductID: productID,
+	}
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("X-User-ID", userID)
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
+		return nil
+	default:
+		return fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
 	}
 }
