@@ -171,6 +171,8 @@ func (c *CatalogClient) AddFavourite(userID string, productID string) error {
 	switch resp.StatusCode {
 	case http.StatusOK:
 		return nil
+	case http.StatusCreated:
+		return nil
 	default:
 		return fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
 	}
