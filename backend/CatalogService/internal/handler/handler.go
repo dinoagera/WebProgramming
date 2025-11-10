@@ -11,14 +11,15 @@ import (
 )
 
 type Handler struct {
-	log           *slog.Logger
-	getCatalog    service.GetCatalog
-	getImage      service.GetImage
-	getFavourites service.GetFavourites
-	addFavourite  service.AddFavourite
+	log             *slog.Logger
+	getCatalog      service.GetCatalog
+	getImage        service.GetImage
+	getFavourites   service.GetFavourites
+	addFavourite    service.AddFavourite
+	removeFavourite service.RemoveFavourite
 }
 
-func New(log *slog.Logger, getCatalog service.GetCatalog, getImage service.GetImage, getFavourites service.GetFavourites, addFavourite service.AddFavourite) *Handler {
+func New(log *slog.Logger, getCatalog service.GetCatalog, getImage service.GetImage, getFavourites service.GetFavourites, addFavourite service.AddFavourite, removeFavourite service.RemoveFavourite) *Handler {
 	return &Handler{
 		log:           log,
 		getCatalog:    getCatalog,
@@ -129,4 +130,29 @@ func (h *Handler) AddFavourite(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"status": "favourite good is added",
 	})
+}
+func (h *Handler) RemoveFavourite(w http.ResponseWriter, r *http.Request) {
+	userID, err := h.getKey(r)
+	if err != nil {
+		h.log.Info("failed to get key", "err", err)
+		http.Error(w, "not authorization", http.StatusUnauthorized)
+		return
+	}
+	var req models.RemoveRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.log.Info("failed to decode to model update item req", "err", err)
+		http.Error(w, "Internal Error", http.StatusBadRequest)
+		return
+	}
+	err = h.removeFavourite.RemoveFavourite(userID, req.ProductID)
+	if err != nil {
+		if err == lib.ErrAlreadyDeleted {
+			h.log.Info("failed to remove, product have been already deleted", "err", err)
+			http.Error(w, "Favourite product have been already deleted", http.StatusBadRequest)
+			return
+		}
+		h.log.Info("failed to add favourite", "err", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
 }

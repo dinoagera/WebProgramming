@@ -9,14 +9,15 @@ import (
 )
 
 type Service struct {
-	log           *slog.Logger
-	getCatalog    storage.GetCatalog
-	getImage      storage.GetImage
-	getFavourites storage.GetFavourites
-	addFavourite  storage.AddFavourite
+	log             *slog.Logger
+	getCatalog      storage.GetCatalog
+	getImage        storage.GetImage
+	getFavourites   storage.GetFavourites
+	addFavourite    storage.AddFavourite
+	removeFavourite storage.RemoveFavourite
 }
 
-func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetImage, getFavourites storage.GetFavourites, addFavourite storage.AddFavourite) *Service {
+func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetImage, getFavourites storage.GetFavourites, addFavourite storage.AddFavourite, removeFavourite storage.RemoveFavourite) *Service {
 	return &Service{
 		log:           log,
 		getCatalog:    getCatalog,
@@ -83,5 +84,27 @@ func (s *Service) AddFavourite(userID, productID string) error {
 		return err
 	}
 	s.log.Info("favourite added", "userID", userID, "productID", productID)
+	return nil
+}
+func (s *Service) RemoveFavourite(userID, productID string) error {
+	userIDInt, err := strconv.Atoi(userID)
+	if err != nil {
+		s.log.Info("failed to convert string to int", "err", err)
+		return err
+	}
+	productIDInt, err := strconv.Atoi(productID)
+	if err != nil {
+		s.log.Info("failed to convert string to int", "err", err)
+		return err
+	}
+	err = s.removeFavourite.RemoveFavourite(userIDInt, productIDInt)
+	if err != nil {
+		if err == lib.ErrAlreadyDeleted {
+			s.log.Info("failed to remove, product have been already deleted", "err", err)
+			return err
+		}
+		s.log.Info("failed to remove favourite", "err", err)
+		return err
+	}
 	return nil
 }

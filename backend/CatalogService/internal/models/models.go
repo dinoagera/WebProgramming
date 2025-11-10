@@ -24,3 +24,6 @@ type Favourites struct {
 type AddRequest struct {
 	ProductID string `json:"product_id"`
 }
+type RemoveRequest struct {
+	ProductID string `json:"product_id"`
+}

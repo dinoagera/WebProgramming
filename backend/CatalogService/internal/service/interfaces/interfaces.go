@@ -14,3 +14,6 @@ type GetFavourites interface {
 type AddFavourite interface {
 	AddFavourite(userID, productID string) error
 }
+type RemoveFavourite interface {
+	RemoveFavourite(userID, productID string) error
+}

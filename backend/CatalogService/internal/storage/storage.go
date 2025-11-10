@@ -163,3 +163,16 @@ func (s *Storage) AddFavourite(userID, productID int) error {
 	}
 	return nil
 }
+func (s *Storage) RemoveFavourite(userID, productID int) error {
+	res, err := s.Pool.Exec(context.Background(), `DELETE FROM favourites WHERE uid = $1 AND product = $2`, userID, productID)
+	if err != nil {
+		s.log.Info("failed to exec query", "err", err)
+		return err
+	}
+	rowsAffected := res.RowsAffected()
+	if rowsAffected == 0 {
+		s.log.Info("product have been already deleted", "userID", userID, "productID", productID)
+		return lib.ErrAlreadyDeleted
+	}
+	return nil
+}
