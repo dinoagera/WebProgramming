@@ -169,10 +169,43 @@ func (c *CatalogClient) AddFavourite(userID string, productID string) error {
 		return err
 	}
 	switch resp.StatusCode {
-	case http.StatusOK:
+	case http.StatusOK: //Сам хэндлер на сторое сервака никогда не вернет 200 CODE.Навсякий добавил
 		return nil
 	case http.StatusCreated:
 		return nil
+	default:
+		return fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
+	}
+}
+func (c *CatalogClient) RemoveFavourite(userID, productID string) error {
+	url := fmt.Sprintf("%s/api/removefavourite", c.baseURL)
+	requestBody := models.RemoveFavouriteRequest{
+		ProductID: productID,
+	}
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("X-User-ID", userID)
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
+		return nil
+	case http.StatusBadRequest:
+		return fmt.Errorf("%s", string(body))
 	default:
 		return fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
 	}

@@ -52,3 +52,6 @@ type Favourites struct {
 type AddFavouriteRequest struct {
 	ProductID string `json:"product_id"`
 }
+type RemoveFavouriteRequest struct {
+	ProductID string `json:"product_id"`
+}

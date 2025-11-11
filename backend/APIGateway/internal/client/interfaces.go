@@ -7,6 +7,7 @@ type CatalogService interface {
 	GetImage(productID string) ([]byte, error)
 	GetFavourites(userID string) ([]models.Favourites, error)
 	AddFavourite(userID, productID string) error
+	RemoveFavourite(userID, productID string) error
 }
 type AuthService interface {
 	Register(email, password string) error

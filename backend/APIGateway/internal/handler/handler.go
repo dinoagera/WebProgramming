@@ -121,7 +121,7 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 // @Success 200 {array} []models.Favourites
 // @Failure 400 {object} map[string]string
-// @Router /getcatalog [get]
+// @Router /getfavourites [get]
 func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.GetUserIDFromContext(r.Context())
 	if !ok {
@@ -151,10 +151,11 @@ func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security BearerAuth
 // @Param input body models.AddFavouriteRequest true "productID info"
-// @Success 200 {object} map[string]string
+// @Success 201 {object} map[string]string
+// @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /additem [post]
+// @Router /addfavourite [post]
 func (h *Handler) AddFavourite(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.GetUserIDFromContext(r.Context())
 	if !ok {
@@ -175,9 +176,48 @@ func (h *Handler) AddFavourite(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"status": "favourite item is added successfully",
+	})
+}
+
+// @Summary Remove Favourite
+// @Tags catalog
+// @Description Remove item from favourites items
+// @ID remove-favourite
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param input body models.RemoveFavouriteRequest true "productID info"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /removefavourite [post]
+func (h *Handler) RemoveFavourite(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.GetUserIDFromContext(r.Context())
+	if !ok {
+		h.log.Info("failed to get userID")
+		http.Error(w, "Unauthorization", http.StatusUnauthorized)
+		return
+	}
+	var removeFavouriteRequest models.RemoveFavouriteRequest
+	if err := json.NewDecoder(r.Body).Decode(&removeFavouriteRequest); err != nil {
+		h.log.Info("decode to failed in add favourtie item handler", "err:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	err := h.catalogService.RemoveFavourite(userID, removeFavouriteRequest.ProductID)
+	if err != nil {
+		h.log.Info("failed to removed favourites", "err", err)
+		http.Error(w, "failed to removed favourites", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "favourite item is removed successfully",
 	})
 }
 

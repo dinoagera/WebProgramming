@@ -48,6 +48,15 @@ func (s *Service) AddFavourite(userID int64, productID string) error {
 	}
 	return nil
 }
+func (s *Service) RemoveFavourite(userID int64, productID string) error {
+	userIDStr := strconv.Itoa(int(userID))
+	err := s.catalogService.RemoveFavourite(userIDStr, productID)
+	if err != nil {
+		s.log.Info("failed to remove favourite", "err", err)
+		return err
+	}
+	return nil
+}
 
 func (s *Service) GetImage(productID string) ([]byte, error) {
 	image, err := s.catalogService.GetImage(productID)
