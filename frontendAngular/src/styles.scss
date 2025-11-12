@@ -1,1 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+    --main-background: #F3E07F;
+    --color-fonts: #2C2C2C;
+    --main-fonts: "Inter", sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--main-fonts);
+    background: var(--main-background);
+    color: var(--color-fonts);
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 10px 15px;
+}
+
+
+a {
+    color: var(--color-fonts);
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}    
+
+.container{
+    box-sizing: border-box;
+
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px;
+}

@@ -1,0 +1,39 @@
+.header {
+  padding: 5px 0;
+  background-color: #fbfce6;
+  position: relative;
+  z-index: 10;
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header_logo {
+}
+
+.header__list {
+  display: flex;
+  gap: 15px;
+  text-transform: uppercase;
+}
+
+.header__nav a {
+  font-size: 14px;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.header__nav a.active {
+  opacity: 1;
+}
+
+.header__nav a:hover {
+  opacity: 0.9;
+}
+.header__icons img {
+  width: 24px;
+  height: 24px;
+}
