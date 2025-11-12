@@ -101,14 +101,13 @@ ul {
 }
 
 .hero__container {
-    display: flex; /* Используем Grid для двух колонок */
-    grid-template-columns: 1fr 1fr; /* Две колонки одинаковой ширины */
+    display: flex; 
+    grid-template-columns: 1fr 1fr; 
     gap: 20px; /* Расстояние между колонками */
     align-items: center; /* Выравнивание элементов по вертикали по центру */
     max-width: 1400px; /* Максимальная ширина, можно настроить */
     max-height: 1900px;
     margin: auto; /* Центрирование контейнера */
-    /* Добавляем отступы по бокам для меньших экранов, если .container их еще не имеет */
     padding: 0 15px; 
 
 }
@@ -178,7 +177,7 @@ ul {
     font-size: 16px;
     font-weight: 500;
     text-align: center;
-    letter-spacing: 0.1em; /* Небольшой трекинг, чтобы выглядело как на макете */
+    letter-spacing: 0.1em; 
     margin-bottom: 20px;
     text-transform: uppercase;
 }
@@ -354,7 +353,7 @@ ul {
 .collection-slider {
     display: flex;
     gap: 30px;
-    /* Убедимся, что слайдер начинается у края и продолжается за ним */
+
     padding: 0 15px; 
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
@@ -463,7 +462,7 @@ ul {
 
 .categories-section {
     padding: 80px 0;
-    /* Убедимся, что фон соответствует макету, если он отличается от body */
+
     background-color: #FBFCE6; 
 }
 
@@ -484,10 +483,6 @@ ul {
 
 /* Контейнер для центрирования всего блока крупных заголовков */
 .categories__content {
-    /* Используем Flexbox для центрирования контента в контейнере (не обязательно) */
-    /* display: flex; 
-    flex-direction: column;
-    align-items: center; */
     text-align: center; /* Центрируем заголовки по центру контейнера */
 }
 
@@ -496,11 +491,11 @@ ul {
     font-size: 79px; 
     font-weight: 700;
     line-height: 1.1;
-    margin: 0; /* Убираем лишние отступы, чтобы заголовки были ближе */
+    margin: 0; 
     color: #2C2C2C;
     text-transform: uppercase;
     max-width: 1000px;
-    /* Используем Flexbox для выравнивания текста и иконок */
+
     display: inline-flex; 
     align-items: center; /* Выравнивание иконок по вертикали */
     flex-wrap: wrap; /* Разрешаем перенос иконок на новую строку, если их много */
@@ -521,10 +516,8 @@ ul {
     
     margin: 0 10px; /* Отступ вокруг иконки */
     
-    /* Стиль желтой обводки, чтобы имитировать макет */
+
     border: 3px solid #F3E07F; 
-    /* Или используем фон #FAD152, как на макете, вместо обводки, если это один элемент */
-    /* background-color: #FAD152; */
 }
 
 .category__icon img {
@@ -616,7 +609,7 @@ ul {
 
 /* Для большой центральной карточки (item-3) */
 .news__item.item-3 .news__image-wrapper {
-    padding: 0; /* Убираем padding, чтобы картинка была больше */
+    padding: 0; 
     /* Добавляем больше вертикального пространства для центральной картинки */
     aspect-ratio: 1.3 / 1; 
 }
@@ -645,38 +638,6 @@ ul {
     margin: 0;
 }
 
-/* --- Адаптивность --- */
-
-@media (max-width: 768px) {
-    .news__title {
-        font-size: 36px;
-        margin-bottom: 30px;
-    }
-    
-    .news-grid {
-        /* На мобильных переключаемся на одну колонку */
-        grid-template-columns: 1fr; 
-        grid-template-rows: auto;
-        gap: 20px;
-    }
-
-    .news__item {
-        /* Все элементы теперь занимают одну колонку и одну строку */
-        grid-column: auto / auto !important; 
-        grid-row: auto / auto !important;
-    }
-    
-    .news__item .news__image-wrapper {
-        aspect-ratio: 16 / 9; /* Более стандартный прямоугольник для мобильных */
-        padding: 5px;
-    }
-    
-    .news__item.item-3 .news__image-wrapper {
-        aspect-ratio: 16 / 9;
-        padding: 5px;
-    }
-}
-
 /* --- Футер (Подвал) --- */
 
 .footer {
@@ -692,7 +653,7 @@ ul {
 }
 
 .footer__col {
-    /* Общие стили для колонок, используем flex-basis для контроля ширины, если нужно */
+
 }
 
 /* Стили для логотипа */
@@ -708,7 +669,7 @@ ul {
 
 /* Стили для списков ссылок (Каталог и Соцсети) */
 .footer__list {
-    /* Наследует ul, но может потребоваться переопределение margin */
+
     margin: 0;
     padding: 0;
 }
@@ -738,7 +699,7 @@ ul {
 .footer__divider {
     height: 1px;
     background-color: #D3D3D3; /* Серый цвет для разделителя */
-    max-width: 1000px; /* Ограничиваем ширину, как на макете */
+    max-width: 1000px; 
     margin: 0 auto 40px; 
 }
 

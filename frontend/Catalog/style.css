@@ -227,14 +227,13 @@ ul {
     font-weight: 500;
     text-transform: uppercase;
     border: 1px solid #2C2C2C;
-    background-color: transparent;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .category-btn--active {
-    background-color: #FBFCE6;
-    border-color: #FBFCE6;
+    background-color: #F3E07F;
+    border-color: #F3E07F;
 }
 
 /* Контейнер для фильтров справа */

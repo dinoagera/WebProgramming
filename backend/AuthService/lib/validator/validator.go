@@ -1,16 +1,17 @@
 package validator
 
 import (
+	liberror "authservice/lib/errors"
 	"errors"
 	"strings"
 )
 
 func ValidateEmail(email string) error {
 	if email == "" {
-		return errors.New("email is empty")
+		return liberror.ErrEmailEmpty
 	}
 	if !strings.Contains(email, "@") {
-		return errors.New("email is not allowed")
+		return liberror.ErrEmailNotAllowed
 	}
 	return nil
 }

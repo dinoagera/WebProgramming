@@ -24,6 +24,13 @@ func New(log *slog.Logger, client *redis.Client, cfg *config.Config) *Storage {
 		cfg:    cfg,
 	}
 }
+func (s *Storage) calculateTotal(cart *models.Cart) {
+	var totalSum float64
+	for _, item := range cart.Items {
+		totalSum += float64(item.Quantity) * item.Price
+	}
+	cart.Total = totalSum
+}
 func (s *Storage) saveCart(key string, cart models.Cart) error {
 	data, err := json.Marshal(cart)
 	if err != nil {
@@ -60,29 +67,40 @@ func (s *Storage) GetCart(key string) (models.Cart, error) {
 	}
 	return cart, nil
 }
+
 func (s *Storage) AddItem(key string, addItem models.AddItemRequest) error {
 	cart, err := s.GetCart(key)
 	if err != nil {
 		s.log.Info("failed to get cart", "err", err)
 		return err
 	}
+	quantity := addItem.Quantity
+	if quantity <= 0 {
+		quantity = 1
+	}
 	itemFound := false
 	for i, item := range cart.Items {
 		if item.ProductID == addItem.ProductID {
-			cart.Items[i].Quantity += addItem.Quantity
+			cart.Items[i].Quantity += quantity
 			cart.Items[i].Price = addItem.Price
-			cart.Items[i].Name = addItem.Name
+			cart.Items[i].Category = addItem.Category
 			itemFound = true
 			break
 		}
 	}
 	if !itemFound {
-		item := models.CartItem(addItem)
+		item := models.CartItem{
+			ProductID: addItem.ProductID,
+			Quantity:  quantity,
+			Price:     addItem.Price,
+			Category:  addItem.Category,
+		}
 		cart.Items = append(cart.Items, item)
 	}
+	s.calculateTotal(&cart)
 	return s.saveCart(key, cart)
 }
-func (s *Storage) RemoveItem(key string, removeItem models.CartItem) error {
+func (s *Storage) RemoveItem(key string, removeItem models.RemoveItemRequest) error {
 	cart, err := s.GetCart(key)
 	if err != nil {
 		s.log.Info("failed to get cart", "err", err)
@@ -100,6 +118,7 @@ func (s *Storage) RemoveItem(key string, removeItem models.CartItem) error {
 		s.log.Info("needed item not founded")
 		return lib.ErrItemIsNotFounded
 	}
+	s.calculateTotal(&cart)
 	return s.saveCart(key, cart)
 }
 func (s *Storage) UpdateItem(key string, updateItem models.UpdateItemRequest) error {
@@ -116,6 +135,8 @@ func (s *Storage) UpdateItem(key string, updateItem models.UpdateItemRequest) er
 					cart.Items[i].Quantity--
 				} else {
 					cart.Items = append(cart.Items[:i], cart.Items[i+1:]...)
+					itemFound = true
+					break
 				}
 			} else {
 				cart.Items[i].Quantity++
@@ -128,6 +149,7 @@ func (s *Storage) UpdateItem(key string, updateItem models.UpdateItemRequest) er
 		s.log.Info("needed item not founded")
 		return lib.ErrItemIsNotFounded
 	}
+	s.calculateTotal(&cart)
 	return s.saveCart(key, cart)
 }
 func (s *Storage) ClearCart(key string) error {
@@ -137,4 +159,12 @@ func (s *Storage) ClearCart(key string) error {
 		return err
 	}
 	return nil
+}
+func (s *Storage) GetTotalPrice(userID string) (float64, error) {
+	cart, err := s.GetCart(userID)
+	if err != nil {
+		s.log.Info("failed to get cart", "err", err)
+		return 0.0, err
+	}
+	return cart.Total, nil
 }

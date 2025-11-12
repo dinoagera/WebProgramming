@@ -9,11 +9,14 @@ type AddItem interface {
 	AddItem(key string, addItem models.AddItemRequest) error
 }
 type RemoveItem interface {
-	RemoveItem(key string, removeItem models.CartItem) error
+	RemoveItem(key string, removeItem models.RemoveItemRequest) error
 }
 type UpdateItem interface {
 	UpdateItem(key string, updateItem models.UpdateItemRequest) error
 }
 type ClearCart interface {
 	ClearCart(key string) error
+}
+type GetTotalPrice interface {
+	GetTotalPrice(userID string) (float64, error)
 }

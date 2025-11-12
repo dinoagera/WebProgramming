@@ -2,17 +2,12 @@ package handler
 
 import (
 	service "authservice/internal/service/interfaces"
+	liberror "authservice/lib/errors"
 	"authservice/lib/validator"
 	"encoding/json"
 	"errors"
 	"log/slog"
 	"net/http"
-)
-
-var (
-	ErrEmailEmpty      = errors.New("email is empty")
-	ErrEmailNotAllowed = errors.New("email is not allowed")
-	ErrEmailBusy       = errors.New("email is busy")
 )
 
 type Handler struct {
@@ -59,18 +54,23 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	}
 	err := validator.ValidateEmail(req.Email)
 	switch {
-	case errors.Is(err, ErrEmailEmpty):
+	case errors.Is(err, liberror.ErrEmailEmpty):
 		h.log.Info("failed to register", "err", err)
 		http.Error(w, "email is empty", http.StatusBadRequest)
 		return
-	case errors.Is(err, ErrEmailNotAllowed):
+	case errors.Is(err, liberror.ErrEmailNotAllowed):
 		h.log.Info("failed to register", "err", err)
 		http.Error(w, "email is not allowed", http.StatusBadRequest)
 		return
 	}
+	err = validator.ValidatePassword(req.Password)
+	if err != nil {
+		http.Error(w, "Password less 6 symbol", http.StatusBadRequest)
+		return
+	}
 	err = h.register.Register(req.Email, req.Password)
 	if err != nil {
-		if errors.Is(err, ErrEmailBusy) {
+		if errors.Is(err, liberror.ErrEmailBusy) {
 			h.log.Info("failed to register", "err", err)
 			http.Error(w, "email is busy", http.StatusBadRequest)
 			return
@@ -90,10 +90,8 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param input body RegisterFormat true "account info"
-// @Success 201 {object} map[string]string
+// @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
-// @Failure 409 {object} map[string]string
-// @Failure 500 {object} map[string]string
 // @Router /login [post]
 func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -106,7 +104,18 @@ func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	err := validator.ValidatePassword(req.Password)
+	err := validator.ValidateEmail(req.Email)
+	switch {
+	case errors.Is(err, liberror.ErrEmailEmpty):
+		h.log.Info("failed to register", "err", err)
+		http.Error(w, "email is empty", http.StatusBadRequest)
+		return
+	case errors.Is(err, liberror.ErrEmailNotAllowed):
+		h.log.Info("failed to register", "err", err)
+		http.Error(w, "email is not allowed", http.StatusBadRequest)
+		return
+	}
+	err = validator.ValidatePassword(req.Password)
 	if err != nil {
 		http.Error(w, "Password less 6 symbol", http.StatusBadRequest)
 		return
@@ -117,6 +126,7 @@ func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to login", http.StatusInternalServerError)
 		return
 	}
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"token": token,
 	})

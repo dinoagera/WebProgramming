@@ -9,14 +9,16 @@ type CartItem struct {
 	ProductID string  `json:"product_id"`
 	Quantity  int     `json:"quantity"`
 	Price     float64 `json:"price"`
-	Name      string  `json:"name"`
+	Category  string  `json:"category"`
 }
-
+type RemoveItemRequest struct {
+	ProductID string `json:"product_id"`
+}
 type AddItemRequest struct {
 	ProductID string  `json:"product_id"`
 	Quantity  int     `json:"quantity"`
 	Price     float64 `json:"price"`
-	Name      string  `json:"name"`
+	Category  string  `json:"category"`
 }
 type UpdateItemRequest struct {
 	ProductID     string `json:"product_id"`
