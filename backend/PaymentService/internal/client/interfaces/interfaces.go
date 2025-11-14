@@ -1,5 +1,6 @@
 package client
 
 type PaymentService interface {
-	Purchase(userID string) (float64, error)
+	GetTotalPrice(userID string) (float64, error)
+	ClearCart(userID string) error
 }

@@ -17,7 +17,12 @@ func New(log *slog.Logger, purchase client.PaymentService) *Service {
 	}
 }
 func (s *Service) Purchase(userID string) (float64, error) {
-	price, err := s.purchase.Purchase(userID)
+	price, err := s.purchase.GetTotalPrice(userID)
+	if err != nil {
+		s.log.Info("failed to purchase", "err", err)
+		return 0.0, err
+	}
+	err = s.purchase.ClearCart(userID)
 	if err != nil {
 		s.log.Info("failed to purchase", "err", err)
 		return 0.0, err

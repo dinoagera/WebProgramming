@@ -88,3 +88,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  api_payment:
+    build:
+      context: ./PaymentService
+      dockerfile: Dockerfile
+    environment:
+      CART_SERVICE_URL: "http://api_cart:8080"
+    ports:
+      - "8084:8080"
