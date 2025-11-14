@@ -5,6 +5,7 @@ import (
 	"apigateway/internal/config"
 	"apigateway/internal/handler"
 	"apigateway/internal/middleware/auth"
+	"apigateway/internal/middleware/cors"
 	"apigateway/internal/service"
 	"log/slog"
 	"net/http"
@@ -55,6 +56,7 @@ func (api *API) setupRouter() {
 	api.router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 	// API routes
 	apiRouter := api.router.PathPrefix("/api").Subrouter()
+	apiRouter.Use(cors.New())
 	// Public routes
 	public := apiRouter.PathPrefix("").Subrouter()
 	public.HandleFunc("/getcatalog", api.handler.GetCatalog).Methods(http.MethodGet)
@@ -70,7 +72,7 @@ func (api *API) setupRouter() {
 	protected.HandleFunc("/additem", api.handler.AddItem).Methods(http.MethodPost)
 	protected.HandleFunc("/removeitem", api.handler.RemoveItem).Methods(http.MethodPost)
 	protected.HandleFunc("/updateitem", api.handler.UpdateItem).Methods(http.MethodPost)
-	protected.HandleFunc("/clearcart", api.handler.ClearCart).Methods(http.MethodGet)
+	protected.HandleFunc("/clearcart", api.handler.ClearCart).Methods(http.MethodDelete)
 	protected.HandleFunc("/getfavourites", api.handler.GetFavourites).Methods(http.MethodGet)
 	protected.HandleFunc("/addfavourite", api.handler.AddFavourite).Methods(http.MethodPost)
 	protected.HandleFunc("/removefavourite", api.handler.RemoveFavourite).Methods(http.MethodPost)

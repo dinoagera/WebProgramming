@@ -406,7 +406,7 @@ func (h *Handler) UpdateItem(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /clearcart [get]
+// @Router /clearcart [delete]
 func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.GetUserIDFromContext(r.Context())
 	if !ok {

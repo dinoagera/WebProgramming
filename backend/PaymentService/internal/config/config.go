@@ -11,7 +11,6 @@ import (
 type Config struct {
 	Address     string        `env:"SERVER_ADDRESS"`
 	ReadTimeout time.Duration `env:"HTTPReadTimeout" env-default:"5s"`
-	BaseURL     string        `env:"CartAddress"`
 	IdleTimeout time.Duration `env:"HTTPidleTimeout" env-default:"60s"`
 }
 

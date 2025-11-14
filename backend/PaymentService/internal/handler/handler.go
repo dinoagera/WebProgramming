@@ -37,7 +37,9 @@ func (h *Handler) Purchase(w http.ResponseWriter, r *http.Request) {
 	}
 	price, err := h.purchase.Purchase(userID)
 	if err != nil {
-
+		h.log.Error("purchase failed", "err", err)
+		http.Error(w, "purchase failed", http.StatusInternalServerError)
+		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -45,5 +47,3 @@ func (h *Handler) Purchase(w http.ResponseWriter, r *http.Request) {
 		"message": fmt.Sprintf("purchase is compeleted, total price:%f", price),
 	})
 }
-
-// func (h *Handler) AcceptPurchase()

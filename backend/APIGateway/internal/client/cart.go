@@ -160,7 +160,7 @@ func (c *CartClient) UpdateItem(userID string, productID string, typeOperation i
 }
 func (c *CartClient) ClearCart(userID string) error {
 	url := fmt.Sprintf("%s/api/clearcart", c.baseURL)
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
 	}
