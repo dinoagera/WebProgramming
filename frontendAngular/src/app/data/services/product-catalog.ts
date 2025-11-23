@@ -7,7 +7,7 @@ import { inject, Injectable } from '@angular/core';
 export class ProductCatalog {
   http = inject(HttpClient)
 
-  baseURL = 'https://icherniakov.ru/yt-course/account/test_accounts'
+  baseURL = 'http://localhost:8080/'
 
   getCatalog() {
     return this.http.get(`${this.baseURL}api/getcatalog`)
