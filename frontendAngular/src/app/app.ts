@@ -4,13 +4,12 @@ import { CatalogProduct } from './common-ui/catalog-product/catalog-product';
 import { Navbar } from './common-ui/navbar/navbar';
 import { SecondNavbar } from './common-ui/second-navbar/second-navbar';
 import { ProductCatalog } from './data/services/product-catalog';
-import { JsonPipe } from '@angular/common';
-
-
+import { JsonPipe } from '@angular/common'; //для теста JSON
+import { Product } from './data/interfaces/profile.interfaces';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,CatalogProduct, Navbar, SecondNavbar,JsonPipe],
+  imports: [RouterOutlet,CatalogProduct, Navbar, SecondNavbar,],
 
   templateUrl: './app.html', //отсюда берется html
   styleUrl: './app.scss', //отсюда берутся стили
@@ -19,12 +18,12 @@ export class App {
   protected readonly title = signal('frontendAngular');
 
   ProductCatalog = inject(ProductCatalog)
-  profiles: any = []
+  products: Product[] = []
 
   constructor() { 
     this.ProductCatalog.getCatalog()
       .subscribe(val => {
-        this.profiles = val; 
+        this.products = val; 
     })
 }
 

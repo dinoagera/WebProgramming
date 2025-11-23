@@ -1,8 +1,7 @@
-
 <app-navbar> </app-navbar>
+@for (product of products; track product.product_id){
 
-<app-catalog-product></app-catalog-product>
-
- <pre> 
-  {{profiles | json }}
- </pre>
+    <app-catalog-product>
+        [product] ="product"
+    </app-catalog-product>
+}
