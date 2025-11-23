@@ -6,14 +6,16 @@
 
 
 
-/* Карточка товара */
 .product-card {
-    background-color: #FBFCE6;
-    border-radius: 20px;
-    padding: 15px;
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.2s;
+  background-color: #FBFCE6;
+  border-radius: 20px;
+  padding: 15px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  display: block; 
 }
 
 .product-card:hover {
@@ -76,4 +78,19 @@ categories-filter .container {
     align-items: center;
     padding-top: 20px; 
     padding-bottom: 20px;
+}
+
+/* Опционально: на мобильных одна колонка, на планшетах 2–3, на десктопе больше */
+@media (max-width: 640px) {
+  .product_grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .product_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

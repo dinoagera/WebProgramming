@@ -4,7 +4,7 @@ import { CatalogProduct } from './common-ui/catalog-product/catalog-product';
 import { Navbar } from './common-ui/navbar/navbar';
 import { SecondNavbar } from './common-ui/second-navbar/second-navbar';
 import { ProductCatalog } from './data/services/product-catalog';
-import { JsonPipe } from '@angular/common'; //для теста JSON
+// import { JsonPipe } from '@angular/common'; //для теста JSON
 import { Product } from './data/interfaces/profile.interfaces';
 
 @Component({
