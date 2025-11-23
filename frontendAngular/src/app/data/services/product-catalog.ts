@@ -13,5 +13,6 @@ export class ProductCatalog {
   getCatalog() {
     return this.http.get<Product[]>(`${this.baseURL}api/getcatalog`)
     //return this.http.get<Product[]>(`https://icherniakov.ru/yt-course/account/test_accounts`)
+    //вот это раскомить, а то закомить
   }
 }
