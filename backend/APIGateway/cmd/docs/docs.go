@@ -147,7 +147,7 @@ const docTemplate = `{
             }
         },
         "/clearcart": {
-            "get": {
+            "delete": {
                 "security": [
                     {
                         "BearerAuth": []
@@ -213,7 +213,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Cart"
+                            "$ref": "#/definitions/models.CartResponse"
                         }
                     },
                     "401": {
@@ -254,10 +254,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/models.Good"
-                                }
+                                "$ref": "#/definitions/models.CatalogResponse"
                             }
                         }
                     },
@@ -295,10 +292,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/models.Favourites"
-                                }
+                                "$ref": "#/definitions/models.FavouritesResponse"
                             }
                         }
                     },
@@ -711,6 +705,31 @@ const docTemplate = `{
                 }
             }
         },
+        "models.CartResponse": {
+            "type": "object",
+            "properties": {
+                "cart": {
+                    "$ref": "#/definitions/models.Cart"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CatalogResponse": {
+            "type": "object",
+            "properties": {
+                "catalog": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Good"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Favourites": {
             "type": "object",
             "properties": {
@@ -739,6 +758,20 @@ const docTemplate = `{
                     }
                 },
                 "tag": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.FavouritesResponse": {
+            "type": "object",
+            "properties": {
+                "favourites": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Favourites"
+                    }
+                },
+                "status": {
                     "type": "string"
                 }
             }

@@ -11,10 +11,6 @@ import (
 	"time"
 )
 
-type CartResponse struct {
-	Status string      `json:"status"`
-	Cart   models.Cart `json:"cart"`
-}
 type CartClient struct {
 	baseURL    string
 	httpClient *http.Client
@@ -52,7 +48,7 @@ func (c *CartClient) GetCart(userID string) (models.Cart, error) {
 	}
 	switch resp.StatusCode {
 	case http.StatusOK:
-		var cart CartResponse
+		var cart models.CartResponse
 		if err := json.Unmarshal(body, &cart); err != nil {
 			return models.Cart{}, err
 		}

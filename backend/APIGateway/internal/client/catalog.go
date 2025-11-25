@@ -11,10 +11,6 @@ import (
 	"time"
 )
 
-type CatalogResponse struct {
-	Status  string        `json:"status"`
-	Catalog []models.Good `json:"catalog"`
-}
 type FavouritesResponse struct {
 	Status     string              `json:"status"`
 	Favourites []models.Favourites `json:"favourites"`
@@ -55,7 +51,7 @@ func (c *CatalogClient) GetCatalog() ([]models.Good, error) {
 	}
 	switch resp.StatusCode {
 	case http.StatusOK:
-		var catalogResp CatalogResponse
+		var catalogResp models.CatalogResponse
 		if err := json.Unmarshal(body, &catalogResp); err != nil {
 			return nil, err
 		}
@@ -87,16 +83,14 @@ func (c *CatalogClient) GetImage(productID string) ([]byte, error) {
 	switch resp.StatusCode {
 	case http.StatusOK:
 		contentType := resp.Header.Get("Content-Type")
-		if contentType != "image/jpeg" {
-			return nil, fmt.Errorf("unexpected content type: %s", contentType)
+		if contentType != "image/jpeg" && contentType != "image/png" {
+			return nil, fmt.Errorf("unsupported content type: %s", contentType)
 		}
 		imageData, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return nil, fmt.Errorf("failed to read image data: %w", err)
 		}
-
 		return imageData, nil
-
 	case http.StatusBadRequest:
 		return nil, fmt.Errorf("product ID is required")
 
