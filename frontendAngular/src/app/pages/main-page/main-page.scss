@@ -1,0 +1,543 @@
+
+.hero-section {
+    padding: 25px 0; /* Отступы сверху и снизу */
+    background-color: #F3E07F ;
+}
+
+.hero__container {
+    display: flex; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px; /* Расстояние между колонками */
+    align-items: center; /* Выравнивание элементов по вертикали по центру */
+    max-width: 1400px; /* Максимальная ширина, можно настроить */
+    max-height: 1900px;
+    margin: auto; /* Центрирование контейнера */
+    padding: 0 15px; 
+
+}
+
+
+.hero__content {
+    /* Чтобы текст и кнопка не прижимались к краям на маленьких экранах */
+    padding-right: 40px; 
+}
+
+.hero__title {
+    font-size: 40px;
+
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.hero__image-small img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 30%;
+    height: auto;
+    border-radius: 30px; /* Закругление углов для маленького изображения */
+    background-color: #FBFCE6;
+}
+
+.hero__text {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    max-width: 600px; /* Ограничиваем ширину текста */
+}
+.hero__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 600px; 
+    height: 50px; 
+    background-color: #FBFCE6; 
+    color: #2C2C2C;
+
+    border-radius: 30px; 
+    text-transform: uppercase;
+    transition: opacity 0.3s;
+}
+
+.hero__image-large img {
+    max-width: 92%;
+    height: auto;
+    display: block; /* Убираем лишний пробел под изображением */
+    border-radius: 30px; /* Закругление углов */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Небольшая тень для эффекта */
+}
+
+/* --- Секция "Наша философия" --- */
+
+.philosophy-section {
+    padding: 60px 0; /* Отступы сверху и снизу */
+}
+
+/* Стили для подзаголовка */
+.philosophy__subtitle {
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.1em; 
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Стили для цитаты */
+.philosophy__quote {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    max-width: 1200px; /* Ограничиваем ширину цитаты */
+    margin: 0 auto 10px; /* Центрируем и добавляем нижний отступ */
+}
+
+/* Стили для дополнительного текста */
+.philosophy__details {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Две колонки */
+    gap: 20px;
+    max-width: 900px; /* Ограничиваем ширину текстового блока */
+    margin: 0 auto 10px; /* Центрируем и добавляем отступ */
+}
+
+.philosophy__text-column p {
+    font-size: 13px;
+    line-height: 1.6;
+
+}
+
+/* На макете виден только текст в правой колонке. 
+   Мы используем пустую левую колонку для отступа. */
+.philosophy__details .philosophy__text-column:first-child {
+    /* Левая колонка остается пустой, чтобы текст был справа */
+}
+
+
+/* Стили для изображения */
+.philosophy__image-wrapper {
+    max-width: 1000px; /* Задаем максимальную ширину изображения */
+    margin: 0 auto; /* Центрируем */
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.philosophy__image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* --- Секция "Почему нас выбирают?" --- */
+
+.advantages-section {
+    padding: 80px 0;
+}
+
+.advantages__title {
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.advantages__quote {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    color: #2C2C2C;
+}
+
+/* --- Сетка галереи --- */
+
+.advantages__gallery {
+    display: grid;
+    /* Создаем сетку из 4 колонок (или 3, чтобы центральный блок был шире) */
+    grid-template-columns: repeat(4, 1fr); 
+    grid-template-rows: auto auto; /* Две строки */
+    gap: 15px;
+    max-width: 1000px; /* Ограничиваем общую ширину галереи */
+    margin: 0 auto 40px;
+}
+
+/* Общий стиль для элементов галереи */
+.gallery__item {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.gallery__item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Позиционирование элементов в сетке: */
+
+/* Центральное, большое фото (item-3) */
+.gallery__item.item-3 {
+    /* Растягиваем на 2 колонки и 2 строки */
+    grid-column: 2 / span 2; 
+    grid-row: 1 / span 2;
+    border-radius: 30px;
+}
+
+/* Верхний левый (item-1) */
+.gallery__item.item-1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    /* Для квадратного вида */
+    border-radius: 30px;
+}
+
+/* Верхний правый (item-2) */
+.gallery__item.item-2 {
+    grid-column: 4 / 5;
+    grid-row: 1 / 2;
+    /* Для квадратного вида */
+    border-radius: 30px;
+}
+
+/* Нижний левый (item-4) */
+.gallery__item.item-4 {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    /* Для квадратного вида */
+    border-radius: 30px;
+}
+
+/* Нижний правый (item-5) */
+.gallery__item.item-5 {
+    grid-column: 4 / 5;
+    grid-row: 2 / 3;
+    /* Для квадратного вида */
+    border-radius: 30px;
+}
+
+/* Стиль для текста под галереей */
+.advantages__text-bottom {
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+/* --- Секция "Новая коллекция / Слайдер" --- */
+
+.new-collection-section {
+    padding: 80px 0 60px;
+    background-color: #F3E07F;
+}
+
+.new-collection__title {
+    font-size: 50px;
+    font-weight: 600;
+    line-height: 1.1;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    color: #2C2C2C;
+    text-transform: uppercase;
+}
+
+/* --- Слайдер / Горизонтальная прокрутка --- */
+
+.collection-slider {
+    display: flex;
+    gap: 30px;
+
+    padding: 0 15px; 
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 30px;
+    scrollbar-width: none;
+}
+
+.collection-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.slider__item {
+    flex-shrink: 0;
+    /* Базовая ширина */
+    width: 250px; 
+    text-align: left; /* Текст слева */
+}
+
+/* 1. Стили для карточек разного размера */
+
+.slider__card-wrapper {
+    background-color: #FBFCE6;
+    border-radius: 40px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    padding: 15px; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Квадратная карточка (СЛАДКОЕЖКА, КЛАССИКА, ЭЛЕГАНТНОСТЬ) */
+.slider__item--square .slider__card-wrapper {
+    aspect-ratio: 1 / 1;
+}
+
+/* Высокая/прямоугольная карточка (ЦВЕТОЧНОЕ, ЗЕФИР, РАДОСТЬ) */
+.slider__item--tall .slider__card-wrapper {
+    /* Создаем прямоугольник, чтобы он был выше */
+    aspect-ratio: 3 / 4; 
+}
+
+
+.slider__card-wrapper img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; 
+}
+
+/* 2. Расположение текста сбоку справа */
+.slider__text {
+    /* Чтобы название и категория были в две строки */
+    display: block; 
+    padding-left: 15px; /* Небольшой отступ слева, чтобы текст не прилипал */
+}
+
+.slider__name {
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.slider__category {
+    font-size: 14px;
+    color: #2C2C2C;
+    opacity: 0.7;
+    margin: 0;
+}
+
+/* 3. Центрирование стрелок управления */
+
+.collection-slider__controls-wrapper {
+    /* Обертка использует .container для ограничения ширины */
+    /* Просто, чтобы стрелки были в контейнере, но сам .collection-slider не был */
+}
+
+.collection-slider__controls {
+    /* Контейнер для стрелок */
+    display: flex;
+    justify-content: center; /* ЦЕНТРИРОВАНИЕ по горизонтали */
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.slider__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 30px;
+    border: 1px solid #2C2C2C;
+    border-radius: 35%;
+    font-size: 20px;
+    color: #2C2C2C;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.slider__arrow:hover {
+    background-color: #2C2C2C;
+    color: #ffffff;
+}
+
+/* --- Секция "Категории" --- */
+
+.categories-section {
+    padding: 80px 0;
+
+    background-color: #FBFCE6; 
+}
+
+.categories__container {
+    /* Ограничиваем общую ширину контента */
+    max-width: 1920px; 
+}
+
+.categories__subtitle {
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    color: #2C2C2C;
+}
+
+/* Контейнер для центрирования всего блока крупных заголовков */
+.categories__content {
+    text-align: center; /* Центрируем заголовки по центру контейнера */
+}
+
+.category__title {
+    /* Очень большой шрифт, как на макете */
+    font-size: 79px; 
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0; 
+    color: #2C2C2C;
+    text-transform: uppercase;
+    max-width: 1000px;
+
+    display: inline-flex; 
+    align-items: center; /* Выравнивание иконок по вертикали */
+    flex-wrap: wrap; /* Разрешаем перенос иконок на новую строку, если их много */
+    justify-content: center; /* Центрируем элементы внутри h2 */
+}
+
+/* Стили для иконок внутри заголовков */
+.category__icon {
+    /* Контейнер для белого фона и закругления вокруг иконки */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 60px; /* Размер контейнера иконки */
+    height: 60px;
+    background-color: #F3E07F; /* Белый фон */
+    border-radius: 30%; /* Круглая форма */
+    
+    margin: 0 10px; /* Отступ вокруг иконки */
+    
+
+    border: 3px solid #F3E07F; 
+}
+
+.category__icon img {
+    width: 90%; /* Размер самой иконки внутри круга */
+    height: 80%;
+    object-fit: contain;
+}
+
+/* --- Секция "Последние новости" --- */
+
+.news-section {
+    padding: 60px 0 100px;
+    background-color: #FBFCE6; /* Светло-желтый фон */
+}
+
+.news__title {
+    font-size: 50px;
+    font-weight: 900;
+    line-height: 1.1;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    color: #2C2C2C;
+    text-transform: uppercase;
+}
+
+/* --- Сетка новостей (News Grid) --- */
+
+.news-grid {
+    display: grid;
+    /* Создаем 3 колонки */
+    grid-template-columns: 1fr 1.5fr 1fr; 
+    /* Создаем 2 строки */
+    grid-template-rows: auto auto; 
+    gap: 30px;
+    max-width: 1200px; /* Ограничиваем общую ширину сетки */
+    margin: 0 auto;
+}
+
+.news__item {
+    /* Общие стили для карточки-ссылки */
+    display: flex;
+    flex-direction: column;
+    color: #2C2C2C;
+    text-decoration: none;
+}
+
+/* Расположение элементов в сетке: */
+
+/* Центральная, большая новость (item-3) */
+.news__item.item-3 {
+    grid-column: 2 / 3; 
+    grid-row: 1 / span 2; /* Растягиваем на 2 строки */
+}
+
+/* Верхний левый (item-1) */
+.news__item.item-1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+
+/* Нижний левый (item-2) */
+.news__item.item-2 {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+/* Верхний правый (item-4) */
+.news__item.item-4 {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+}
+
+/* Нижний правый (item-5) */
+.news__item.item-5 {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+}
+
+
+/* Стиль обертки изображения (белый фон и закругление) */
+.news__image-wrapper {
+    background-color: #ffffff; 
+    border-radius: 10px; 
+    overflow: hidden;
+    margin-bottom: 15px;
+    padding: 5px; /* Небольшой отступ внутри белого блока */
+}
+
+/* Для большой центральной карточки (item-3) */
+.news__item.item-3 .news__image-wrapper {
+    padding: 0; 
+    /* Добавляем больше вертикального пространства для центральной картинки */
+    aspect-ratio: 1.3 / 1; 
+}
+
+.news__image-wrapper img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Стиль текста */
+.news__date {
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.7;
+    margin: 0 0 5px;
+}
+
+.news__text {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-transform: uppercase;
+    margin: 0;
+}
