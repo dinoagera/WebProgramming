@@ -1,12 +1,10 @@
-<app-navbar> </app-navbar>
-<div class="product_grid">
-    @for (product of products; track product.product_id){
-        <app-catalog-product>
-            [product] ="product"
-        </app-catalog-product>
-    }
-</div>
 <router-outlet></router-outlet>
+
+
+
+
+
+
 
 <!-- <pre>
     {{products | json}}

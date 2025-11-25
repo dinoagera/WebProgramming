@@ -15,17 +15,5 @@ import { Product } from './data/interfaces/profile.interfaces';
   styleUrl: './app.scss', //отсюда берутся стили
 })
 export class App {
-  protected readonly title = signal('frontendAngular');
-
-  ProductCatalog = inject(ProductCatalog)
-  products: Product[] = []
-
-  constructor() { 
-    this.ProductCatalog.getCatalog()
-      .subscribe(val => {
-        this.products = val; 
-    })
-}
-
 
 }
