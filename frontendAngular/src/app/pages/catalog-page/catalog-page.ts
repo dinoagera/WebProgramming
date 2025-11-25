@@ -2,13 +2,14 @@ import { Component, inject, signal } from '@angular/core';
 import { ProductCatalog } from '../../data/services/product-catalog';
 import { Product } from '../../data/interfaces/profile.interfaces';
 import { Navbar } from '../../common-ui/navbar/navbar';
+import { CatalogProduct } from '../../common-ui/catalog-product/catalog-product';
 
 
 
 
 @Component({
   selector: 'app-catalog-page',
-  imports: [Navbar],
+  imports: [Navbar, CatalogProduct],
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.scss',
 })
