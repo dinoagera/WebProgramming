@@ -55,3 +55,15 @@ type AddFavouriteRequest struct {
 type RemoveFavouriteRequest struct {
 	ProductID string `json:"product_id"`
 }
+type CartResponse struct {
+	Status string `json:"status"`
+	Cart   Cart   `json:"cart"`
+}
+type CatalogResponse struct {
+	Status  string `json:"status"`
+	Catalog []Good `json:"catalog"`
+}
+type FavouritesResponse struct {
+	Status     string       `json:"status"`
+	Favourites []Favourites `json:"favourites"`
+}

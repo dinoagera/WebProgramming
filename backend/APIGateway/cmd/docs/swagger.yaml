@@ -45,6 +45,22 @@ definitions:
       quantity:
         type: integer
     type: object
+  models.CartResponse:
+    properties:
+      cart:
+        $ref: '#/definitions/models.Cart'
+      status:
+        type: string
+    type: object
+  models.CatalogResponse:
+    properties:
+      catalog:
+        items:
+          $ref: '#/definitions/models.Good'
+        type: array
+      status:
+        type: string
+    type: object
   models.Favourites:
     properties:
       category:
@@ -64,6 +80,15 @@ definitions:
           type: integer
         type: array
       tag:
+        type: string
+    type: object
+  models.FavouritesResponse:
+    properties:
+      favourites:
+        items:
+          $ref: '#/definitions/models.Favourites'
+        type: array
+      status:
         type: string
     type: object
   models.Good:
@@ -196,7 +221,7 @@ paths:
       tags:
       - cart
   /clearcart:
-    get:
+    delete:
       description: Clear cart by user id from JWT token
       operationId: clear-cart
       produces:
@@ -235,7 +260,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Cart'
+            $ref: '#/definitions/models.CartResponse'
         "401":
           description: Unauthorized
           schema:
@@ -264,9 +289,7 @@ paths:
           description: OK
           schema:
             items:
-              items:
-                $ref: '#/definitions/models.Good'
-              type: array
+              $ref: '#/definitions/models.CatalogResponse'
             type: array
         "400":
           description: Bad Request
@@ -288,9 +311,7 @@ paths:
           description: OK
           schema:
             items:
-              items:
-                $ref: '#/definitions/models.Favourites'
-              type: array
+              $ref: '#/definitions/models.FavouritesResponse'
             type: array
         "400":
           description: Bad Request

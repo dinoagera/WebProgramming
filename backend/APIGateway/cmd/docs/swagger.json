@@ -141,7 +141,7 @@
             }
         },
         "/clearcart": {
-            "get": {
+            "delete": {
                 "security": [
                     {
                         "BearerAuth": []
@@ -207,7 +207,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Cart"
+                            "$ref": "#/definitions/models.CartResponse"
                         }
                     },
                     "401": {
@@ -248,10 +248,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/models.Good"
-                                }
+                                "$ref": "#/definitions/models.CatalogResponse"
                             }
                         }
                     },
@@ -289,10 +286,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/models.Favourites"
-                                }
+                                "$ref": "#/definitions/models.FavouritesResponse"
                             }
                         }
                     },
@@ -705,6 +699,31 @@
                 }
             }
         },
+        "models.CartResponse": {
+            "type": "object",
+            "properties": {
+                "cart": {
+                    "$ref": "#/definitions/models.Cart"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CatalogResponse": {
+            "type": "object",
+            "properties": {
+                "catalog": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Good"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Favourites": {
             "type": "object",
             "properties": {
@@ -733,6 +752,20 @@
                     }
                 },
                 "tag": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.FavouritesResponse": {
+            "type": "object",
+            "properties": {
+                "favourites": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Favourites"
+                    }
+                },
+                "status": {
                     "type": "string"
                 }
             }

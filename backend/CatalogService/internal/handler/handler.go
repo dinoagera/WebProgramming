@@ -74,7 +74,8 @@ func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "image/jpeg")
+	contentType := http.DetectContentType(imageData)
+	w.Header().Set("Content-Type", contentType)
 	w.Write(imageData)
 }
 func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {

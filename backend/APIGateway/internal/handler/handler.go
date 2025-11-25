@@ -12,6 +12,10 @@ import (
 	"strings"
 )
 
+type CatalogResponse struct {
+	Status  string        `json:"status"`
+	Catalog []models.Good `json:"catalog"`
+}
 type Handler struct {
 	log            *slog.Logger
 	catalogService service.CatalogService
@@ -89,7 +93,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 // @Description Return all goods in catalog
 // @ID get-all-catalog
 // @Produce json
-// @Success 200 {array} []models.Good
+// @Success 200 {array} models.CatalogResponse
 // @Failure 400 {object} map[string]string
 // @Router /getcatalog [get]
 func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
@@ -107,9 +111,9 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 	h.log.Info("get catalog is successfully")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":  "get catalog is successfully",
-		"catalog": goods,
+	json.NewEncoder(w).Encode(models.CatalogResponse{
+		Status:  "get catalog is successfully",
+		Catalog: goods,
 	})
 }
 
@@ -119,7 +123,7 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 // @ID get-favourites-goods
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {array} []models.Favourites
+// @Success 200 {array} models.FavouritesResponse
 // @Failure 400 {object} map[string]string
 // @Router /getfavourites [get]
 func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
@@ -129,7 +133,7 @@ func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unauthorization", http.StatusUnauthorized)
 		return
 	}
-	cart, err := h.catalogService.GetFavourites(userID)
+	favourites, err := h.catalogService.GetFavourites(userID)
 	if err != nil {
 		h.log.Info("failed to get favourites", "err", err)
 		http.Error(w, "failed to get favourites", http.StatusInternalServerError)
@@ -137,9 +141,9 @@ func (h *Handler) GetFavourites(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status": "get cart is successfully",
-		"cart":   cart,
+	json.NewEncoder(w).Encode(models.FavouritesResponse{
+		Status:     "get favourites is successfully",
+		Favourites: favourites,
 	})
 }
 
@@ -248,7 +252,8 @@ func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "image/jpeg")
+	contentType := http.DetectContentType(imageData)
+	w.Header().Set("Content-Type", contentType)
 	w.Write(imageData)
 }
 
@@ -258,7 +263,7 @@ func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 // @ID get-cart
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} models.Cart
+// @Success 200 {object} models.CartResponse
 // @Failure 401 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /getcart [get]
@@ -277,9 +282,9 @@ func (h *Handler) GetCart(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status": "get cart is successfully",
-		"cart":   cart,
+	json.NewEncoder(w).Encode(models.CartResponse{
+		Status: "get cart is successfully",
+		Cart:   cart,
 	})
 }
 
