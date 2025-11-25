@@ -11,7 +11,7 @@
   font-size: 14px;
   font-weight: 500;
   text-transform: uppercase;
-  border: 1px solid #2c2c2c; /* Черная рамка для неактивных */
+  border: 2px solid #fbfce6; /* Черная рамка для неактивных */
   background-color: transparent;
   cursor: pointer;
 }
@@ -51,7 +51,7 @@
 
 .header {
   padding: 5px 0;
-  background-color: #fbfce6;
+  background-color: #F3E07F;
   position: relative;
   z-index: 10;
 }

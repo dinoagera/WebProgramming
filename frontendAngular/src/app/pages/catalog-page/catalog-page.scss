@@ -15,7 +15,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* это главное! */
   gap: 24px;
-  padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -27,4 +26,38 @@
     gap: 16px;
     padding: 16px;
   }
+}
+
+
+.more-button-wrapper {
+  display: flex;
+  justify-content: center; /* Horizontal centering */
+  align-items: center;     /* Vertical centering if needed */
+  padding: 20px 0;         /* Fixed: top/bottom padding; adjust as needed */
+}
+
+.more-btn {
+  /* Your overrides for .btn */
+  width: 100%; 
+  max-width: 1400px; /* Matches grid width */
+  height: 10px; 
+  background-color: #FBFCE6; /* Yellow background */
+  color: #2C2C2C;
+  border-radius: 30px;
+  border: none;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 15px 20px; /* Fixed: proper padding shorthand */
+  text-align: center; /* Ensure text inside is centered */
+  display: flex;      /* Optional: Make the button itself flex for internal centering */
+  justify-content: center;
+  align-items: center;
+  text-decoration: none; /* Remove underline if it's an <a> */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Optional hover effect */
+  margin: 8px;
+}
+
+.more-btn:hover {
+  background-color: #f0f2d8; /* Lighter yellow on hover, optional */
 }
