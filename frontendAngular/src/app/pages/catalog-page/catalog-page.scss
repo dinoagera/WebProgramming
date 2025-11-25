@@ -10,3 +10,21 @@
   max-width: 1400px;      /* ограничиваем ширину на больших экранах */
   margin: 0 auto;         /* центрируем */
 }
+
+.product_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* это главное! */
+  gap: 24px;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Опционально — принудительно одна колонка на мобильных */
+@media (max-width: 640px) {
+  .product_grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+}

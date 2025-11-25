@@ -37,3 +37,10 @@
   width: 24px;
   height: 24px;
 }
+
+
+@media (min-width: 1200px) {
+  .header .container {
+    padding: 0 30px;  /* Динамика на маленьком экране */
+  }
+}
