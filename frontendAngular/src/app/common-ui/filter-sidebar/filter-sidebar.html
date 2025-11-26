@@ -1,0 +1,63 @@
+<div class="sidebar-overlay" *ngIf="isOpen" (click)="closeSidebar()"></div>
+
+<div class="sidebar-container" [class.open]="isOpen">
+    
+    <div class="sidebar-header">
+        <h2 class="title">ФИЛЬТРЫ</h2>
+        <button class="close-button" (click)="closeSidebar()">
+            <img src="path/to/close_icon.svg" alt="Закрыть" /> 
+            </button>
+    </div>
+    
+    <div class="sidebar-content">
+        
+        <h3>Категории:</h3>
+        <div class="filter-group tag-group">
+            <button class="filter-tag active">КРОКСЫ</button>
+            <button class="filter-tag">ШЛЕПАНЦЫ</button>
+            <button class="filter-tag">ДЖИБИТСЫ</button>
+        </div>
+
+        <h3>Пол:</h3>
+        <div class="filter-group tag-group">
+            <button class="filter-tag">ЖЕНСКИЕ</button>
+            <button class="filter-tag">МУЖСКИЕ</button>
+            <button class="filter-tag">ДЕТСКИЕ</button>
+            <button class="filter-tag active">УНИСЕКС</button>
+        </div>
+
+        <h3>Размер:</h3>
+        <div class="filter-group size-group">
+            <button class="size-btn">25</button>
+            <button class="size-btn">26</button>
+            <button class="size-btn active">46</button>
+        </div>
+        
+        <h3>Цена ₽:</h3>
+        <div class="price-range">
+            <p>1 500 - 4 000</p>
+            <div class="slider-placeholder"></div>
+        </div>
+        
+        <h3>Цвет:</h3>
+        <div class="filter-group color-group">
+            <span class="color-swatch red"></span>
+            <span class="color-swatch orange"></span>
+            <span class="color-swatch black active"></span>
+        </div>
+        
+        <h3>Признаки:</h3>
+        <div class="filter-group tag-group features-group">
+            <button class="filter-tag active">СО СКИДКОЙ</button>
+            <button class="filter-tag">НОВИНКА</button>
+            <button class="filter-tag">БЕСТСЕЛЛЕР</button>
+            <button class="filter-tag active">В НАЛИЧИИ</button>
+        </div>
+
+    </div>
+
+    <div class="sidebar-footer">
+        <button class="reset-button">СБРОСИТЬ</button>
+        <button class="apply-button">ПРИМЕНИТЬ</button>
+    </div>
+</div>

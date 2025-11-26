@@ -6,6 +6,7 @@ import { LoginPage } from './pages/login-page/login-page';
 import { MainPage } from './pages/main-page/main-page';
 import { ProductPage } from './pages/product-page/product-page';
 import { RegisterPage } from './pages/register-page/register-page';
+import { FilterSidebar } from './common-ui/filter-sidebar/filter-sidebar';
 
 
 export const routes: Routes = [
@@ -16,4 +17,5 @@ export const routes: Routes = [
     {path: 'register', component: RegisterPage},
     {path: 'main', component: MainPage},
     {path: 'product', component: ProductPage},
+    {path: 'filter', component: FilterSidebar},
 ];

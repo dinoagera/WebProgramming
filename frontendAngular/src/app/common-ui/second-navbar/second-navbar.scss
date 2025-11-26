@@ -1,7 +1,45 @@
-/* Стили для группы кнопок */
-.category-buttons {
+/* src/app/common-ui/second-navbar/second-navbar.scss */
+
+$yellow-bg: #f3e07f; /* Цвет фона вашего хедера */
+
+.header {
+  background-color: $yellow-bg;
+  padding: 10px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.header .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+
   display: flex;
-  gap: 10px; /* Расстояние между кнопками */
+
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.filter-sort-bar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 /* Стили для отдельных кнопок */
@@ -11,7 +49,7 @@
   font-size: 14px;
   font-weight: 500;
   text-transform: uppercase;
-  border: 2px solid #fbfce6; /* Черная рамка для неактивных */
+  border: 1px solid #2c2c2c; /* Черная рамка для неактивных */
   background-color: transparent;
   cursor: pointer;
 }
@@ -21,43 +59,17 @@
   border-color: #fbfce6; /* Желтая рамка */
 }
 
-/* Стили для группы фильтров и сортировки */
-.filter-sort-bar {
-  display: flex;
-  gap: 20px; /* Расстояние между ссылками "Фильтры" и "Сортировка" */
-  align-items: center;
-}
-
-.filter-sort-bar a {
-  /* Общий стиль для ссылок с иконками */
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 500;
-  opacity: 0.7;
-}
-
-.filter-sort-bar img {
-  width: 18px;
-  height: 18px;
-  margin-right: 5px;
-}
-
-.more-button-wrapper {
-  display: flex;
-  justify-content: center; /* Центрируем кнопку */
-  padding-top: 0 20px;
-}
-
-.header {
-  padding: 5px 0;
-  background-color: #F3E07F;
-  position: relative;
-  z-index: 10;
-}
+/* src/app/common-ui/second-navbar/second-navbar.scss */
 
 .header .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+
   display: flex;
+
   justify-content: space-between;
   align-items: center;
 }
+
+// ... остальной код (он корректен для данной задачи)

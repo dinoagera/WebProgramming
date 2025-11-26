@@ -1,21 +1,23 @@
 <header class="header">
-  <div class="container">
-    <div class="category-buttons">
-      <button class="category-btn">Женские</button>
-      <button class="category-btn">Мужские</button>
-      <button class="category-btn">Детские</button>
-      <button class="category-btn category-btn--active">Все</button>
+    <div class="container">
+        
+        <div class="category-buttons">
+            <button class="category-btn">Женские</button>
+            <button class="category-btn">Мужские</button>
+            <button class="category-btn">Детские</button>
+            <button class="category-btn category-btn--active">Все</button>
+        </div>
+        
+        <div class="filter-sort-bar">
+            <a href="#!" (click)="onFilterClick($event)">
+                <img src="icon-park_setting-config.svg" alt="Фильтры" />
+                Фильтры
+            </a>
+            <a href="#!">
+                <img src="ic_outline-sort.svg" alt="Сортировка" />
+                По популярности
+            </a>
+        </div>
+        
     </div>
-
-    <div class="filter-sort-bar">
-      <a href="#!">
-        <img src="icon-park_setting-config.svg" alt="Фильтры" />
-        Фильтры
-      </a>
-      <a href="#!">
-        <img src="ic_outline-sort.svg" alt="Сортировка" />
-        По популярности
-      </a>
-    </div>
-  </div>
 </header>

@@ -1,0 +1,162 @@
+// src/app/common-ui/filter-sidebar/filter-sidebar.scss
+
+$primary-bg: #fff;
+$yellow-bg: #fae69e;
+$dark-color: #333;
+$active-border: #333;
+
+// --- Оверлей (для затемнения фона) ---
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000; /* Должен быть ниже сайдбара, но выше основного контента */
+}
+
+// --- Контейнер Сайдбара ---
+.sidebar-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 380px; /* Ширина сайдбара */
+    height: 100%;
+    background-color: $primary-bg;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001; /* Должен быть самым высоким */
+    
+    // Начальное состояние: скрыто (за пределами экрана)
+    transform: translateX(100%); 
+    transition: transform 0.3s ease-out;
+    
+    display: flex;
+    flex-direction: column;
+    padding: 25px 20px;
+}
+
+// Состояние "открыто"
+.sidebar-container.open {
+    transform: translateX(0);
+}
+
+// --- Хедер ---
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    
+    .title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .close-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        font-size: 20px;
+    }
+}
+
+// --- Контент (Прокручиваемая часть) ---
+.sidebar-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 15px; /* Чтобы скрыть скроллбар немного */
+    
+    h3 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+}
+
+// --- Группы фильтров (Теги) ---
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.filter-tag, .size-btn {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: $primary-bg;
+    cursor: pointer;
+    font-size: 14px;
+    
+    &.active {
+        border-color: $active-border;
+        font-weight: 600;
+    }
+}
+
+.size-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// --- Цветовые образцы ---
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    
+    &.active {
+        border-color: $active-border;
+    }
+    
+    /* Заглушки для цветов */
+    &.red { background-color: #f00; }
+    &.yellow { background-color: #ff0; }
+    &.black { background-color: #000; }
+}
+
+.slider-placeholder {
+    height: 5px;
+    background-color: #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+// --- Футер с кнопками ---
+.sidebar-footer {
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+    
+    .reset-button, .apply-button {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    
+    .reset-button {
+        background: none;
+        border: 1px solid #ccc;
+    }
+    
+    .apply-button {
+        background-color: $yellow-bg;
+        border: none;
+        color: $dark-color;
+    }
+}

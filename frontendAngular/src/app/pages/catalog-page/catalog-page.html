@@ -1,5 +1,13 @@
 <app-navbar></app-navbar>
-<app-second-navbar></app-second-navbar>
+
+<app-second-navbar (openFilters)="openSidebar()"></app-second-navbar>
+
+<app-filter-sidebar 
+    [isOpen]="isSidebarOpen" 
+    (close)="closeSidebar()">
+</app-filter-sidebar>
+
+
 <div class="product_grid">
   @for (product of products; track product.product_id) {
   <app-catalog-product [product]="product"></app-catalog-product>
