@@ -14,6 +14,9 @@ import { JsonPipe } from '@angular/common';
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.scss',
 })
+
+
+
 export class CatalogPage {
   isSidebarOpen: boolean = false;
 

@@ -1,63 +1,215 @@
 <div class="sidebar-overlay" *ngIf="isOpen" (click)="closeSidebar()"></div>
 
 <div class="sidebar-container" [class.open]="isOpen">
-    
-    <div class="sidebar-header">
-        <h2 class="title">ФИЛЬТРЫ</h2>
-        <button class="close-button" (click)="closeSidebar()">
-            <img src="path/to/close_icon.svg" alt="Закрыть" /> 
-            </button>
-    </div>
-    
-    <div class="sidebar-content">
-        
-        <h3>Категории:</h3>
-        <div class="filter-group tag-group">
-            <button class="filter-tag active">КРОКСЫ</button>
-            <button class="filter-tag">ШЛЕПАНЦЫ</button>
-            <button class="filter-tag">ДЖИБИТСЫ</button>
-        </div>
+  <div class="sidebar-header">
+    <h2 class="title">ФИЛЬТРЫ</h2>
+    <button class="close-button" (click)="closeSidebar()">
+      <img src="" alt="Закрыть" />
+    </button>
+  </div>
 
-        <h3>Пол:</h3>
-        <div class="filter-group tag-group">
-            <button class="filter-tag">ЖЕНСКИЕ</button>
-            <button class="filter-tag">МУЖСКИЕ</button>
-            <button class="filter-tag">ДЕТСКИЕ</button>
-            <button class="filter-tag active">УНИСЕКС</button>
-        </div>
-
-        <h3>Размер:</h3>
-        <div class="filter-group size-group">
-            <button class="size-btn">25</button>
-            <button class="size-btn">26</button>
-            <button class="size-btn active">46</button>
-        </div>
-        
-        <h3>Цена ₽:</h3>
-        <div class="price-range">
-            <p>1 500 - 4 000</p>
-            <div class="slider-placeholder"></div>
-        </div>
-        
-        <h3>Цвет:</h3>
-        <div class="filter-group color-group">
-            <span class="color-swatch red"></span>
-            <span class="color-swatch orange"></span>
-            <span class="color-swatch black active"></span>
-        </div>
-        
-        <h3>Признаки:</h3>
-        <div class="filter-group tag-group features-group">
-            <button class="filter-tag active">СО СКИДКОЙ</button>
-            <button class="filter-tag">НОВИНКА</button>
-            <button class="filter-tag">БЕСТСЕЛЛЕР</button>
-            <button class="filter-tag active">В НАЛИЧИИ</button>
-        </div>
+  <div class="sidebar-content">
+    <h3>Категории:</h3>
+    <div class="filter-group tag-group">
+        <button
+        class="filter-tag"
+        (click)="toggleFilter('category', 'Кроксы')"
+        [class.active]="localFilters.category.includes('Кроксы')"
+      >
+        КРОКСЫ
+      </button>
+        <button
+        class="filter-tag"
+        (click)="toggleFilter('category', 'Шлепанцы')"
+        [class.active]="localFilters.category.includes('Шлепанцы')"
+      >
+        ШЛЕПАНЦЫ
+      </button>
+        <button
+        class="filter-tag"
+        (click)="toggleFilter('category', 'Джибитсы')"
+        [class.active]="localFilters.category.includes('Джибитсы')"
+      >
+        ДЖИБИТСЫ
+      </button>
 
     </div>
 
-    <div class="sidebar-footer">
-        <button class="reset-button">СБРОСИТЬ</button>
-        <button class="apply-button">ПРИМЕНИТЬ</button>
+    <h3>Пол:</h3>
+    <div class="filter-group tag-group">
+      <button
+        class="filter-tag"
+        (click)="toggleFilter('sex', 'unisex')"
+        [class.active]="localFilters.sex.includes('unisex')"
+      >
+        УНИСЕКС
+      </button>
+      <button
+        class="filter-tag"
+        (click)="toggleFilter('sex', 'female')"
+        [class.active]="localFilters.sex.includes('female')"
+      >
+        ЖЕНСКИЕ
+      </button>
+      <button
+        class="filter-tag"
+        (click)="toggleFilter('sex', 'male')"
+        [class.active]="localFilters.sex.includes('male')"
+      >
+        МУЖСКИЕ
+      </button>
+      <button
+        class="filter-tag"
+        (click)="toggleFilter('sex', 'child')"
+        [class.active]="localFilters.sex.includes('child')"
+      >
+        ДЕТСКИЕ
+      </button>
     </div>
+
+    <h3>Размер:</h3>
+<div class="filter-group size-group">
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 25)"
+        [class.active]="localFilters.sizes.includes(25)">
+        25
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 26)"
+        [class.active]="localFilters.sizes.includes(26)">
+        26
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 27)"
+        [class.active]="localFilters.sizes.includes(27)">
+        27
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 28)"
+        [class.active]="localFilters.sizes.includes(28)">
+        28
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 29)"
+        [class.active]="localFilters.sizes.includes(29)">
+        29
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 30)"
+        [class.active]="localFilters.sizes.includes(30)">
+        30
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 31)"
+        [class.active]="localFilters.sizes.includes(31)">
+        31
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 32)"
+        [class.active]="localFilters.sizes.includes(32)">
+        32
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 33)"
+        [class.active]="localFilters.sizes.includes(33)">
+        33
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 34)"
+        [class.active]="localFilters.sizes.includes(34)">
+        34
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 35)"
+        [class.active]="localFilters.sizes.includes(35)">
+        35
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 36)"
+        [class.active]="localFilters.sizes.includes(36)">
+        36
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 37)"
+        [class.active]="localFilters.sizes.includes(37)">
+        37
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 38)"
+        [class.active]="localFilters.sizes.includes(38)">
+        38
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 39)"
+        [class.active]="localFilters.sizes.includes(39)">
+        39
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 40)"
+        [class.active]="localFilters.sizes.includes(40)">
+        40
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 41)"
+        [class.active]="localFilters.sizes.includes(41)">
+        41
+    </button>
+    <button 
+        class="size-btn" 
+        (click)="toggleFilter('sizes', 42)"
+        [class.active]="localFilters.sizes.includes(42)">
+        42
+    </button>
+    </div>
+
+    <h3>Цена ₽:</h3>
+    <div class="price-range">
+      <p>1 500 - 4 000</p>
+      <div class="slider-placeholder"></div>
+    </div>
+
+    <h3>Цвет:</h3>
+    <div class="filter-group color-group">
+      <span class="color-swatch red"></span>
+      <span class="color-swatch orange"></span>
+      <span class="color-swatch black active"></span>
+    </div>
+
+    <h3>Признаки:</h3>
+<div class="filter-group tag-group features-group">
+    <button 
+        class="filter-tag" 
+        (click)="toggleFilter('tag', 'со скидкой')"
+        [class.active]="localFilters.tag.includes('со скидкой')">
+        СО СКИДКОЙ
+    </button>
+    <button 
+        class="filter-tag" 
+        (click)="toggleFilter('tag', 'новинка')"
+        [class.active]="localFilters.tag.includes('новинка')">
+        НОВИНКА
+    </button>
+    </div>
+
+  <div class="sidebar-footer">
+    <button class="reset-button">СБРОСИТЬ</button>
+    <button class="apply-button">ПРИМЕНИТЬ</button>
+  </div>
 </div>

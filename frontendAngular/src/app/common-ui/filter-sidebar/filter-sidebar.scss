@@ -160,3 +160,21 @@ $active-border: #333;
         color: $dark-color;
     }
 }
+
+
+// src/app/common-ui/filter-sidebar/filter-sidebar.scss
+
+$active-border: #333; // Цвет рамки активного элемента
+$active-bg: $yellow-bg; // Если активный фон желтый
+
+.filter-tag, .size-btn {
+    // ... (стандартные стили) ...
+    
+    &.active {
+        // !!! Стили для активного состояния !!!
+        background-color: $active-bg; /* Например, желтый фон */
+        border-color: $active-border; /* Например, более толстая черная рамка */
+        font-weight: 700;
+        opacity: 1;
+    }
+}
