@@ -1,15 +1,23 @@
-@if (!product){
-<a href="#!" class="product-card">
-  <a href="#!"><img src="si_heart-line.svg" alt="Добавить в избранное" class="product-card__heart" /></a>
-  <img src="welcome_scroll_1.png" alt="Шлепанцы Какао" class="product-card__image" />
+@if (product){
+<a href="product" class="product-card">
+  <a href="#!"
+    ><img 
+      src= "si_heart-line.svg" 
+      alt="Добавить в избранное" 
+      class="product-card__heart"
+  /></a>
+  <img 
+    [src]="product.image_url | imgUrlulu" 
+    alt="Шлепанцы Какао" 
+    class="product-card__image" 
+  />
+
   <div class="product-card__details">
     <div class="product-card__info">
-      <p class="product-card__name">КАКАО</p>
-      <p class="product-card__category">Шлепанцы</p>
+      <p class="product-card__name">Алмаз, сделай названия им</p>
+      <p class="product-card__category">{{ product.tag }}</p>
     </div>
-    <p class="product-card__price">2 300 Р</p>
+    <p class="product-card__price">{{ product.price }} ₽</p>
   </div>
 </a>
-} @else{
-  Емае, Алмаз опять насрал
-}
+} @else{ Емае, Алмаз опять насрал }

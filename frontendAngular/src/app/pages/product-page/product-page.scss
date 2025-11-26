@@ -1,0 +1,297 @@
+/* src/app/pages/product-page/product-page.scss */
+
+// Основные переменные (если ты их используешь)
+$primary-color: #222;
+$secondary-bg: #fbfce6; // Светло-желтый фон
+$card-radius: 12px;
+$price-color: #222; // Цвет цены
+
+.product-page-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    
+    // Используем Flexbox для основного контента
+    .product-container {
+        display: flex;
+        gap: 40px;
+        margin-top: 20px;
+    }
+}
+
+// Хлебные крошки
+.breadcrumbs {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+// --- Секция изображений ---
+.product-image-section {
+    flex: 0 0 50%; // Занимает 50%
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+    // Основной блок с изображением
+    .main-image-placeholder {
+        background-color: $secondary-bg;
+        border-radius: $card-radius;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        .main-product-image {
+            max-width: 90%;
+            height: auto;
+            display: block;
+        }
+    }
+    
+    // Миниатюры
+    .thumbnails {
+        display: flex;
+        gap: 10px;
+        
+        .thumbnail-item {
+            width: 80px;
+            height: 80px;
+            border-radius: $card-radius;
+            background-color: $secondary-bg;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+
+            &.active {
+                border-color: $primary-color; // Выделение активной миниатюры
+            }
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
+
+// --- Секция информации ---
+.product-info-section {
+    flex: 1; // Занимает оставшееся пространство
+    padding-top: 20px;
+    
+    .product-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: $primary-color;
+    }
+    
+    .product-category {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 25px;
+    }
+    
+    .product-price {
+        font-size: 40px;
+        font-weight: 500;
+        color: $price-color;
+        margin-bottom: 30px;
+    }
+
+    .size-label {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    
+    .size-options {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 40px;
+
+        .size-button {
+            background-color: $secondary-bg;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: darken($secondary-bg, 5%);
+            }
+            // Пример активного размера
+            // &.active {
+            //     background-color: $primary-color;
+            //     color: white;
+            // }
+        }
+    }
+    
+    // Кнопки действий
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        
+        .add-to-cart-button {
+            flex-grow: 1;
+            background-color: $secondary-bg;
+            border: none;
+            border-radius: 8px;
+            padding: 18px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+        
+        .favorite-button {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            width: 58px; // Чтобы соответствовать высоте кнопки корзины
+            height: 58px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            svg {
+                width: 24px;
+                height: 24px;
+                // stroke: $primary-color;
+            }
+        }
+    }
+}
+
+/* src/app/common-ui/related-products/related-products.scss */
+
+$yellow-bg: #fbfce6; // Светло-желтый фон
+$card-radius: 12px;
+$dark-color: #333;
+
+.related-products-section {
+    max-width: 1400px;
+    margin: 80px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 50px;
+    color: $dark-color;
+    letter-spacing: 1px;
+}
+
+.product-slider-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    gap: 15px; // Расстояние между карточками
+    position: relative; 
+    padding-bottom: 60px; // Место для стрелок
+    
+    // Стили для всех карточек в этой секции
+    .product-card {
+        background-color: $yellow-bg;
+        border-radius: $card-radius;
+        padding: 20px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        
+        // ВАЖНО: Если ты будешь использовать компонент app-catalog-product, 
+        // тебе нужно будет либо переопределить стили через :host-context, 
+        // либо добавить CSS-классы внутрь самого app-catalog-product.
+        
+        .item-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .item-info {
+            margin-top: 10px;
+        }
+
+        .item-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: $dark-color;
+            margin: 0;
+        }
+
+        .item-category {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+
+        .item-price {
+            font-size: 16px;
+            font-weight: 500;
+            color: $dark-color;
+            margin-top: 5px;
+        }
+    }
+
+    // Стили для маленьких карточек
+    .small-card {
+        flex: 0 0 auto; 
+        width: 180px;
+    }
+    
+    // Стили для большой центральной карточки
+    .large-card {
+        flex: 0 0 auto;
+        width: 300px; 
+        margin: 0 30px; // Отступы для выделения
+        padding: 30px;
+        
+        .item-name {
+            font-size: 18px;
+        }
+        .item-price {
+            font-size: 20px;
+        }
+    }
+}
+
+// Навигационные стрелки
+.slider-navigation {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%); 
+    display: flex;
+    gap: 30px;
+    
+    .nav-arrow {
+        background-color: transparent;
+        border: 1px solid $dark-color;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        
+        svg {
+            stroke: $dark-color;
+        }
+    }
+}

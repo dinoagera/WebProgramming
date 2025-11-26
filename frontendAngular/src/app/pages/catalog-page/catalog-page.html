@@ -1,42 +1,35 @@
 <app-navbar></app-navbar>
 <app-second-navbar></app-second-navbar>
 <div class="product_grid">
-@for (product of products; track product.product_id) {
-  <app-catalog-product
-    [product]="product"
-  ></app-catalog-product>
-}
-@empty {
+  @for (product of products; track product.product_id) {
+  <app-catalog-product [product]="product"></app-catalog-product>
+  } @empty {
   <!-- Опционально: что показать, если массив пуст -->
   <p>Нет продуктов</p>
-}
+  }
 </div>
 
-<pre> 
-  {{products | json}}
+<pre>
+ 
+  {{ products | json }}
 </pre>
 
-
-
-
-
-
 <div class="product_grid">
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
-<app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
+  <app-catalog-product></app-catalog-product>
 </div>
 
-<div class="more-button-wrapper"> 
+<div class="more-button-wrapper">
   <a href="#!" class="btn more-btn">ЕЩЁ</a>
 </div>
 
