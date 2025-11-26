@@ -1,16 +1,20 @@
 <app-navbar></app-navbar>
 <app-second-navbar></app-second-navbar>
+<div class="product_grid">
+@for (product of products; track product.product_id) {
+  <app-catalog-product
+    [product]="product"
+  ></app-catalog-product>
+}
+@empty {
+  <!-- Опционально: что показать, если массив пуст -->
+  <p>Нет продуктов</p>
+}
+</div>
 
 <pre> 
   {{products | json}}
 </pre>
-
-@for (product of products; track product.product_id) {
-    <app-catalog-product [productData]="product"></app-catalog-product>
-} @empty {
-    <div>Нет продуктов в каталоге.</div>
-}
-
 
 
 

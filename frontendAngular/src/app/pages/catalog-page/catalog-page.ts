@@ -12,6 +12,7 @@ import { JsonPipe } from '@angular/common';
   imports: [Navbar, CatalogProduct, SecondNavbar, Footer, JsonPipe],
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.scss',
+  
 })
 
 export class CatalogPage {
