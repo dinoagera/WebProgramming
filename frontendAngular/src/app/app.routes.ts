@@ -5,6 +5,7 @@ import { FavoritePage } from './pages/favorite-page/favorite-page';
 import { LoginPage } from './pages/login-page/login-page';
 import { MainPage } from './pages/main-page/main-page';
 import { ProductPage } from './pages/product-page/product-page';
+import { RegisterPage } from './pages/register-page/register-page';
 
 
 export const routes: Routes = [
@@ -12,6 +13,7 @@ export const routes: Routes = [
     {path: 'basket', component: BasketPage},
     {path: 'favorite', component: FavoritePage},
     {path: 'login', component: LoginPage},
+    {path: 'register', component: RegisterPage},
     {path: 'main', component: MainPage},
     {path: 'product', component: ProductPage},
 ];

@@ -7,7 +7,7 @@ export class ImgUrluluPipe implements PipeTransform {
 
   transform(value: string | null): string | null {
     if (!value) return null
-    return `httpbl/${value}`; //ждем Алмаза и его ссылку на фотки
+    return `http://localhost:8080${value}`; //ждем Алмаза и его ссылку на фотки
   }
 
 }
