@@ -1,7 +1,5 @@
-// import { ProductCatalog } from '../services/product-catalog';
-
 export interface Product {
-    product_id: number,
+    product_id: string,
     category: string,
     sex: string,
     sizes: number[],
@@ -9,4 +7,8 @@ export interface Product {
     color: string,
     tag: string,
     image_url: string | null,
+}
+export interface CatalogResponse {
+  status: string;      
+  catalog: Product[];  
 }

@@ -1,6 +1,21 @@
 <app-navbar></app-navbar>
 <app-second-navbar></app-second-navbar>
 
+<pre> 
+  {{products | json}}
+</pre>
+
+@for (product of products; track product.product_id) {
+    <app-catalog-product [productData]="product"></app-catalog-product>
+} @empty {
+    <div>Нет продуктов в каталоге.</div>
+}
+
+
+
+
+
+
 
 <div class="product_grid">
 <app-catalog-product></app-catalog-product>

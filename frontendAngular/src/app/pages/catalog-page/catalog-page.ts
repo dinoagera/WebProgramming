@@ -5,27 +5,22 @@ import { Navbar } from '../../common-ui/navbar/navbar';
 import { CatalogProduct } from '../../common-ui/catalog-product/catalog-product';
 import { SecondNavbar } from '../../common-ui/second-navbar/second-navbar';
 import { Footer } from '../../common-ui/footer/footer';
-
-
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-catalog-page',
-  imports: [Navbar, CatalogProduct, SecondNavbar, Footer],
+  imports: [Navbar, CatalogProduct, SecondNavbar, Footer, JsonPipe],
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.scss',
 })
+
 export class CatalogPage {
+  ProductCatalog = inject(ProductCatalog);
+  products: Product[] = []; // ← именно Product[], потому что это массив товаров
 
-  ProductCatalog = inject(ProductCatalog)
-  products: Product[] = []
-
-  constructor() { 
-    this.ProductCatalog.getCatalog()
-      .subscribe(val => {
-        this.products = val; 
-    })
-}
-
-
-  
+  constructor() {
+    this.ProductCatalog.getCatalog().subscribe(val => {
+      this.products = val.catalog; // val: CatalogResponse, val.catalog: Product[]
+    });
+  }
 }
