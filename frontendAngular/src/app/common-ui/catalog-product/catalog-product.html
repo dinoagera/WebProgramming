@@ -1,5 +1,5 @@
 @if (product){
-<a href="product" class="product-card">
+<a [routerLink]="['/product', product.product_id]" class="product-card">
   <a href="#!"
     ><img 
       src= "si_heart-line.svg" 

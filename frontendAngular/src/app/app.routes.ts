@@ -9,13 +9,14 @@ import { RegisterPage } from './pages/register-page/register-page';
 import { FilterSidebar } from './common-ui/filter-sidebar/filter-sidebar';
 
 
+
 export const routes: Routes = [
-    {path: '', component: CatalogPage },
-    {path: 'basket', component: BasketPage},
-    {path: 'favorite', component: FavoritePage},
-    {path: 'login', component: LoginPage},
-    {path: 'register', component: RegisterPage},
-    {path: 'main', component: MainPage},
-    {path: 'product', component: ProductPage},
-    {path: 'filter', component: FilterSidebar},
+  { path: '', component: CatalogPage },
+  { path: 'basket', component: BasketPage },
+  { path: 'favorite', component: FavoritePage },
+  { path: 'login', component: LoginPage },
+  { path: 'register', component: RegisterPage },
+  { path: 'main', component: MainPage },
+  { path: 'product/:id', component: ProductPage },
+  { path: 'filter', component: FilterSidebar },
 ];

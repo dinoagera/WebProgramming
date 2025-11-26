@@ -1,87 +1,64 @@
 <app-navbar></app-navbar>
 
-<div class="product-page-wrapper">
-    <div class="product-container">
-        
-        <div class="product-image-section">
-            <div class="main-image-placeholder">
-                <img src="ok.png" alt="Шлепанцы в цвете Какао" class="main-product-image" />
-            </div>
-            
-            <div class="thumbnails">
-                <div class="thumbnail-item active">
-                    <img src="ok.png" alt="Миниатюра 1" />
-                </div>
-                <div class="thumbnail-item">
-                    <img src="ok.png" alt="Миниатюра 2" />
-                </div>
-                <div class="thumbnail-item">
-                    <img src="ok.png" alt="Миниатюра 3" />
-                </div>
-            </div>
+<div class="product-page-wrapper" *ngIf="productData(); else loading">
+
+  <div class="product-container">
+
+    <div class="product-image-section">
+
+      <div class="main-image-placeholder">
+
+        <img
+          [src]="productData()!.image_url"
+          [alt]="productData()!.category + ' в цвете ' + productData()!.color"
+          class="main-product-image"
+        />
+
+      </div>
+
+      <div class="thumbnails">
+
+        <div class="thumbnail-item active">
+<img [src]="productData()!.image_url" alt="Миниатюра 1" />
+
         </div>
 
-        <div class="product-info-section">
-            
-            <h1 class="product-title">ШЛЕПАНЦЫ В ЦВЕТЕ КАКАО</h1>
-            <p class="product-category">Шлепанцы</p>
+      </div>
 
-            <p class="product-price">2 300 Р</p>
-            
-            <p class="size-label">РАЗМЕР:</p>
-            
-            <div class="size-options">
-                <button class="size-button">36</button>
-                <button class="size-button">37</button>
-                <button class="size-button">38</button>
-                <button class="size-button">39</button>
-                <button class="size-button">40</button>
-                <button class="size-button">41</button>
-                <button class="size-button">42</button>
-                <button class="size-button">43</button>
-            </div>
-
-            <div class="action-buttons">
-                <button class="add-to-cart-button">ДОБАВИТЬ В КОРЗИНУ</button>
-                <button class="favorite-button">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                </button>
-            </div>
-        </div>
     </div>
+
+
+    <div class="product-info-section">
+
+      <h1 class="product-title">
+        {{ productData()!.category | uppercase }} В ЦВЕТЕ {{ productData()!.color | uppercase }}
+      </h1>
+      <p class="product-category">{{ productData()!.category }}</p>
+
+      <p class="product-price">{{ productData()!.price | number : '1.0-0' }} ₽</p>
+
+      <p class="size-label">РАЗМЕР:</p>
+
+      <div class="size-options">
+
+        <button
+          *ngFor="let size of productData()!.sizes"
+          class="size-button"
+          [class.active]="selectedSize === size"
+          (click)="selectSize(size)"
+        >
+          {{ size }}
+        </button>
+
+      </div>
+
+    </div>
+       
+  </div>
 </div>
 
-<div class="related-products-section">
-    <h2 class="section-title">ВАМ ТАКЖЕ МОЖЕТ ПОНРАВИТЬСЯ:</h2>
-    
-    <div class="product-slider-container">
-        <app-mini-product></app-mini-product>
-        <app-mini-product></app-mini-product>
-        <app-mini-product></app-mini-product>
+<ng-template #loading>
+  <div class="loading-indicator">Загрузка данных товара...</div>
+</ng-template>
 
-        
-        <div class="product-card large-card">
-            <img src="ok.png" alt="Коралл" class="item-image" />
-            <div class="item-info">
-                <p class="item-name">КОРАЛЛ</p>
-                <p class="item-category">Шлепанцы</p>
-            </div>
-            <p class="item-price">2 200 Р</p>
-        </div>
-        
-        <app-mini-product></app-mini-product>
-        <app-mini-product></app-mini-product>
-        <app-mini-product></app-mini-product>
-
-
-        <div class="slider-navigation">
-            <button class="nav-arrow left-arrow">
-                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-            </button>
-            <button class="nav-arrow right-arrow">
-                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            </button>
-        </div>
-        
-    </div>
-</div>
+<div class="related-products-section"></div>
