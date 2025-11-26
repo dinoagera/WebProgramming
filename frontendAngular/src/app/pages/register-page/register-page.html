@@ -1,22 +1,35 @@
 <!-- <app-navbar></app-navbar> -->
 
 <div class="profile-page-wrapper">
-    <div class="breadcrumbs">
-        <a href="">Каталог</a> / <a href="profile">Профиль</a>
-    </div>
+  <div class="breadcrumbs">
+    <a href="">Каталог</a> / <a href="/register">Регистрация</a>
+  </div>
 
-    <section class="personal-data-section">
-        <h1 class="section-title">ЛИЧНЫЕ ДАННЫЕ</h1>
-        
-        <form class="data-form">
-            <input type="text" class="text-input" value="" />
-            
-            <input type="password" class="text-input" value="" />
-            
-            <button type="submit" class="submit-button change-password-button">
-                Регистрация
-            </button>
-        </form>
-    </section>
+  <section class="personal-data-section">
+    <h1 class="section-title">ЛИЧНЫЕ ДАННЫЕ</h1>
 
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="data-form">
+      <input
+        formControlName="email"
+        type="email"
+        class="text-input"
+        placeholder="Email"
+      />
+
+      <input
+        formControlName="password"
+        type="password"
+        class="text-input"
+        placeholder="Пароль (минимум 6 символов)"
+      />
+
+      <button
+        type="submit"
+        class="submit-button change-password-button"
+        [disabled]="form.invalid"
+      >
+        Регистрация
+      </button>
+    </form>
+  </section>
 </div>

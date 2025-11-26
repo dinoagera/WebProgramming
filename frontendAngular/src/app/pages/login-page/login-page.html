@@ -1,41 +1,66 @@
 <!-- <app-navbar></app-navbar> -->
 
 <div class="profile-page-wrapper">
-    <div class="breadcrumbs">
-        <a href="">Каталог</a> / <a href="profile">Профиль</a>
+  <div class="breadcrumbs">
+    <a href="">Каталог</a> / <a href="profile">Профиль</a>
+  </div>
+
+  <section class="personal-data-section">
+    <h1 class="section-title">ЛИЧНЫЕ ДАННЫЕ</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="data-form">
+      <input
+        formControlName="email"
+        type="email"
+        class="text-input"
+        placeholder="Email"
+      />
+      <input
+        formControlName="password"
+        type="password"
+        class="text-input"
+        placeholder="Пароль"
+      />
+
+      <!-- Кнопка "Войти" — отдельно -->
+      <button
+        type="submit"
+        class="submit-button change-password-button"
+        [disabled]="form.invalid"
+      >
+        Войти
+      </button>
+
+      <!-- Кнопка "Нет аккаунта" — отдельно -->
+      <button
+        type="button"
+        class="submit-button change-password-button"
+        (click)="goToRegister()"
+      >
+        Нет аккаунта
+      </button>
+    </form>
+  </section>
+
+  <section class="delivery-address-section">
+    <h2 class="section-title">АДРЕС ДОСТАВКИ</h2>
+    <p class="section-description">
+      ВЫБЕРИТЕ АДРЕС ДОСТАВКИ НА КАРТЕ ИЛИ ВПИШИТЕ ЕГО САМОСТОЯТЕЛЬНО В ПОЛЕ НИЖЕ
+    </p>
+
+    <input type="text" class="text-input delivery-input" value="Музей Чак-Чака" />
+
+    <div class="map-placeholder">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10366.947809993626!2d49.10679575832741!3d55.789017005423965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x415ead2b7caccd99%3A0x7fcb77b9b5ad8c65!2z0JrQsNC30LDQvdGMLCDQoNC10YHQvy4g0KLQsNGC0LDRgNGB0YLQsNC9LCDQoNC-0YHRgdC40Y8!5e0!3m2!1sru!2snl!4v1764166190010!5m2!1sru!2snl"
+        width="800"
+        height="450"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      >
+      </iframe>
     </div>
-
-    <section class="personal-data-section">
-        <h1 class="section-title">ЛИЧНЫЕ ДАННЫЕ</h1>
-        
-        <form class="data-form">
-            <input type="text" class="text-input" value="" />
-            
-            <input type="password" class="text-input" value="" />
-            
-            <button type="submit" class="submit-button change-password-button">
-                Войти
-            </button>
-        </form>
-    </section>
-
-    <section class="delivery-address-section">
-        <h2 class="section-title">АДРЕС ДОСТАВКИ</h2>
-        <p class="section-description">
-            ВЫБЕРИТЕ АДРЕС ДОСТАВКИ НА КАРТЕ ИЛИ ВПИШИТЕ ЕГО САМОСТОЯТЕЛЬНО В ПОЛЕ НИЖЕ
-        </p>
-        
-        <input type="text" class="text-input delivery-input" value="Музей Чак-Чака" />
-
-        <div class="map-placeholder">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10366.947809993626!2d49.10679575832741!3d55.789017005423965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x415ead2b7caccd99%3A0x7fcb77b9b5ad8c65!2z0JrQsNC30LDQvdGMLCDQoNC10YHQvy4g0KLQsNGC0LDRgNGB0YLQsNC9LCDQoNC-0YHRgdC40Y8!5e0!3m2!1sru!2snl!4v1764166190010!5m2!1sru!2snl" 
-            width="800" 
-            height="450" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-            </div>
-    </section>
+  </section>
 </div>

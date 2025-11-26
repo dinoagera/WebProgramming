@@ -5,6 +5,7 @@ import (
 	liberror "authservice/lib/errors"
 	lib "authservice/lib/jwt"
 	"errors"
+	"fmt"
 	"log/slog"
 
 	"golang.org/x/crypto/bcrypt"
@@ -45,6 +46,10 @@ func (s *Service) Login(email, password string) (string, error) {
 	if err != nil {
 		s.log.Info("failed to login user", "err:", err)
 		return "", errors.New("failed to login user")
+	}
+	if err := bcrypt.CompareHashAndPassword(user.PassHash, []byte(password)); err != nil {
+		s.log.Info("invalid password", "email", email)
+		return "", fmt.Errorf("password is not correct")
 	}
 	token, err := lib.GenerateJWT(user)
 	if err != nil {

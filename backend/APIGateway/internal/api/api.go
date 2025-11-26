@@ -55,14 +55,20 @@ func (api *API) StartServer() {
 func (api *API) setupRouter() {
 	api.router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 	// API routes
+	api.router.Use(cors.New())
 	apiRouter := api.router.PathPrefix("/api").Subrouter()
-	apiRouter.Use(cors.New())
 	// Public routes
 	public := apiRouter.PathPrefix("").Subrouter()
 	public.HandleFunc("/getcatalog", api.handler.GetCatalog).Methods(http.MethodGet)
 	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
 	// Auth routes (public)
 	authRoutes := apiRouter.PathPrefix("").Subrouter()
+	authRoutes.HandleFunc("/register", api.handler.Register).Methods(http.MethodPost)
+	authRoutes.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+	}).Methods(http.MethodOptions)
+	authRoutes.HandleFunc("/login", api.handler.Login).Methods(http.MethodPost)
+	authRoutes.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+	}).Methods(http.MethodOptions)
 	authRoutes.HandleFunc("/register", api.handler.Register).Methods(http.MethodPost)
 	authRoutes.HandleFunc("/login", api.handler.Login).Methods(http.MethodPost)
 	// Protected routes
