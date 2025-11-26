@@ -1,0 +1,116 @@
+/* src/app/pages/profile-page/profile-page.scss */
+
+$yellow-bg: #fae69e; // Светло-желтый цвет кнопок
+$dark-color: #333;
+$input-radius: 8px;
+
+:root {
+  --main-background: #fbfce6;
+  --color-fonts: #2c2c2c;
+  --main-fonts: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--main-fonts);
+  background: var(--main-background);
+  color: var(--color-fonts);
+}
+.profile-page-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff; // Если страница не имеет фона
+}
+
+.breadcrumbs {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 25px;
+  color: $dark-color;
+}
+
+.data-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 450px;
+  margin-bottom: 60px;
+}
+
+.text-input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: $input-radius;
+  font-size: 16px;
+  box-sizing: border-box;
+
+  // Сброс дефолтного фона, чтобы соответствовать макету
+  background-color: #fff;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: $input-radius;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-transform: uppercase;
+}
+
+.change-password-button {
+  background-color: $yellow-bg;
+  color: $dark-color;
+  margin-top: 5px;
+
+  &:hover {
+    background-color: darken($yellow-bg, 5%);
+  }
+}
+
+// --- Секция АДРЕС ДОСТАВКИ ---
+
+.delivery-address-section {
+  margin-top: 40px;
+}
+
+.section-description {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  max-width: 450px;
+  margin-bottom: 20px;
+  color: $dark-color;
+}
+
+.delivery-input {
+  max-width: 450px;
+  margin-bottom: 25px;
+}
+
+.map-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 500px; /* Фиксированная высота для имитации карты */
+  border-radius: $input-radius;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Чтобы изображение карты заполняло контейнер */
+  }
+}
