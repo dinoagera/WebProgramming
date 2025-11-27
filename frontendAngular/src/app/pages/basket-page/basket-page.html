@@ -1,1 +1,62 @@
-<p>basket-page works!</p>
+<app-navbar></app-navbar>
+
+<div class="basket-page">
+  <!-- Загрузка -->
+  <div *ngIf="loading">Загрузка корзины...</div>
+
+  <!-- Ошибка -->
+  <div *ngIf="error && !loading" class="error">{{ error }}</div>
+
+  <!-- Данные успешно загружены -->
+  <div *ngIf="!loading && !error">
+    <div *ngIf="basketData as data">
+      <div class="basket-header">
+        <h1>КОРЗИНА / {{ data.cart.items.length || 0 }} ШТ.</h1>
+      </div>
+
+      <div class="basket-content">
+        <div class="basket-items">
+          <div *ngFor="let item of data.cart.items" class="basket-item">
+            <div class="item-details">
+              <h3>ID: {{ item.product_id }}</h3>
+              <p class="item-category">Категория: {{ item.category }}</p>
+              <div class="item-price">Цена: {{ item.price | number }} ₽</div>
+              <div>Кол-во: {{ item.quantity }} шт.</div>
+            </div>
+            <div class="item-actions">
+              <button class="btn-remove" (click)="removeItem(item)">Удалить</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="basket-summary">
+          <div class="summary-header">
+            <h2>ИТОГИ</h2>
+          </div>
+          <div class="summary-body">
+            <div class="summary-row">
+              <span>Сумма товаров</span>
+              <span>{{ data.cart.total | number }} ₽</span>
+            </div>
+            <div class="summary-row">
+              <span>Стоимость доставки</span>
+              <span>Бесплатно</span>
+            </div>
+            <div class="summary-row total">
+              <strong>ИТОГО К ОПЛАТЕ</strong>
+              <strong>{{ data.cart.total | number }} ₽</strong>
+            </div>
+            <button class="btn-pay" (click)="checkout()">ОПЛАТИТЬ ЗАКАЗ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- basketData === null, но ошибки нет → пустая корзина -->
+    <div *ngIf="!basketData">
+      Ваша корзина пуста.
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
