@@ -49,7 +49,6 @@ removeItem(item: BasketItem): void {
   if (!confirm(`Удалить товар "${item.product_id}" из корзины?`)) {
     return;
   }
-
   this.basketService.removeItem({ product_id: item.product_id }).subscribe({
     next: () => {
       this.loadCart();
@@ -59,8 +58,20 @@ removeItem(item: BasketItem): void {
     }
   });
 }
-
-  checkout() {
+clearCart(): void {
+  if (!confirm(`Вы уверенч что хотите очистить коризу?`)) {
+    return;
+  }
+  this.basketService.clearCart().subscribe({
+        next: () => {
+      this.loadCart();
+    },
+    error: () => {
+      alert('Ошибка при удалении товаров');
+    }
+  });
+}
+checkout() {
     alert('Переход к оплате');
   }
 }

@@ -31,4 +31,7 @@ export class BasketService {
   removeItem(item:RemoveItemRequest): Observable<any> {
         return this.http.post(`${this.baseUrl}api/removeitem`, item);
   }
+  clearCart() : Observable<any>{
+        return this.http.delete(`${this.baseUrl}api/clearcart`);
+  }
 }

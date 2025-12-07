@@ -24,7 +24,7 @@ import { BasketService } from '../../data/services/basket-service';
 })
 export class ProductPage implements OnInit {
   private productCatalog = inject(ProductCatalog);
-  private basketService = inject(BasketService); // ← внедряем корзину
+  private basketService = inject(BasketService); 
   private route = inject(ActivatedRoute);
   protected productData = signal<Product | undefined>(undefined);
   protected selectedSize: number | null = null;
@@ -68,4 +68,5 @@ export class ProductPage implements OnInit {
       }
     });
   }
+  
 }

@@ -83,6 +83,8 @@ func (api *API) setupRouter() {
 	}).Methods(http.MethodOptions)
 	protected.HandleFunc("/updateitem", api.handler.UpdateItem).Methods(http.MethodPost)
 	protected.HandleFunc("/clearcart", api.handler.ClearCart).Methods(http.MethodDelete)
+	protected.HandleFunc("/clearcart", func(w http.ResponseWriter, r *http.Request) {
+	}).Methods(http.MethodOptions)
 	protected.HandleFunc("/getfavourites", api.handler.GetFavourites).Methods(http.MethodGet)
 	protected.HandleFunc("/addfavourite", api.handler.AddFavourite).Methods(http.MethodPost)
 	protected.HandleFunc("/removefavourite", api.handler.RemoveFavourite).Methods(http.MethodPost)

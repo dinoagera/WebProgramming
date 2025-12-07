@@ -52,6 +52,14 @@
       </div>
     </div>
 
+    <button
+        class="clear-cart-button"
+        (click)="clearCart()"
+      >
+        Очистить корзину
+    </button>
+
+
     <!-- basketData === null, но ошибки нет → пустая корзина -->
     <div *ngIf="!basketData">
       Ваша корзина пуста.
