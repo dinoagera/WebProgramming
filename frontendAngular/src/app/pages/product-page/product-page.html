@@ -1,46 +1,31 @@
 <app-navbar></app-navbar>
 
 <div class="product-page-wrapper" *ngIf="productData(); else loading">
-
   <div class="product-container">
-
     <div class="product-image-section">
-
       <div class="main-image-placeholder">
-
         <img
           [src]="productData()!.image_url"
           [alt]="productData()!.category + ' в цвете ' + productData()!.color"
           class="main-product-image"
         />
-
       </div>
-
       <div class="thumbnails">
-
         <div class="thumbnail-item active">
-<img [src]="productData()!.image_url" alt="Миниатюра 1" />
-
+          <img [src]="productData()!.image_url" alt="Миниатюра 1" />
         </div>
-
       </div>
-
     </div>
 
-
     <div class="product-info-section">
-
       <h1 class="product-title">
         {{ productData()!.category | uppercase }} В ЦВЕТЕ {{ productData()!.color | uppercase }}
       </h1>
       <p class="product-category">{{ productData()!.category }}</p>
-
       <p class="product-price">{{ productData()!.price | number : '1.0-0' }} ₽</p>
 
       <p class="size-label">РАЗМЕР:</p>
-
       <div class="size-options">
-
         <button
           *ngFor="let size of productData()!.sizes"
           class="size-button"
@@ -49,11 +34,15 @@
         >
           {{ size }}
         </button>
-
       </div>
 
+      <button
+        class="add-to-cart-button"
+        (click)="addToCart()"
+      >
+        Добавить в корзину
+      </button>
     </div>
-       
   </div>
 </div>
 

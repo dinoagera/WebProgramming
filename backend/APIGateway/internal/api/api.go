@@ -73,10 +73,14 @@ func (api *API) setupRouter() {
 	protected := apiRouter.PathPrefix("").Subrouter()
 	protected.Use(auth.New(api.log, api.cfg.JWTSecret))
 	protected.HandleFunc("/getcart", api.handler.GetCart).Methods(http.MethodGet)
-	authRoutes.HandleFunc("/getcart", func(w http.ResponseWriter, r *http.Request) {
+	protected.HandleFunc("/getcart", func(w http.ResponseWriter, r *http.Request) {
 	}).Methods(http.MethodOptions)
 	protected.HandleFunc("/additem", api.handler.AddItem).Methods(http.MethodPost)
+	protected.HandleFunc("/additem", func(w http.ResponseWriter, r *http.Request) {
+	}).Methods(http.MethodOptions)
 	protected.HandleFunc("/removeitem", api.handler.RemoveItem).Methods(http.MethodPost)
+	protected.HandleFunc("/removeitem", func(w http.ResponseWriter, r *http.Request) {
+	}).Methods(http.MethodOptions)
 	protected.HandleFunc("/updateitem", api.handler.UpdateItem).Methods(http.MethodPost)
 	protected.HandleFunc("/clearcart", api.handler.ClearCart).Methods(http.MethodDelete)
 	protected.HandleFunc("/getfavourites", api.handler.GetFavourites).Methods(http.MethodGet)

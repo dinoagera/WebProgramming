@@ -56,6 +56,7 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 		"catalog": goods,
 	})
 }
+
 func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 	productID := strings.TrimPrefix(r.URL.Path, "/api/image/")
 	if productID == "" {

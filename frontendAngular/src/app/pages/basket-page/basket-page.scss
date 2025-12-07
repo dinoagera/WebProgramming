@@ -1,62 +1,176 @@
-// Здесь главные стили на всю страницу
+.basket-page {
+  background-color: #FCE9A3;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-/* Это главный стиль - именно он делает сетку! */
-.product_grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px; /* расстояние между карточками */
-  padding: 20px; /* отступы по краям */
-  max-width: 1400px; /* ограничиваем ширину на больших экранах */
-  margin: 0 auto; /* центрируем */
-}
-
-.product_grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* это главное! */
-  gap: 24px;
-  padding: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Опционально — принудительно одна колонка на мобильных */
-@media (max-width: 640px) {
-  .product_grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 16px;
+  .basket-header {
+    margin-bottom: 20px;
+    h1 {
+      color: #000000;
+      font-size: 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
   }
-}
 
-.more-button-wrapper {
-  display: flex;
-  justify-content: center; /* Horizontal centering */
-  align-items: center; /* Vertical centering if needed */
-  padding: 20px 0; /* Fixed: top/bottom padding; adjust as needed */
-}
+  .basket-content {
+    display: flex;
+    gap: 20px;
 
-.more-btn {
-  /* Your overrides for .btn */
-  width: 100%;
-  max-width: 1400px; /* Matches grid width */
-  height: 10px;
-  background-color: #fbfce6; /* Yellow background */
-  color: #2c2c2c;
-  border-radius: 30px;
-  border: none;
-  font-weight: 700;
-  font-size: 18px;
-  padding: 15px 20px; /* Fixed: proper padding shorthand */
-  text-align: center; /* Ensure text inside is centered */
-  display: flex; /* Optional: Make the button itself flex for internal centering */
-  justify-content: center;
-  align-items: center;
-  text-decoration: none; /* Remove underline if it's an <a> */
-  cursor: pointer;
-  transition: background-color 0.3s; /* Optional hover effect */
-  margin: 1px;
-}
+    // Левая колонка — список товаров
+    .basket-items {
+      flex: 1;
+      max-width: 600px;
 
-.more-btn:hover {
-  background-color: #f0f2d8; /* Lighter yellow on hover, optional */
+      .basket-item {
+        background-color: #FFFFFF;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        .item-details {
+          flex: 1;
+
+          h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000000;
+          }
+
+          .item-category {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            color: #666;
+          }
+
+          .item-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000;
+            margin: 5px 0;
+          }
+
+          div {
+            font-size: 14px;
+            color: #666;
+          }
+        }
+
+        .item-actions {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          button.btn-remove {
+            background-color: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+
+            &:hover {
+              background-color: #FF5252;
+            }
+          }
+        }
+      }
+    }
+
+    // Правая колонка — итоги
+    .basket-summary {
+      background-color: #FFFFFF;
+      border-radius: 8px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+      .summary-header {
+        margin-bottom: 15px;
+        h2 {
+          color: #000000;
+          font-size: 18px;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+      }
+
+      .summary-body {
+        .summary-row {
+          display: flex;
+          justify-content: space-between;
+          padding: 8px 0;
+          border-bottom: 1px solid #EEE;
+
+          span:first-child {
+            font-size: 14px;
+            color: #666;
+          }
+
+          span:last-child {
+            font-size: 14px;
+            font-weight: bold;
+            color: #000000;
+          }
+        }
+
+        .total {
+          border-top: 2px solid #000;
+          margin-top: 10px;
+          padding-top: 10px;
+          font-size: 16px;
+
+          strong:first-child {
+            font-size: 16px;
+            color: #000000;
+          }
+
+          strong:last-child {
+            font-size: 18px;
+            color: #000000;
+          }
+        }
+
+        .btn-pay {
+          width: 100%;
+          background-color: #FFD700;
+          color: #000000;
+          border: none;
+          padding: 12px;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: bold;
+          margin-top: 15px;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #FFC107;
+          }
+        }
+      }
+    }
+  }
+
+  // Состояния
+  .error {
+    color: #FF6B6B;
+    background-color: #FFEDED;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+  }
 }
