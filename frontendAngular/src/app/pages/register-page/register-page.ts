@@ -8,6 +8,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { RegisterService } from '../../data/services/register-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -17,6 +18,7 @@ import { RegisterService } from '../../data/services/register-service';
 })
 export class RegisterPage {
   private registerService = inject(RegisterService);
+  private router = inject(Router);
 
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -42,11 +44,14 @@ onSubmit() {
     },
     error: (err) => {
         if (err.status === 400) {
-            alert('Регистрация недоступна!');
+            alert('Такой аккаунт уже существует.');
             return;
         }
         alert('Неверный email или пароль');
     }
     });
   }
+goToLogin() {
+    this.router.navigate(['/login']);
+}
 }
