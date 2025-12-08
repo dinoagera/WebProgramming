@@ -66,7 +66,7 @@ clearCart(): void {
         next: () => {
       this.loadCart();
     },
-    error: () => {
+    error: (err) => {
       alert('Ошибка при удалении товаров');
     }
   });

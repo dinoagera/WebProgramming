@@ -43,7 +43,11 @@ onSubmit() {
       alert('Авторизация прошла успешно!')
       this.router.navigate(['/']);
     },
-    error: () => {
+    error: (err) => {
+        if (err.status === 400) {
+          alert('Авторизация недоступна!');
+          return;
+        }
       alert('Неверный email или пароль');
     }
   });
