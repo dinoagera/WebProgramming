@@ -26,6 +26,8 @@
             <div class="item-actions">
               <button class="btn-remove" (click)="removeItem(item)">Удалить</button>
             </div>
+            <button (click)="updateItem(item.product_id, 1)">+</button>
+            <button (click)="updateItem(item.product_id, 0)">-</button>
           </div>
         </div>
 

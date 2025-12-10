@@ -82,6 +82,8 @@ func (api *API) setupRouter() {
 	protected.HandleFunc("/removeitem", func(w http.ResponseWriter, r *http.Request) {
 	}).Methods(http.MethodOptions)
 	protected.HandleFunc("/updateitem", api.handler.UpdateItem).Methods(http.MethodPost)
+	protected.HandleFunc("/updateitem", func(w http.ResponseWriter, r *http.Request) {
+	}).Methods(http.MethodOptions)
 	protected.HandleFunc("/clearcart", api.handler.ClearCart).Methods(http.MethodDelete)
 	protected.HandleFunc("/clearcart", func(w http.ResponseWriter, r *http.Request) {
 	}).Methods(http.MethodOptions)

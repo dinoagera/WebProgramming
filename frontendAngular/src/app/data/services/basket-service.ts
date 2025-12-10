@@ -13,7 +13,10 @@ export interface AddItemRequest {
 export interface RemoveItemRequest{
 	product_id: string
 }
-
+export interface UpdateItemRequest {
+  product_id: string;
+  type_operation: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -33,5 +36,12 @@ export class BasketService {
   }
   clearCart() : Observable<any>{
         return this.http.delete(`${this.baseUrl}api/clearcart`);
+  }
+  updateItem(productId: string, typeOperation: number): Observable<any> {
+  const req: UpdateItemRequest = {
+      product_id: productId,      
+      type_operation: typeOperation
+    };
+    return this.http.post(`${this.baseUrl}api/updateitem`, req);
   }
 }

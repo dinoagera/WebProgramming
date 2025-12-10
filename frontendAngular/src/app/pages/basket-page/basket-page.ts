@@ -71,6 +71,16 @@ clearCart(): void {
     }
   });
 }
+updateItem(productId: string, typeOperation: number): void {
+    this.basketService.updateItem(productId,typeOperation).subscribe({
+        next: () => {
+      this.loadCart();
+    },
+    error: (err) => {
+      alert('Ошибка изменение кол-во товаров');
+    }
+  });
+}
 checkout() {
     alert('Переход к оплате');
   }
