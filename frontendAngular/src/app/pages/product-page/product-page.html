@@ -5,14 +5,14 @@
     <div class="product-image-section">
       <div class="main-image-placeholder">
         <img
-          [src]="productData()!.image_url"
+          [src]="productData()!.image_url | imgUrlulu"
           [alt]="productData()!.category + ' в цвете ' + productData()!.color"
           class="main-product-image"
         />
       </div>
       <div class="thumbnails">
         <div class="thumbnail-item active">
-          <img [src]="productData()!.image_url" alt="Миниатюра 1" />
+          <img [src]="productData()!.image_url | imgUrlulu" alt="Миниатюра 1" />
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { CatalogProduct } from '../../common-ui/catalog-product/catalog-product'
 import { Footer } from '../../common-ui/footer/footer';
 import { CommonModule } from '@angular/common'; // UpperCasePipe и DecimalPipe регистрировать в imports не нужно
 import { BasketService } from '../../data/services/basket-service';
+import { ImgUrluluPipe } from '../../data/helpers/pipe/img-urlulu-pipe';
 
 @Component({
   selector: 'app-product-page',
@@ -16,6 +17,7 @@ import { BasketService } from '../../data/services/basket-service';
     Footer,
     MiniProduct,
     RouterModule,
+    ImgUrluluPipe,
     CommonModule, // Пайпы входят в CommonModule — отдельно их не импортируем
   ],
   standalone: true,
