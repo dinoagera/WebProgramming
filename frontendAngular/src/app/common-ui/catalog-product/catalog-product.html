@@ -1,23 +1,21 @@
-@if (product){
-<a [routerLink]="['/product', product.product_id]" class="product-card">
-  <a href="#!"
-    ><img 
-      src= "si_heart-line.svg" 
-      alt="Добавить в избранное" 
-      class="product-card__heart"
-  /></a>
-  <img 
-    [src]="product.image_url | imgUrlulu" 
-    alt="Шлепанцы Какао" 
-    class="product-card__image" 
-  />
+<!-- catalog-product.html -->
 
-  <div class="product-card__details">
-    <div class="product-card__info">
-      <p class="product-card__name"> {{product.category}}</p>
-      <p class="product-card__category">{{ product.tag }}</p>
+@if (product) {
+  <a [routerLink]="['/product', product.product_id]" class="product-card">
+    <img
+      [src]="product.image_url | imgUrlulu"
+      [alt]="product.category"
+      class="product-card__image"
+    />
+
+    <div class="product-card__details">
+      <div class="product-card__info">
+        <p class="product-card__name">{{ product.category }}</p>
+        <p class="product-card__category">{{ product.tag }}</p>
+      </div>
+      <p class="product-card__price">{{ product.price }} ₽</p>
     </div>
-    <p class="product-card__price">{{ product.price }} ₽</p>
-  </div>
-</a>
-} @else{ Емае, Алмаз опять насрал }
+  </a>
+} @else {
+  Емае, Алмаз опять насрал
+}

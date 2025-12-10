@@ -42,6 +42,12 @@
       >
         Добавить в корзину
       </button>
+      <button
+        class="add-to-cart-button"
+        (click)="toggleFavorite(productData()!.product_id)"
+      >
+        Добавить в избранное
+      </button>
     </div>
   </div>
 </div>

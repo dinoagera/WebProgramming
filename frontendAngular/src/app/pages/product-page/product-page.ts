@@ -9,6 +9,7 @@ import { Footer } from '../../common-ui/footer/footer';
 import { CommonModule } from '@angular/common'; // UpperCasePipe и DecimalPipe регистрировать в imports не нужно
 import { BasketService } from '../../data/services/basket-service';
 import { ImgUrluluPipe } from '../../data/helpers/pipe/img-urlulu-pipe';
+import { FavoritesService } from '../../data/services/favourites-serivce';
 
 @Component({
   selector: 'app-product-page',
@@ -27,6 +28,7 @@ import { ImgUrluluPipe } from '../../data/helpers/pipe/img-urlulu-pipe';
 export class ProductPage implements OnInit {
   private productCatalog = inject(ProductCatalog);
   private basketService = inject(BasketService); 
+  private favoritesService = inject(FavoritesService); 
   private route = inject(ActivatedRoute);
   protected productData = signal<Product | undefined>(undefined);
   protected selectedSize: number | null = null;
@@ -70,5 +72,14 @@ export class ProductPage implements OnInit {
       }
     });
   }
-  
+  toggleFavorite(productId: string) {
+    this.favoritesService.addToFavorites(productId).subscribe({
+      next: () => {
+        alert('Товар добавлен в избранное.')
+      },
+      error: () => {
+        console.error('Не удалось добавить в избранное');
+      }
+    });
 }
+    }

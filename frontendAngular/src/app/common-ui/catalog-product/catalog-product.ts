@@ -4,6 +4,7 @@ import { UpperCasePipe, DecimalPipe } from '@angular/common';
 import { ImgUrluluPipe } from '../../data/helpers/pipe/img-urlulu-pipe';
 import { RouterModule } from '@angular/router';
 
+
 @Component({
   selector: 'app-catalog-product',
   imports: [UpperCasePipe, DecimalPipe, ImgUrluluPipe, RouterModule],
@@ -13,4 +14,5 @@ import { RouterModule } from '@angular/router';
 })
 export class CatalogProduct {
   @Input() product!: Product;
+  @Input() onToggleFavorite: ((event: Event, product: Product) => void) | null = null;
 }

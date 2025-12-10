@@ -7,6 +7,7 @@ export interface Product {
   color: string;
   tag: string;
   image_url: string | null;
+  isFavorite?: boolean; 
 }
 export interface CatalogResponse {
   status: string;

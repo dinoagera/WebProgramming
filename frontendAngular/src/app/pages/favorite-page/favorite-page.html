@@ -1,91 +1,56 @@
 <app-navbar></app-navbar>
 
-<div class="product-page-wrapper" *ngIf="productData() as product; else loadingOrNotFound">
-   
-  <div class="product-container">
-           
-    <div class="product-image-section">
-           
-      <div class="main-image-placeholder">
-               
-        <img
-          [src]="product.image_url | imgUrlulu"
-          [alt]="product.category + ' в цвете ' + product.color"
-          class="main-product-image"
-        />
-             
+<div class="favorites-page">
+  <!-- Загрузка -->
+  <div *ngIf="loading">Загрузка избранного...</div>
+
+  <!-- Ошибка -->
+  <div *ngIf="error && !loading" class="error">{{ error }}</div>
+
+  <!-- Данные успешно загружены -->
+  <div *ngIf="!loading && !error">
+    <div *ngIf="favorites.length > 0">
+      <div class="favorites-header">
+        <h1>ИЗБРАННОЕ / {{ favorites.length }} ТОВАР(ОВ)</h1>
       </div>
 
-                 
-      <div class="thumbnails">
-               
-        <div class="thumbnail-item active">
-                    <img [src]="product.image_url | imgUrlulu" alt="Миниатюра 1" />        
+      <div class="favorites-content">
+        <div class="favorites-items">
+          <div *ngFor="let item of favorites" class="favorite-item">
+            <!-- Изображение слева (как на странице товара) -->
+            <div class="product-image-section">
+              <div class="main-image-placeholder">
+                <img
+                  [src]="item.image_url | imgUrlulu"
+                  [alt]="item.category + ' в цвете ' + item.color"
+                  class="main-product-image"
+                />
+              </div>
+            </div>
+
+            <!-- Информация справа -->
+            <div class="item-details">
+              <p class="item-category">Категория: {{ item.category }}</p>
+              <div class="item-price">Цена: {{ item.price }} ₽</div>
+              <p>Цвет: {{ item.color }}</p>
+              <p>Тег: {{ item.tag }}</p>
+            </div>
+
+            <div class="item-actions">
+              <!-- <button class="btn-remove" (click)="removeFromFavorites(item.product_id)">
+                Удалить из избранного 
+              </button> -->
+            </div>
+          </div>
         </div>
-             
       </div>
-
-         
     </div>
 
-           
-    <div class="product-info-section">
-           
-      <h1 class="product-title">
-                        {{ product.category | uppercase }} В ЦВЕТЕ {{ product.color | uppercase }}  
-           
-      </h1>
-           
-      <p class="product-category">{{ product.category }}</p>
-
-           
-      <p class="product-price">{{ product.price | number : '1.0-0' }} ₽</p>
-
-           
-      <p class="size-label">РАЗМЕР:</p>
-
-                 
-      <div class="size-options">
-               
-        <button
-          *ngFor="let size of product.sizes"
-          class="size-button"
-          [class.active]="selectedSize === size"
-          (click)="selectSize(size)"
-        >
-                    {{ size }}        
-        </button>
-             
-      </div>
-
-      <div class="add-to-cart-actions">
-        <button class="add-to-cart-button">ДОБАВИТЬ В КОРЗИНУ</button>
-
-        <button class="favorite-button">
-          <img src="/assets/icons/heart.svg" alt="В избранное" width="24" height="24" />
-        </button>
-      </div>
-
-         
+    <!-- Пустое избранное -->
+    <div *ngIf="favorites.length === 0">
+      В избранном пока ничего нет.
     </div>
-
-     
   </div>
-</div>
-
-<ng-template #loadingOrNotFound>
-  <div class="loading-indicator" *ngIf="!productData(); else notFound">
-    Загрузка данных товара...
-  </div>
-</ng-template>
-
-<ng-template #notFound>
-   
-  <div class="product-not-found">Товар с таким ID не найден. Проверьте адрес.</div>
-</ng-template>
-
-<div class="related-products-section">
-  <h2>ВАМ ТАКЖЕ МОЖЕТ ПОНРАВИТЬСЯ:</h2>
 </div>
 
 <app-footer></app-footer>
