@@ -1,1 +1,91 @@
-<p>favorite-page works!</p>
+<app-navbar></app-navbar>
+
+<div class="product-page-wrapper" *ngIf="productData() as product; else loadingOrNotFound">
+   
+  <div class="product-container">
+           
+    <div class="product-image-section">
+           
+      <div class="main-image-placeholder">
+               
+        <img
+          [src]="product.image_url | imgUrlulu"
+          [alt]="product.category + ' в цвете ' + product.color"
+          class="main-product-image"
+        />
+             
+      </div>
+
+                 
+      <div class="thumbnails">
+               
+        <div class="thumbnail-item active">
+                    <img [src]="product.image_url | imgUrlulu" alt="Миниатюра 1" />        
+        </div>
+             
+      </div>
+
+         
+    </div>
+
+           
+    <div class="product-info-section">
+           
+      <h1 class="product-title">
+                        {{ product.category | uppercase }} В ЦВЕТЕ {{ product.color | uppercase }}  
+           
+      </h1>
+           
+      <p class="product-category">{{ product.category }}</p>
+
+           
+      <p class="product-price">{{ product.price | number : '1.0-0' }} ₽</p>
+
+           
+      <p class="size-label">РАЗМЕР:</p>
+
+                 
+      <div class="size-options">
+               
+        <button
+          *ngFor="let size of product.sizes"
+          class="size-button"
+          [class.active]="selectedSize === size"
+          (click)="selectSize(size)"
+        >
+                    {{ size }}        
+        </button>
+             
+      </div>
+
+      <div class="add-to-cart-actions">
+        <button class="add-to-cart-button">ДОБАВИТЬ В КОРЗИНУ</button>
+
+        <button class="favorite-button">
+          <img src="/assets/icons/heart.svg" alt="В избранное" width="24" height="24" />
+        </button>
+      </div>
+
+         
+    </div>
+
+     
+  </div>
+</div>
+
+<ng-template #loadingOrNotFound>
+  <div class="loading-indicator" *ngIf="!productData(); else notFound">
+    Загрузка данных товара...
+  </div>
+</ng-template>
+
+<ng-template #notFound>
+   
+  <div class="product-not-found">Товар с таким ID не найден. Проверьте адрес.</div>
+</ng-template>
+
+<div class="related-products-section">
+  <h2>ВАМ ТАКЖЕ МОЖЕТ ПОНРАВИТЬСЯ:</h2>
+</div>
+
+<app-footer></app-footer>
