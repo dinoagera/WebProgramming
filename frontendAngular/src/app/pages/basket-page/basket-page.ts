@@ -55,11 +55,11 @@ removeItem(item: BasketItem): void {
     },
     error: () => {
       alert('Ошибка при удалении товара');
-    }
+    } 
   });
 }
 clearCart(): void {
-  if (!confirm(`Вы уверенч что хотите очистить коризу?`)) {
+  if (!confirm(`Вы уверены, что хотите очистить корзину?`)) {
     return;
   }
   this.basketService.clearCart().subscribe({

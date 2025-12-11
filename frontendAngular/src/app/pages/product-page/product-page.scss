@@ -127,11 +127,10 @@ $price-color: #222; // Цвет цены
             &:hover {
                 background-color: darken($secondary-bg, 5%);
             }
-            // Пример активного размера
-            // &.active {
-            //     background-color: $primary-color;
-            //     color: white;
-            // }
+            &.active {
+                background-color: $primary-color;
+                color: white;
+            }
         }
     }
     

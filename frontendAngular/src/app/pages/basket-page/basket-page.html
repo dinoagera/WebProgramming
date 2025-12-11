@@ -18,7 +18,6 @@
         <div class="basket-items">
           <div *ngFor="let item of data.cart.items" class="basket-item">
             <div class="item-details">
-              <h3>ID: {{ item.product_id }}</h3>
               <p class="item-category">Категория: {{ item.category }}</p>
               <div class="item-price">Цена: {{ item.price | number }} ₽</div>
               <div>Кол-во: {{ item.quantity }} шт.</div>
@@ -50,22 +49,23 @@
             </div>
             <button class="btn-pay" (click)="checkout()">ОПЛАТИТЬ ЗАКАЗ</button>
           </div>
+          <button
+              class="clear-cart-button"
+              (click)="clearCart()"
+            >
+              Очистить корзину
+          </button>
         </div>
       </div>
     </div>
 
-    <button
-        class="clear-cart-button"
-        (click)="clearCart()"
-      >
-        Очистить корзину
-    </button>
-
 
     <!-- basketData === null, но ошибки нет → пустая корзина -->
-    <div *ngIf="!basketData">
-      Ваша корзина пуста.
-    </div>
+<!-- На это: -->
+      <div *ngIf="!basketData" class="empty-basket-message">
+        <div class="empty-icon">🛒</div>
+        <p>Ваша корзина пуста.</p>
+      </div>
   </div>
 </div>
 

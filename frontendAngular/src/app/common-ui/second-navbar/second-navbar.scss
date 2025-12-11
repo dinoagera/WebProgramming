@@ -1,6 +1,11 @@
-/* src/app/common-ui/second-navbar/second-navbar.scss */
+/* src/app/common-ui/second-navbar/second-navbar.component.scss */
 
-$yellow-bg: #f3e07f; /* Цвет фона вашего хедера */
+$yellow-bg: #f3e07f; // Основной фон хедера
+$primary-color: #222;
+$secondary-bg: #fbfce6; // Активный фон
+$border-color: #2c2c2c;
+$text-color: #333;
+$hover-bg: #fff;
 
 .header {
   background-color: $yellow-bg;
@@ -13,13 +18,60 @@ $yellow-bg: #f3e07f; /* Цвет фона вашего хедера */
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
-
   display: flex;
-
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 }
 
+// --- Категории (кнопки "Женское", "Мужское", "Все") ---
+.category-buttons {
+  display: flex;
+  gap: 10px;
+
+  ul.header__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+
+      a {
+        display: block;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: $text-color;
+        text-decoration: none;
+        border: 1px solid $border-color;
+        background-color: transparent;
+        transition: all 0.2s ease;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $hover-bg;
+          border-color: $hover-bg;
+        }
+
+        &:active {
+          transform: scale(0.98);
+        }
+      }
+
+      // Активная категория
+      &.active a {
+        background-color: $secondary-bg;
+        border-color: $secondary-bg;
+        color: $primary-color;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+    }
+  }
+}
+
+// --- Фильтры и сортировка ---
 .filter-sort-bar {
   display: flex;
   gap: 20px;
@@ -28,48 +80,32 @@ $yellow-bg: #f3e07f; /* Цвет фона вашего хедера */
   a {
     display: flex;
     align-items: center;
-    gap: 5px;
-    color: #333;
+    gap: 8px;
+    color: $text-color;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
-    opacity: 0.7;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background-color: transparent;
+    border: 1px solid transparent;
+
+    &:hover {
+      background-color: $hover-bg;
+      border-color: $hover-bg;
+      opacity: 1;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
   }
 
   img {
     width: 18px;
     height: 18px;
+    fill: currentColor;
+    stroke: currentColor;
   }
 }
-
-/* Стили для отдельных кнопок */
-.category-btn {
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-size: 14px;
-  font-weight: 500;
-  text-transform: uppercase;
-  border: 1px solid #2c2c2c; /* Черная рамка для неактивных */
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.category-btn--active {
-  background-color: #fbfce6; /* Активная кнопка - желтый фон */
-  border-color: #fbfce6; /* Желтая рамка */
-}
-
-/* src/app/common-ui/second-navbar/second-navbar.scss */
-
-.header .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
-
-  display: flex;
-
-  justify-content: space-between;
-  align-items: center;
-}
-
-// ... остальной код (он корректен для данной задачи)
