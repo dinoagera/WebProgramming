@@ -2,7 +2,7 @@
 
 <div class="favorites-page">
   <!-- Загрузка -->
-  <div *ngIf="loading">Загрузка избранного...</div>
+  <div *ngIf="loading" class="loading-indicator">Загрузка избранного...</div>
 
   <!-- Ошибка -->
   <div *ngIf="error && !loading" class="error">{{ error }}</div>
@@ -17,7 +17,7 @@
       <div class="favorites-content">
         <div class="favorites-items">
           <div *ngFor="let item of favorites" class="favorite-item">
-            <!-- Изображение слева (как на странице товара) -->
+            <!-- Изображение -->
             <div class="product-image-section">
               <div class="main-image-placeholder">
                 <img
@@ -28,22 +28,18 @@
               </div>
             </div>
 
-            <!-- Информация справа -->
+            <!-- Информация -->
             <div class="item-details">
-              <p class="item-category">Категория: {{ item.category }}</p>
-              <div class="item-price">Цена: {{ item.price }} ₽</div>
+              <p class="item-category">{{ item.category }}</p>
+              <div class="item-price">{{ item.price }} ₽</div>
               <p>Цвет: {{ item.color }}</p>
               <p>Тег: {{ item.tag }}</p>
             </div>
-            <!-- <button
-              type="submit"
-              (click)="removeFromFavorites()"
-            >
-              Удалить из избранного
-            </button> -->
+
+            <!-- Кнопка удаления -->
             <div class="item-actions">
               <button class="btn-remove" (click)="removeFromFavorites(item.product_id)">
-                Удалить из избранного 
+                Удалить из избранного
               </button>
             </div>
           </div>
@@ -52,7 +48,7 @@
     </div>
 
     <!-- Пустое избранное -->
-    <div *ngIf="favorites.length === 0">
+    <div *ngIf="favorites.length === 0" class="empty-favorites">
       В избранном пока ничего нет.
     </div>
   </div>
