@@ -60,8 +60,12 @@ func (api *API) setupRouter() {
 	// Public routes
 	public := apiRouter.PathPrefix("").Subrouter()
 	public.HandleFunc("/getcatalog", api.handler.GetCatalog).Methods(http.MethodGet)
-	public.HandleFunc("/getmale", api.handler.GetCatalog).Methods(http.MethodGet)
-	public.HandleFunc("/getfemale", api.handler.GetCatalog).Methods(http.MethodGet)
+	public.HandleFunc("/getmale", api.handler.GetMale).Methods(http.MethodGet)
+	public.HandleFunc("/getmale", func(w http.ResponseWriter, r *http.Request) {
+	}).Methods(http.MethodOptions)
+	public.HandleFunc("/getfemale", api.handler.GetFemale).Methods(http.MethodGet)
+	public.HandleFunc("/getfemale", func(w http.ResponseWriter, r *http.Request) {
+	}).Methods(http.MethodOptions)
 	public.HandleFunc("/image/{productID}", api.handler.GetImage).Methods(http.MethodGet)
 	// Auth routes (public)
 	authRoutes := apiRouter.PathPrefix("").Subrouter()

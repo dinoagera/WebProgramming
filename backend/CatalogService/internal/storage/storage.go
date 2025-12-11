@@ -178,7 +178,7 @@ func (s *Storage) RemoveFavourite(userID, productID int) error {
 }
 
 func (s *Storage) GetMale() ([]models.Good, error) {
-	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, sizes, price, color, tag, '/api/image/' || product_id as image_url FROM goods`)
+	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, sizes, price, color, tag, '/api/image/' || product_id as image_url FROM goods WHERE sex = $1`, "male")
 	if err != nil {
 		s.log.Info("failed to get catalog query", "err", err)
 		return nil, err
@@ -215,7 +215,7 @@ func (s *Storage) GetMale() ([]models.Good, error) {
 	return goods, nil
 }
 func (s *Storage) GetFemale() ([]models.Good, error) {
-	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, sizes, price, color, tag, '/api/image/' || product_id as image_url FROM goods`)
+	rows, err := s.Pool.Query(context.Background(), `SELECT product_id,category, sex, sizes, price, color, tag, '/api/image/' || product_id as image_url FROM goods  WHERE sex = $1`, "female")
 	if err != nil {
 		s.log.Info("failed to get catalog query", "err", err)
 		return nil, err
@@ -238,9 +238,7 @@ func (s *Storage) GetFemale() ([]models.Good, error) {
 			s.log.Info("failed to scan to struct", "err", err)
 			return nil, err
 		}
-		if good.Sex == "female" || good.Sex == "unisex" {
-			goods = append(goods, good)
-		}
+		goods = append(goods, good)
 	}
 	if err := rows.Err(); err != nil {
 		s.log.Info("failed to reading rows", "err", err)

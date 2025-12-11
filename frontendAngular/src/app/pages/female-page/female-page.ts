@@ -9,7 +9,10 @@ import { SecondNavbar } from '../../common-ui/second-navbar/second-navbar';
 import { Footer } from '../../common-ui/footer/footer';
 import { FilterSidebar } from '../../common-ui/filter-sidebar/filter-sidebar';
 import { JsonPipe, NgFor } from '@angular/common';
-import { FavoritesService } from '../../data/services/favourites-serivce'; // ← импорт сервиса
+import { FavoritesService } from '../../data/services/favourites-serivce';
+import { FemaleService } from '../../data/services/female-service';
+
+
 
 @Component({
   selector: 'app-catalog-page',
@@ -22,37 +25,36 @@ import { FavoritesService } from '../../data/services/favourites-serivce'; // �
     FilterSidebar,
     NgFor
   ],
-  templateUrl: './catalog-page.html',
-  styleUrl: './catalog-page.scss',
+  templateUrl: './female-page.html',
+  styleUrl: './female-page.scss',
 })
-export class CatalogPage {
+export class FemalePage {
   isSidebarOpen = false;
   
   private productCatalog = inject(ProductCatalog);
-  private favoritesService = inject(FavoritesService); // ← внедрение
-
+  private favoritesService = inject(FavoritesService); 
+  private femaleService = inject(FemaleService); 
+  
   products: Product[] = [];
 
   constructor() {
-    this.productCatalog.getCatalog().subscribe((val) => {
+    this.femaleService.getFemale().subscribe((val) => {
       this.products = val.catalog;
     });
   }
+  toggleFavorite = (event: Event, product: Product) => {
+    event.stopPropagation();
+    event.preventDefault();
 
-  // ✅ Метод для добавления в избранное
-  // toggleFavorite = (event: Event, product: Product) => {
-  //   event.stopPropagation();
-  //   event.preventDefault();
-
-  //   this.favoritesService.addToFavorites(product.product_id).subscribe({
-  //     next: () => {
-  //       product.isFavorite = true;
-  //     },
-  //     error: (err) => {
-  //       console.error('Ошибка добавления в избранное', err);
-  //     }
-  //   });
-  // };
+    this.favoritesService.addToFavorites(product.product_id).subscribe({
+      next: () => {
+        product.isFavorite = true;
+      },
+      error: (err) => {
+        console.error('Ошибка добавления в избранное', err);
+      }
+    });
+  };
 
   openSidebar() { this.isSidebarOpen = true; }
   closeSidebar() { this.isSidebarOpen = false; }

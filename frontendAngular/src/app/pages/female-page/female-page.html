@@ -1,0 +1,26 @@
+<app-navbar></app-navbar>
+
+<app-second-navbar (openFilters)="openSidebar()"></app-second-navbar>
+
+<app-filter-sidebar 
+  [isOpen]="isSidebarOpen" 
+  (close)="closeSidebar()">
+</app-filter-sidebar>
+
+<div class="product_grid">
+  @for (product of products; track product.product_id) {
+    <app-catalog-product 
+      [product]="product"
+      (toggleFavorite)="toggleFavorite($event, product)">
+    </app-catalog-product>
+  } @empty {
+    <p class="empty-message">Нет товаров в женской коллекции</p>
+  }
+</div>
+
+<!-- Кнопка "ЕЩЁ" можно оставить, если пагинация будет реализована позже -->
+<div class *ngIf="false" class="more-button-wrapper">
+  <a href="#!" class="btn more-btn">ЕЩЁ</a>
+</div>
+
+<app-footer></app-footer>

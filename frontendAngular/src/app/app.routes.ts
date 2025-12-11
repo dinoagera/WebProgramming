@@ -7,6 +7,8 @@ import { MainPage } from './pages/main-page/main-page';
 import { ProductPage } from './pages/product-page/product-page';
 import { RegisterPage } from './pages/register-page/register-page';
 import { FilterSidebar } from './common-ui/filter-sidebar/filter-sidebar';
+import { MalePage } from './pages/male-page/male-page';
+import { FemalePage } from './pages/female-page/female-page';
 
 
 
@@ -19,4 +21,6 @@ export const routes: Routes = [
   { path: 'main', component: MainPage },
   { path: 'product/:id', component: ProductPage },
   { path: 'filter', component: FilterSidebar },
+  { path: 'male', component: MalePage },
+  { path: 'female', component: FemalePage },
 ];
