@@ -17,9 +17,10 @@ type Handler struct {
 	getFavourites   service.GetFavourites
 	addFavourite    service.AddFavourite
 	removeFavourite service.RemoveFavourite
+	getpol          service.GetPol
 }
 
-func New(log *slog.Logger, getCatalog service.GetCatalog, getImage service.GetImage, getFavourites service.GetFavourites, addFavourite service.AddFavourite, removeFavourite service.RemoveFavourite) *Handler {
+func New(log *slog.Logger, getCatalog service.GetCatalog, getImage service.GetImage, getFavourites service.GetFavourites, addFavourite service.AddFavourite, removeFavourite service.RemoveFavourite, getpol service.GetPol) *Handler {
 	return &Handler{
 		log:             log,
 		getCatalog:      getCatalog,
@@ -27,6 +28,7 @@ func New(log *slog.Logger, getCatalog service.GetCatalog, getImage service.GetIm
 		getFavourites:   getFavourites,
 		addFavourite:    addFavourite,
 		removeFavourite: removeFavourite,
+		getpol:          getpol,
 	}
 }
 func (h *Handler) getKey(r *http.Request) (string, error) {
@@ -56,7 +58,6 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 		"catalog": goods,
 	})
 }
-
 func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 	productID := strings.TrimPrefix(r.URL.Path, "/api/image/")
 	if productID == "" {
@@ -162,5 +163,43 @@ func (h *Handler) RemoveFavourite(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"status": "favourite good is deleted",
+	})
+}
+func (h *Handler) GetMale(w http.ResponseWriter, r *http.Request) {
+	goods, err := h.getpol.GetMale()
+	if err != nil {
+		if err == lib.ErrCatalogIsEmpty {
+			h.log.Info("catalog is empty", "err", err)
+			http.Error(w, "Catalog is empty", http.StatusInternalServerError)
+			return
+		}
+		h.log.Info("failed to get catalog", "err", err)
+		http.Error(w, "Internal server", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":  "get catalog is successfully",
+		"catalog": goods,
+	})
+}
+func (h *Handler) GetFemale(w http.ResponseWriter, r *http.Request) {
+	goods, err := h.getpol.GetFemale()
+	if err != nil {
+		if err == lib.ErrCatalogIsEmpty {
+			h.log.Info("catalog is empty", "err", err)
+			http.Error(w, "Catalog is empty", http.StatusInternalServerError)
+			return
+		}
+		h.log.Info("failed to get catalog", "err", err)
+		http.Error(w, "Internal server", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":  "get catalog is successfully",
+		"catalog": goods,
 	})
 }

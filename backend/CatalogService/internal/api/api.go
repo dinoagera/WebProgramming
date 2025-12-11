@@ -27,8 +27,8 @@ func InitAPI(log *slog.Logger, cfg *config.Config) *API {
 		log.Info("failed to init storage", "err", err)
 		os.Exit(1)
 	}
-	srv := service.New(log, db, db, db, db, db)
-	handler := handler.New(log, srv, srv, srv, srv, srv)
+	srv := service.New(log, db, db, db, db, db, db)
+	handler := handler.New(log, srv, srv, srv, srv, srv, srv)
 	api := &API{
 		log:     log,
 		cfg:     cfg,
@@ -61,4 +61,6 @@ func (api *API) setupRouter() {
 	public.HandleFunc("/getfavourites", api.handler.GetFavourites).Methods(http.MethodGet)
 	public.HandleFunc("/addfavourite", api.handler.AddFavourite).Methods(http.MethodPost)
 	public.HandleFunc("/removefavourite", api.handler.RemoveFavourite).Methods(http.MethodPost)
+	public.HandleFunc("/getmale", api.handler.GetMale).Methods(http.MethodGet)
+	public.HandleFunc("/getfemale", api.handler.GetFemale).Methods(http.MethodGet)
 }

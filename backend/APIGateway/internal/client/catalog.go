@@ -204,3 +204,69 @@ func (c *CatalogClient) RemoveFavourite(userID, productID string) error {
 		return fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
 	}
 }
+func (c *CatalogClient) GetMale() ([]models.Good, error) {
+	url := fmt.Sprintf("%s/api/getmale", c.baseURL)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/json")
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
+		var catalogResp models.CatalogResponse
+		if err := json.Unmarshal(body, &catalogResp); err != nil {
+			return nil, err
+		}
+		return catalogResp.Catalog, nil
+
+	case http.StatusInternalServerError:
+		if string(body) == "Catalog is empty" {
+			return []models.Good{}, nil
+		}
+		return nil, fmt.Errorf("catalog service error: %s", string(body))
+	default:
+		return nil, fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
+	}
+}
+func (c *CatalogClient) GetFemale() ([]models.Good, error) {
+	url := fmt.Sprintf("%s/api/getfemale", c.baseURL)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/json")
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
+		var catalogResp models.CatalogResponse
+		if err := json.Unmarshal(body, &catalogResp); err != nil {
+			return nil, err
+		}
+		return catalogResp.Catalog, nil
+
+	case http.StatusInternalServerError:
+		if string(body) == "Catalog is empty" {
+			return []models.Good{}, nil
+		}
+		return nil, fmt.Errorf("catalog service error: %s", string(body))
+	default:
+		return nil, fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
+	}
+}

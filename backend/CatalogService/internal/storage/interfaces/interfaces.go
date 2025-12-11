@@ -17,3 +17,7 @@ type AddFavourite interface {
 type RemoveFavourite interface {
 	RemoveFavourite(userID, productID int) error
 }
+type GetPol interface {
+	GetMale() ([]models.Good, error)
+	GetFemale() ([]models.Good, error)
+}

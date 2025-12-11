@@ -15,9 +15,10 @@ type Service struct {
 	getFavourites   storage.GetFavourites
 	addFavourite    storage.AddFavourite
 	removeFavourite storage.RemoveFavourite
+	getpol          storage.GetPol
 }
 
-func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetImage, getFavourites storage.GetFavourites, addFavourite storage.AddFavourite, removeFavourite storage.RemoveFavourite) *Service {
+func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetImage, getFavourites storage.GetFavourites, addFavourite storage.AddFavourite, removeFavourite storage.RemoveFavourite, getpol storage.GetPol) *Service {
 	return &Service{
 		log:             log,
 		getCatalog:      getCatalog,
@@ -25,6 +26,7 @@ func New(log *slog.Logger, getCatalog storage.GetCatalog, getImage storage.GetIm
 		getFavourites:   getFavourites,
 		addFavourite:    addFavourite,
 		removeFavourite: removeFavourite,
+		getpol:          getpol,
 	}
 }
 func (s *Service) GetCatalog() ([]models.Good, error) {
@@ -108,4 +110,28 @@ func (s *Service) RemoveFavourite(userID, productID string) error {
 		return err
 	}
 	return nil
+}
+func (s *Service) GetMale() ([]models.Good, error) {
+	goods, err := s.getpol.GetMale()
+	if err != nil {
+		if err == lib.ErrCatalogIsEmpty {
+			s.log.Info("catalog is empty")
+			return nil, err
+		}
+		s.log.Info("failed to get catalog", "err", err)
+		return nil, err
+	}
+	return goods, nil
+}
+func (s *Service) GetFemale() ([]models.Good, error) {
+	goods, err := s.getpol.GetFemale()
+	if err != nil {
+		if err == lib.ErrCatalogIsEmpty {
+			s.log.Info("catalog is empty")
+			return nil, err
+		}
+		s.log.Info("failed to get catalog", "err", err)
+		return nil, err
+	}
+	return goods, nil
 }

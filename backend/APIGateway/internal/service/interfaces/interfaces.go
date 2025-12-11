@@ -10,6 +10,8 @@ type CatalogService interface {
 	GetFavourites(userID int64) ([]models.Favourites, error)
 	AddFavourite(userID int64, productID string) error
 	RemoveFavourite(userID int64, productID string) error
+	GetMale() ([]models.Good, error)
+	GetFemale() ([]models.Good, error)
 }
 type AuthService interface {
 	Register(email, password string) error

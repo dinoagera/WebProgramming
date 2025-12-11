@@ -431,3 +431,45 @@ func (h *Handler) ClearCart(w http.ResponseWriter, r *http.Request) {
 		"status": "cart is cleared",
 	})
 }
+
+func (h *Handler) GetMale(w http.ResponseWriter, r *http.Request) {
+	goods, err := h.catalogService.GetMale()
+	if err != nil {
+		if err == lib.ErrCatalogIsEmpty {
+			h.log.Info("catalog is empty", "err", err)
+			http.Error(w, "Catalog is empty", http.StatusInternalServerError)
+			return
+		}
+		h.log.Info("failed to get catalog", "err", err)
+		http.Error(w, "Internal server", http.StatusInternalServerError)
+		return
+	}
+	h.log.Info("get catalog is successfully")
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(models.CatalogResponse{
+		Status:  "get catalog is successfully",
+		Catalog: goods,
+	})
+}
+
+func (h *Handler) GetFemale(w http.ResponseWriter, r *http.Request) {
+	goods, err := h.catalogService.GetFemale()
+	if err != nil {
+		if err == lib.ErrCatalogIsEmpty {
+			h.log.Info("catalog is empty", "err", err)
+			http.Error(w, "Catalog is empty", http.StatusInternalServerError)
+			return
+		}
+		h.log.Info("failed to get catalog", "err", err)
+		http.Error(w, "Internal server", http.StatusInternalServerError)
+		return
+	}
+	h.log.Info("get catalog is successfully")
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(models.CatalogResponse{
+		Status:  "get catalog is successfully",
+		Catalog: goods,
+	})
+}

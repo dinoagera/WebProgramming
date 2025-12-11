@@ -127,3 +127,19 @@ func (s *Service) ClearCart(userID int64) error {
 	}
 	return nil
 }
+func (s *Service) GetMale() ([]models.Good, error) {
+	goods, err := s.catalogService.GetMale()
+	if err != nil {
+		s.log.Info("failed to get catalog", "err", err)
+		return nil, err
+	}
+	return goods, nil
+}
+func (s *Service) GetFemale() ([]models.Good, error) {
+	goods, err := s.catalogService.GetFemale()
+	if err != nil {
+		s.log.Info("failed to get catalog", "err", err)
+		return nil, err
+	}
+	return goods, nil
+}
