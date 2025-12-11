@@ -94,4 +94,6 @@ func (api *API) setupRouter() {
 	protected.HandleFunc("/addfavourite", func(w http.ResponseWriter, r *http.Request) {
 	}).Methods(http.MethodOptions)
 	protected.HandleFunc("/removefavourite", api.handler.RemoveFavourite).Methods(http.MethodPost)
+	protected.HandleFunc("/removefavourite", func(w http.ResponseWriter, r *http.Request) {
+	}).Methods(http.MethodOptions)
 }

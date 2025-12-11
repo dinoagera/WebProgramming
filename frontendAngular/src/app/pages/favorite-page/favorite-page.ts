@@ -46,5 +46,15 @@ export class FavoritePage {
       }
     });
   }
-
-}
+  removeFromFavorites(productID: string) {
+    this.favoritesService.removeFromFavorites(productID).subscribe({
+        next: () => {
+          alert('Товар удален из избранного.')
+          this.loadFavorites();
+        },
+      error: (err) => {
+        console.error('Ошибка удаления из избранного', err);
+      }
+    });
+    }
+  }

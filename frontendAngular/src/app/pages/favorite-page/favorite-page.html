@@ -35,11 +35,16 @@
               <p>Цвет: {{ item.color }}</p>
               <p>Тег: {{ item.tag }}</p>
             </div>
-
+            <!-- <button
+              type="submit"
+              (click)="removeFromFavorites()"
+            >
+              Удалить из избранного
+            </button> -->
             <div class="item-actions">
-              <!-- <button class="btn-remove" (click)="removeFromFavorites(item.product_id)">
+              <button class="btn-remove" (click)="removeFromFavorites(item.product_id)">
                 Удалить из избранного 
-              </button> -->
+              </button>
             </div>
           </div>
         </div>

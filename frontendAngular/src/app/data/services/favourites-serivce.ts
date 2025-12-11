@@ -35,4 +35,9 @@ export class FavoritesService {
       product_id: productId 
     });
   }
+  removeFromFavorites(productId: string): Observable<any> {
+    return this.http.post(`${this.baseURL}api/removefavourite`, {
+      product_id: productId 
+    });
+  }
 }
