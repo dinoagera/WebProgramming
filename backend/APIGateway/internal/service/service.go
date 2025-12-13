@@ -30,6 +30,14 @@ func (s *Service) GetCatalog() ([]models.Good, error) {
 	}
 	return goods, nil
 }
+func (s *Service) GetProduct(id string) (models.Good, error) {
+	good, err := s.catalogService.GetProduct(id)
+	if err != nil {
+		s.log.Info("failed to get product", "err", err)
+		return models.Good{}, err
+	}
+	return good, nil
+}
 func (s *Service) GetFavourites(userID int64) ([]models.Favourites, error) {
 	userIDStr := strconv.Itoa(int(userID))
 	favourites, err := s.catalogService.GetFavourites(userIDStr)

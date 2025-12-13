@@ -6,6 +6,7 @@ import (
 
 type CatalogService interface {
 	GetCatalog() ([]models.Good, error)
+	GetProduct(id string) (models.Good, error)
 	GetImage(productID string) ([]byte, error)
 	GetFavourites(userID int64) ([]models.Favourites, error)
 	AddFavourite(userID int64, productID string) error

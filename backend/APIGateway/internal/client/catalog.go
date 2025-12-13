@@ -270,3 +270,30 @@ func (c *CatalogClient) GetFemale() ([]models.Good, error) {
 		return nil, fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, string(body))
 	}
 }
+func (c *CatalogClient) GetProduct(id string) (models.Good, error) {
+	URL := fmt.Sprintf("%s/api/product/%s", c.baseURL, id)
+	req, err := http.NewRequest("GET", URL, nil)
+	if err != nil {
+		return models.Good{}, err
+	}
+	req.Header.Set("Accept", "application/json")
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return models.Good{}, fmt.Errorf("failed to execute request: %w", err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return models.Good{}, fmt.Errorf("failed to read response body: %w", err)
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
+		var res models.ProductResponse
+		if err := json.Unmarshal(body, &res); err != nil {
+			return models.Good{}, err
+		}
+		return res.Product, nil
+	default:
+		return models.Good{}, err
+	}
+}

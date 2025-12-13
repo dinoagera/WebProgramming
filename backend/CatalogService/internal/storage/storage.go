@@ -4,11 +4,13 @@ import (
 	"catalogservice/internal/models"
 	"catalogservice/lib"
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"os"
 	"path/filepath"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -248,4 +250,26 @@ func (s *Storage) GetFemale() ([]models.Good, error) {
 		return []models.Good{}, lib.ErrCatalogIsEmpty
 	}
 	return goods, nil
+}
+func (s *Storage) GetProduct(id string) (models.Good, error) {
+	var good models.Good
+	err := s.Pool.QueryRow(context.Background(), `SELECT product_id,category, sex, sizes, price, color, tag, '/api/image/' || product_id as image_url FROM goods  WHERE product_id = $1`, id).Scan(
+		&good.ProductID,
+		&good.Category,
+		&good.Sex,
+		&good.Sizes,
+		&good.Price,
+		&good.Color,
+		&good.Tag,
+		&good.ImageURL,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			s.log.Info("product not found", "id", id)
+			return models.Good{}, err
+		}
+		s.log.Error("failed to scan product", "id", id, "err", err)
+		return models.Good{}, err
+	}
+	return good, nil
 }

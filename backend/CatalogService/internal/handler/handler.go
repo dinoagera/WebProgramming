@@ -58,6 +58,26 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 		"catalog": goods,
 	})
 }
+func (h *Handler) GetProduct(w http.ResponseWriter, r *http.Request) {
+	productID := strings.TrimPrefix(r.URL.Path, "/api/product/")
+	if productID == "" {
+		h.log.Info("request have not product id")
+		http.Error(w, "Product ID required", http.StatusBadRequest)
+		return
+	}
+	good, err := h.getCatalog.GetProduct(productID)
+	if err != nil {
+		h.log.Info("failed to get product", "id", productID, "err", err)
+		http.Error(w, "Internal server", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":  "get product is successfully",
+		"product": good,
+	})
+}
 func (h *Handler) GetImage(w http.ResponseWriter, r *http.Request) {
 	productID := strings.TrimPrefix(r.URL.Path, "/api/image/")
 	if productID == "" {

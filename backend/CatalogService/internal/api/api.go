@@ -63,4 +63,5 @@ func (api *API) setupRouter() {
 	public.HandleFunc("/removefavourite", api.handler.RemoveFavourite).Methods(http.MethodPost)
 	public.HandleFunc("/getmale", api.handler.GetMale).Methods(http.MethodGet)
 	public.HandleFunc("/getfemale", api.handler.GetFemale).Methods(http.MethodGet)
+	public.HandleFunc("/product/{productID}", api.handler.GetProduct).Methods(http.MethodGet)
 }

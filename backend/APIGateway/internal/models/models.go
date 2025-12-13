@@ -63,6 +63,10 @@ type CatalogResponse struct {
 	Status  string `json:"status"`
 	Catalog []Good `json:"catalog"`
 }
+type ProductResponse struct {
+	Status  string `json:"status"`
+	Product Good   `json:"product"`
+}
 type FavouritesResponse struct {
 	Status     string       `json:"status"`
 	Favourites []Favourites `json:"favourites"`

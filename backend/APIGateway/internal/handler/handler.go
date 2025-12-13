@@ -117,6 +117,31 @@ func (h *Handler) GetCatalog(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// @Summary GetProductByID
+// @Tags catalog
+// @Description Return good by id
+// @ID get-product
+// @Produce json
+// @Success 200 {array} models.ProductResponse
+// @Failure 400 {object} map[string]string
+// @Router /product/{productID} [get]
+func (h *Handler) GetProduct(w http.ResponseWriter, r *http.Request) {
+	productID := strings.TrimPrefix(r.URL.Path, "/api/product/")
+	good, err := h.catalogService.GetProduct(productID)
+	if err != nil {
+		h.log.Info("failed to get product", "err", err)
+		http.Error(w, "Internal server", http.StatusInternalServerError)
+		return
+	}
+	h.log.Info("get product is successfully")
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(models.ProductResponse{
+		Status:  "get product is successfully",
+		Product: good,
+	})
+}
+
 // @Summary GetFavouritesGoods
 // @Tags catalog
 // @Description Return all favourites goods by user
