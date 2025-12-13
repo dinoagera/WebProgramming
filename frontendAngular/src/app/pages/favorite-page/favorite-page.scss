@@ -1,411 +1,151 @@
-// src/app/pages/product-page/product-page.scss
+// src/app/pages/favorites-page/favorites-page.component.scss
 
-// Используем желтый фон, как на ваших скриншотах
 $main-bg-color: #fcf4c7; // Светло-желтый/кремовый цвет
+$card-bg: #fdfae9; // Белый с легким желтоватым оттенком (как на скриншоте)
+$border-color: #e0e0e0;
+$text-color: #2c2c2c;
 
 :host {
-    display: block;
-    background-color: $main-bg-color;
-    min-height: 100vh;
+  display: block;
+  background-color: $main-bg-color;
+  min-height: 100vh;
+  padding: 40px 0;
 }
 
-.product-page-wrapper {
-    padding: 40px 10%; 
-    min-height: 80vh; 
+.favorites-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: 380px;
+  width: 100%;
 }
 
-// --- Индикатор загрузки/не найдено ---
-.loading-indicator, .product-not-found {
-    text-align: center;
-    padding: 100px 0;
-    font-size: 1.5rem;
-    color: #444;
+.favorites-header {
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $text-color;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    @media (max-width: 600px) {
+      font-size: 2rem;
+    }
+  }
 }
 
-// --- Основной контейнер товара ---
-.product-container {
-    display: flex;
-    gap: 50px; // Расстояние между изображением и информацией
-    max-width: 1200px;
+.favorites-content {
+  .favorites-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 20px;
+    max-width: 1400px;
     margin: 0 auto;
 
-    @media (max-width: 900px) {
-        flex-direction: column; // На мобильных устройствах - в столбец
-        gap: 30px;
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 16px;
     }
-}
+  }
 
-// --- Секция изображения (слева) ---
-.product-image-section {
-    flex: 1; // Занимает половину места
-    max-width: 50%;
-
-    @media (max-width: 900px) {
-        max-width: 100%;
-    }
-}
-
-.main-image-placeholder {
-    // Стиль белого контейнера вокруг изображения
-    background-color: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-
-    .main-product-image {
-        width: 100%;
-        height: auto;
-        display: block; // Убрать нижний пробел у img
-        object-fit: contain;
-    }
-}
-
-// Миниатюры (под основным изображением)
-.thumbnails {
+  .favorite-item {
+    background-color: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
     display: flex;
-    gap: 15px;
-    margin-top: 20px;
-    
-    .thumbnail-item {
-        width: 80px;
-        height: 80px;
-        background-color: white;
-        padding: 5px;
-        border-radius: 8px;
-        cursor: pointer;
-        border: 2px solid transparent; // Для анимации/активности
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 
-        &.active {
-            border-color: #333; // Пример активной рамки
-        }
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+      z-index: 1;
+    }
+
+    &::after:hover {
+      transform: scale(1.2);
+    }
+
+    .product-image-section {
+      width: 100%;
+      margin-bottom: 16px;
+
+      .main-image-placeholder {
+        background-color: white;
+        padding: 12px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
         img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+          width: 100%;
+          height: auto;
+          object-fit: contain;
+          max-height: 180px;
         }
-    }
-}
-
-// --- Секция информации (справа) ---
-.product-info-section {
-    flex: 1; // Занимает половину места
-    padding-top: 20px;
-}
-
-.product-title {
-    font-size: 2.5rem; // Большой заголовок
-    font-weight: 700;
-    margin-bottom: 5px;
-    line-height: 1.2;
-
-    @media (max-width: 600px) {
-        font-size: 2rem;
-    }
-}
-
-.product-category {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 25px;
-}
-
-.product-price {
-    font-size: 3rem; // Крупная цена
-    font-weight: 800;
-    margin-bottom: 30px;
-    color: #333;
-
-    @media (max-width: 600px) {
-        font-size: 2.5rem;
-    }
-}
-
-.size-label {
-    font-weight: 600;
-    margin-bottom: 15px;
-    font-size: 1rem;
-    color: #333;
-}
-
-// --- Опции размеров ---
-.size-options {
-    display: flex;
-    flex-wrap: wrap; // Перенос на новую строку
-    gap: 10px;
-    margin-bottom: 40px;
-
-    .size-button {
-        background-color: white;
-        border: 1px solid #ccc;
-        color: #333;
-        font-size: 1rem;
-        padding: 10px 18px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background-color 0.2s, border-color 0.2s;
-
-        &:hover {
-            border-color: #333;
-        }
-
-        &.active {
-            background-color: #333; // Активная кнопка черная
-            color: white;
-            border-color: #333;
-            font-weight: 600;
-        }
-    }
-}
-
-// --- Кнопка добавления в корзину ---
-.add-to-cart-actions {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-
-    .add-to-cart-button {
-        flex-grow: 1;
-        background-color: #ffe066; // Желтый цвет, как на скриншотах
-        color: #333;
-        border: none;
-        padding: 15px 30px;
-        font-size: 1.2rem;
-        font-weight: 700;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-
-        &:hover {
-            background-color: #ffd44c;
-        }
+      }
     }
 
-    .favorite-button {
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: border-color 0.2s;
-        
-        &:hover {
-            border-color: #333;
-        }
+    .item-details {
+      width: 100%;
+      text-align: left;
+      font-size: 0.9rem;
+
+      .item-category {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: $text-color;
+      }
+
+      .item-price {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin: 8px 0;
+        color: $text-color;
+      }
+
+      p {
+        margin: 4px 0;
+        color: #666;
+        font-size: 0.85rem;
+      }
     }
-}
 
-// --- Секция "Вам также может понравиться" (за пределами ngIf) ---
-.related-products-section {
-    padding: 60px 10%;
-    text-align: center;
-}// src/app/pages/product-page/product-page.scss
+    .item-actions {
+      width: 100%;
+      margin-top: 16px;
 
-// Используем желтый фон, как на ваших скриншотах
-$main-bg-color: #fcf4c7; // Светло-желтый/кремовый цвет
-
-:host {
-    display: block;
-    background-color: $main-bg-color;
-    min-height: 100vh;
-}
-
-.product-page-wrapper {
-    padding: 40px 10%; 
-    min-height: 80vh; 
-}
-
-// --- Индикатор загрузки/не найдено ---
-.loading-indicator, .product-not-found {
-    text-align: center;
-    padding: 100px 0;
-    font-size: 1.5rem;
-    color: #444;
-}
-
-// --- Основной контейнер товара ---
-.product-container {
-    display: flex;
-    gap: 50px; // Расстояние между изображением и информацией
-    max-width: 1200px;
-    margin: 0 auto;
-
-    @media (max-width: 900px) {
-        flex-direction: column; // На мобильных устройствах - в столбец
-        gap: 30px;
-    }
-}
-
-// --- Секция изображения (слева) ---
-.product-image-section {
-    flex: 1; // Занимает половину места
-    max-width: 50%;
-
-    @media (max-width: 900px) {
-        max-width: 100%;
-    }
-}
-
-.main-image-placeholder {
-    // Стиль белого контейнера вокруг изображения
-    background-color: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-
-    .main-product-image {
+      .btn-remove {
         width: 100%;
-        height: auto;
-        display: block; // Убрать нижний пробел у img
-        object-fit: contain;
-    }
-}
-
-// Миниатюры (под основным изображением)
-.thumbnails {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-    
-    .thumbnail-item {
-        width: 80px;
-        height: 80px;
-        background-color: white;
-        padding: 5px;
-        border-radius: 8px;
-        cursor: pointer;
-        border: 2px solid transparent; // Для анимации/активности
-
-        &.active {
-            border-color: #333; // Пример активной рамки
-        }
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-    }
-}
-
-// --- Секция информации (справа) ---
-.product-info-section {
-    flex: 1; // Занимает половину места
-    padding-top: 20px;
-}
-
-.product-title {
-    font-size: 2.5rem; // Большой заголовок
-    font-weight: 700;
-    margin-bottom: 5px;
-    line-height: 1.2;
-
-    @media (max-width: 600px) {
-        font-size: 2rem;
-    }
-}
-
-.product-category {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 25px;
-}
-
-.product-price {
-    font-size: 3rem; // Крупная цена
-    font-weight: 800;
-    margin-bottom: 30px;
-    color: #333;
-
-    @media (max-width: 600px) {
-        font-size: 2.5rem;
-    }
-}
-
-.size-label {
-    font-weight: 600;
-    margin-bottom: 15px;
-    font-size: 1rem;
-    color: #333;
-}
-
-// --- Опции размеров ---
-.size-options {
-    display: flex;
-    flex-wrap: wrap; // Перенос на новую строку
-    gap: 10px;
-    margin-bottom: 40px;
-
-    .size-button {
-        background-color: white;
-        border: 1px solid #ccc;
-        color: #333;
-        font-size: 1rem;
-        padding: 10px 18px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background-color 0.2s, border-color 0.2s;
-
-        &:hover {
-            border-color: #333;
-        }
-
-        &.active {
-            background-color: #333; // Активная кнопка черная
-            color: white;
-            border-color: #333;
-            font-weight: 600;
-        }
-    }
-}
-
-// --- Кнопка добавления в корзину ---
-.add-to-cart-actions {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-
-    .add-to-cart-button {
-        flex-grow: 1;
-        background-color: #ffe066; // Желтый цвет, как на скриншотах
-        color: #333;
+        background-color: #fbfce6;
+        color: #2c2c2c;
         border: none;
-        padding: 15px 30px;
-        font-size: 1.2rem;
+        padding: 10px 16px;
+        border-radius: 30px;
         font-weight: 700;
-        border-radius: 8px;
+        font-size: 0.9rem;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: background-color 0.3s;
 
         &:hover {
-            background-color: #ffd44c;
+          background-color: #f0f2d8;
         }
+      }
     }
-
-    .favorite-button {
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: border-color 0.2s;
-        
-        &:hover {
-            border-color: #333;
-        }
-    }
+  }
 }
 
-// --- Секция "Вам также может понравиться" (за пределами ngIf) ---
-.related-products-section {
-    padding: 60px 10%;
-    text-align: center;
+// Если избранное пустое
+.empty-favorites {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 1.5rem;
+  color: #666;
 }
